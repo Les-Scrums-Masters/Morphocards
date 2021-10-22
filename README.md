@@ -1,6 +1,6 @@
-# FOC21-T3-A : Les Scrums Masters 🕵️‍♂️
+# FOC21-T3-A : Les Scrums Masters 🕵️
 
-## **🧑🏽 Membres du groupes**
+## **👨 Membres du groupes**
 
     * CEYLAN Eren Moustafa
     * MANSOURI Sofiane

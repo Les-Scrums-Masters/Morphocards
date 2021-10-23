@@ -15,13 +15,13 @@ La morphologie dérivationelle permet par exemple de : lire plus vite, lire plus
 
 ## **📃 Description du jeu**
 
-MorphoCard est un jeu sérieux ludique qui a pour vocation d’aider à l’apprentissage des mots aux personnes dyslexiques.
+MorphoCards est un jeu sérieux ludique qui a pour vocation d’aider à l’apprentissage des mots aux personnes dyslexiques.
 
-![Menu principal](./prototypes/Menu_principal.png)
+![Menu principal](./images/Menu_principal.png)
 
 Il s'agit d'un jeu de cartes visuel. Le joueur se retrouve avec une main de X cartes constituée de préfixes ou de suffixes. Le plateau de jeu, lui, contient une seule carte représentant le radical, que le joueur devra compléter à l'aide d'une des cartes de sa main.
 Le but du joueur est donc de trouver le mot correspondant le plus rapidement possible.
 Une partie se déroule en 10 tours (par défaut). Il faut terminer la partie le plus rapidement possible. Chaque mauvaises réponses ajoutent une pénalité de temps.
 A chaque fin de tour, le joueur aura connaissance de ses erreurs dans un but pédagogique et de ses bonnes décisions afin de pouvoir progresser.
 
-![Mode 1](./prototypes/Mode_1.png)
+![Mode 1](./images/Mode_1.png)

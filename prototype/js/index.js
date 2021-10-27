@@ -69,7 +69,7 @@ function newGame(){
   //Liste qui va contenir nos X cartes
   let currentHand = [goodCard];
 
-  let random = key
+  let random = Math.floor(Math.random()* (handCards.length-1));
   //CONSITUTION DE LA MAIN
   //Donne une distribution de clé aléatoire avec 1 seule bonne
   for (let i = 0; i < HAND_LENGTH - 1; i++) {
@@ -80,8 +80,10 @@ function newGame(){
       //Avoir un clé du tableau handCards
       random = Math.floor(Math.random()* (handCards.length-1));
     }
+    console.log(random + " " + handCards[random]);
     currentHand.push(handCards[random]);
   }
+  console.log(currentHand);
 
   //Mélange de la main
   shuffle(currentHand);

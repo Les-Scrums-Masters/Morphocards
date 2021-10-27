@@ -1,0 +1,35 @@
+*{
+  margin:0;
+  padding:0;
+}
+
+body, html{
+  height:100%;
+}
+
+body{
+  text-align:center;
+}
+
+main{
+  max-width:1280px;
+  min-height:100%;
+  margin:0 auto;
+  position:relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+h2{
+  margin: 2rem;
+}
+
+
+
+footer{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:3rem;
+}

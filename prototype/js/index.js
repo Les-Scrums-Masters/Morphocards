@@ -58,6 +58,7 @@ function newGame(){
   //bonne réponse à mettre
   let goodCard = association[key][0];
   console.log(goodCard);
+  console.log(key);
 
 
   document.getElementById("radical").innerHTML = radical;
@@ -65,18 +66,27 @@ function newGame(){
   hand.innerHTML = "";
 
 
-  let currentHand = [key];
-  let random = key
+  //Liste qui va contenir nos X cartes
+  let currentHand = [goodCard];
 
+  let random = key
+  //CONSITUTION DE LA MAIN
   //Donne une distribution de clé aléatoire avec 1 seule bonne
   for (let i = 0; i < HAND_LENGTH - 1; i++) {
-    while( currentHand.includes(random)){
-      random = Math.floor(Math.random()*handCards.length);
+
+    //Tant que la carte n'est pas déjà présente
+    while( currentHand.includes(handCards[random])){
+
+      //Avoir un clé du tableau handCards
+      random = Math.floor(Math.random()* (handCards.length-1));
     }
-    currentHand.push(random);
+    currentHand.push(handCards[random]);
   }
+
+  //Mélange de la main
   shuffle(currentHand);
 
+  //Fonction exécuté lorsqu'on clique sur une carte
   var cardClicked = function(){
     let userWord = radical + this.innerHTML;
     if(userWord == word){
@@ -87,11 +97,12 @@ function newGame(){
     newGame();
   }
 
+  //Affichages des cartes
   for (let i = 0; i < HAND_LENGTH; i++) {
     //Placement des cartes
     let button = document.createElement("button");
     button.onclick = cardClicked;
-    button.innerHTML = association[currentHand[i]][0];
+    button.innerHTML = currentHand[i];
     hand.appendChild(button);
   }
 

@@ -9,7 +9,11 @@
 </head>
 <body>
     <main>
-      <h2 id="radical">{radical}</h2>
+      <div id="board">
+        <input id="left" type="radio" name="placement" value="">
+        <h2 id="radical">{radical}</h2>
+        <input id="right" type="radio" name="placement" value="" checked>
+      </div>
 
       <div id="btn_container">
 
@@ -18,6 +22,7 @@
 
     <footer>
         <p>Le but du jeu est de trouvé à partir du radical affiché, le suffixe ou le préfixe correspondant.</p>
+        <p>Vous pouvez choisir où vous allez placer votre suffixe ou préfixe à l'aide des radio bouttons à gauche et à droite du radical.</p>
     </footer>
 
     <script type="text/javascript" src="js/index.js"></script>

@@ -21,10 +21,21 @@ main{
   align-items: center;
   flex-direction: column;
 }
+
+#board{
+  display: flex;
+  align-items: center;
+}
+
 h2{
   margin: 2rem;
 }
 
+
+button{
+  padding: .25rem;
+  margin: .75rem;
+}
 
 
 footer{

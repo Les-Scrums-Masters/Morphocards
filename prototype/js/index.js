@@ -70,7 +70,7 @@ function newGame(){
   let currentHand = [goodCard];
 
   let random = Math.floor(Math.random()* (handCards.length-1));
-  
+
   //CONSITUTION DE LA MAIN
   //Donne une distribution de clé aléatoire avec 1 seule bonne
   for (let i = 0; i < HAND_LENGTH - 1; i++) {
@@ -91,7 +91,15 @@ function newGame(){
 
   //Fonction exécuté lorsqu'on clique sur une carte
   var cardClicked = function(){
-    let userWord = radical + this.innerHTML;
+
+    //Verification si le radioButton de gauche ou de droite à été choisi
+    //Dans ce cas, this est la carte selectionné
+    let userWord
+    if (document.getElementById("right").checked) {
+      userWord = radical + this.innerHTML;
+    } else{
+      userWord = this.innerHTML + radical;
+    }
     if(userWord == word){
       alert("gagné " + word);
     } else{

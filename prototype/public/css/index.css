@@ -3,17 +3,29 @@
   padding:0;
 }
 
+header{
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  height: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 body, html{
   height:100%;
 }
 
 body{
   text-align:center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 main{
-  max-width:1280px;
-  min-height:100%;
   margin:0 auto;
   position:relative;
   display: flex;

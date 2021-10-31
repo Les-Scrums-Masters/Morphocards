@@ -2,6 +2,16 @@ console.log("Script lancé");
 
 const HAND_LENGTH = 5;
 
+//Objectif d'une partie (nombre de mots à trouver)
+const GAME_LENGTH = 5;
+
+//Score du joueur dans la partie courante
+let score = 0;
+
+//Round courant dans la partie courante
+let round = 0;
+
+//Listes des mots à trouver
 let words = [
   "bijoutier",
   "coiffeur",
@@ -13,6 +23,7 @@ let words = [
   "sismique"
 ]
 
+//Listes des cartes que le joueur peut avoir dans la main (préfixes/suffixes)
 let handCards = [
   "tier",
   "eur",
@@ -22,6 +33,8 @@ let handCards = [
   "gique",
   "ique"
 ]
+
+//Listes des cartes qui seront placé automatiquement (radical)
 let boardCards = [
   "bijou",
   "coiff",
@@ -45,20 +58,23 @@ let association = [
   [handCards[6], boardCards[7]]
 ]
 
+let scoreBar = document.getElementById('scoreBar');
+
 /** Nouvelle partie **/
 function newGame(){
-  let key = Math.floor(Math.random()*words.length);
+  round++;
+  scoreBar.innerHTML = round + "/" + GAME_LENGTH;
 
-  //mot à trouver
+
+  //mot à trouver choisi au hasard dans la listes des mots (words)
+  let key = Math.floor(Math.random()*words.length);
   let word = words[key];
 
-  //radical
+  //radical correspondant au mot choisi
   let radical = association[key][1];
 
   //bonne réponse à mettre
   let goodCard = association[key][0];
-  console.log(goodCard);
-  console.log(key);
 
 
   document.getElementById("radical").innerHTML = radical;
@@ -102,8 +118,15 @@ function newGame(){
     }
     if(userWord == word){
       alert("gagné " + word);
+      score++;
     } else{
-      alert("perdu c'etait : "+word + " au lieu de " + userWord);
+      alert("perdu c'etait : "+ word + " au lieu de " + userWord);
+    }
+
+    if(round == GAME_LENGTH){
+      alert("Partie fini, vous avez trouvé " + score +" mot(s)");
+      round = 0;
+      score = 0;
     }
     newGame();
   }

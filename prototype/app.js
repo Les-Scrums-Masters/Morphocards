@@ -12,7 +12,6 @@ const SERVER_PORT = 8000;
 /* Autorisation de l'accès au dossier 'js' pour des fichiers statiques.
 Tout chemin n'ayant pas été défini dans ce fichier n'est pas accesible par l'application
 */
-app.use('/js', express.static(__dirname+'/js'));
 
 // Permettre l'encocade des données JSON incluses dans l'url d'une requête :
 app.use(express.urlencoded({extended:true}));

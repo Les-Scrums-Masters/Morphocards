@@ -1,5 +1,32 @@
 console.log("Script lancé");
 
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.2.0/firebase-app.js";
+import { getFirestore,
+  collection,
+  doc } from "https://www.gstatic.com/firebasejs/9.2.0/firebase-firestore.js";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCIy172a-eDssYLn7uTCPvUlHLzrtOvV5s",
+  authDomain: "morphocards-3976f.firebaseapp.com",
+  projectId: "morphocards-3976f",
+  storageBucket: "morphocards-3976f.appspot.com",
+  messagingSenderId: "1048733341127",
+  appId: "1:1048733341127:web:39a31dd14a61a4f6d2b5e2"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore();
+
+const CARDBOARD_COLLECTION = collection(db, "cards_board");
+const CARDHAND_COLLECTION = collection(db, "cards_hands");
+const WORDS_COLLECTION = collection(db, "words");
+
+
+
+
 const HAND_LENGTH = 5;
 
 //Objectif d'une partie (nombre de mots à trouver)
@@ -146,4 +173,5 @@ function newGame(){
 function shuffle(array) {
   array.sort(() => Math.random() - 0.5);
 }
+
 newGame();

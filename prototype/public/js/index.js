@@ -102,7 +102,7 @@ function play(){
     //Verification si le radioButton de gauche ou de droite à été choisi
     //Dans ce cas, this est la carte selectionné
     let userWord = (document.getElementById("right").checked) 
-      ? radical + this.innerHTMLn
+      ? radical + this.innerHTML
       : this.innerHTML + radical;
 
     if(userWord in words){

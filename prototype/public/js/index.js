@@ -12,75 +12,66 @@ let score = 0;
 let round = 0;
 
 //Listes des mots à trouver
-let words = [
-  "bijoutier",
-  "coiffeur",
-  "chanteur",
-  "boulanger",
-  "absenteisme",
-  "alcoolique",
-  "allergique",
-  "sismique"
-]
+let words = {}
 
 //Listes des cartes que le joueur peut avoir dans la main (préfixes/suffixes)
-let handCards = [
-  "tier",
-  "eur",
-  "ger",
-  "eisme",
-  "lique",
-  "gique",
-  "ique"
-]
+let handCards = []
 
 //Listes des cartes qui seront placé automatiquement (radical)
-let boardCards = [
-  "bijou",
-  "coiff",
-  "chant",
-  "boulan",
-  "absent",
-  "alcoo",
-  "aller",
-  "sism"
-]
-
-//association entre la table words avec handCards/boardCards
-let association = [
-  [handCards[0], boardCards[0]],
-  [handCards[1], boardCards[1]],
-  [handCards[1], boardCards[2]],
-  [handCards[2], boardCards[3]],
-  [handCards[3], boardCards[4]],
-  [handCards[4], boardCards[5]],
-  [handCards[5], boardCards[6]],
-  [handCards[6], boardCards[7]]
-]
+let boardCards = []
 
 let scoreBar = document.getElementById('scoreBar');
 
-/** Nouvelle partie **/
-function newGame(){
-  round++;
-  scoreBar.innerHTML = round + "/" + GAME_LENGTH;
+// Fonction d'obtention des données
+async function getData() {
+  let wordSnapshot = await WORDS_COLLECTION.get();
+  let handSnapshot = await CARDHAND_COLLECTION.get();
+  let boardSnapshot = await CARDBOARD_COLLECTION.get();
 
+   wordSnapshot.forEach(element => {
+     words[element.id] = element.data();
+   });
+
+   handSnapshot.forEach(element => {
+     handCards.push(element.id);
+   })
+
+   boardCards.forEach(element => {
+     boardCards.push(element.id);
+   })
+
+   console.log("Données récupérés");
+
+   // Une fois les données obtenues, lancement du jeu :
+   play();
+
+}
+
+/** Jeu **/
+function play(){
+
+  round++;
+
+  scoreBar.innerHTML = round + "/" + GAME_LENGTH;
 
   //mot à trouver choisi au hasard dans la listes des mots (words)
   let key = Math.floor(Math.random()*words.length);
-  let word = words[key];
+
+  let word = getRandomWord(words);
+
+  console.log("Mot : " + word);
 
   //radical correspondant au mot choisi
-  let radical = association[key][1];
+  let radical = words[word].root.id;
+
+  console.log("Radical : " + radical);
 
   //bonne réponse à mettre
-  let goodCard = association[key][0];
-
+  let goodCard = (words[word].prefix) ? words[word].prefix.id : words[word].suffix.id;
 
   document.getElementById("radical").innerHTML = radical;
   let hand = document.getElementById("btn_container");
   hand.innerHTML = "";
-
 
   //Liste qui va contenir nos X cartes
   let currentHand = [goodCard];
@@ -93,10 +84,10 @@ function newGame(){
 
     //Tant que la carte n'est pas déjà présente
     while( currentHand.includes(handCards[random])){
-
       //Avoir un clé du tableau handCards
       random = Math.floor(Math.random()* (handCards.length-1));
     }
+
     console.log(random + " " + handCards[random]);
     currentHand.push(handCards[random]);
   }
@@ -110,14 +101,12 @@ function newGame(){
 
     //Verification si le radioButton de gauche ou de droite à été choisi
     //Dans ce cas, this est la carte selectionné
-    let userWord
-    if (document.getElementById("right").checked) {
-      userWord = radical + this.innerHTML;
-    } else{
-      userWord = this.innerHTML + radical;
-    }
-    if(userWord == word){
-      alert("gagné " + word);
+    let userWord = (document.getElementById("right").checked) 
+      ? radical + this.innerHTML
+      : userWord = this.innerHTML + radical;
+
+    if(userWord in words){
+      alert("gagné " + userWord);
       score++;
     } else{
       alert("perdu c'etait : "+ word + " au lieu de " + userWord);
@@ -128,7 +117,7 @@ function newGame(){
       round = 0;
       score = 0;
     }
-    newGame();
+    play();
   }
 
   //Affichages des cartes
@@ -140,11 +129,16 @@ function newGame(){
     hand.appendChild(button);
   }
 
-
 }
 
 function shuffle(array) {
   array.sort(() => Math.random() - 0.5);
 }
 
-newGame();
+function getRandomWord(obj) {
+  var keys = Object.keys(obj);
+  return keys[ keys.length * Math.random() << 0];
+};
+
+// Au lancement, récupérer les données :
+getData();

@@ -102,8 +102,8 @@ function play(){
     //Verification si le radioButton de gauche ou de droite à été choisi
     //Dans ce cas, this est la carte selectionné
     let userWord = (document.getElementById("right").checked) 
-      ? radical + this.innerHTML
-      : userWord = this.innerHTML + radical;
+      ? radical + this.innerHTMLn
+      : this.innerHTML + radical;
 
     if(userWord in words){
       alert("gagné " + userWord);

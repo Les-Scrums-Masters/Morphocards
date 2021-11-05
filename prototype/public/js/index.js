@@ -1,5 +1,8 @@
 console.log("Script lancé");
 
+
+
+//Longueur d'une partie
 const HAND_LENGTH = 5;
 
 //Objectif d'une partie (nombre de mots à trouver)
@@ -20,7 +23,10 @@ let handCards = []
 //Listes des cartes qui seront placé automatiquement (radical)
 let boardCards = []
 
+
+let roundBar = document.getElementById('roundBar');
 let scoreBar = document.getElementById('scoreBar');
+
 
 // Fonction d'obtention des données
 async function getData() {
@@ -52,7 +58,8 @@ function play(){
 
   round++;
 
-  scoreBar.innerHTML = round + "/" + GAME_LENGTH;
+  scoreBar.innerHTML = "Réponse juste : " + score + "/" + (round-1);
+  roundBar.innerHTML = round + "/" + GAME_LENGTH;
 
   //mot à trouver choisi au hasard dans la listes des mots (words)
   let key = Math.floor(Math.random()*words.length);
@@ -101,7 +108,7 @@ function play(){
 
     //Verification si le radioButton de gauche ou de droite à été choisi
     //Dans ce cas, this est la carte selectionné
-    let userWord = (document.getElementById("right").checked) 
+    let userWord = (document.getElementById("right").checked)
       ? radical + this.innerHTML
       : this.innerHTML + radical;
 

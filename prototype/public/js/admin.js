@@ -44,7 +44,7 @@ async function getData() {
     board.docs.forEach(element => {
         boardCards.appendChild(makeItem(element.id, CARDBOARD_COLLECTION));
         wordBoard.appendChild(makeOption(element.id));
-        wordArray.push(element.id);
+        boardArray.push(element.id);
     });
 
     // Pour chaque carte main
@@ -74,7 +74,6 @@ function makeItem(id, collection) {
     remove.onclick = function() {
         deleteCard(id, collection);
     }
-    remove.className = "removeBtn";
 
     item.appendChild(text);
     item.appendChild(remove);

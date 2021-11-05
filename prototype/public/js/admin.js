@@ -140,11 +140,10 @@ function addWord(prefix, board, suffix) {
 }
 
 function deleteCard(id, collection){
-  if(!wordArray.includes(id)){
-    throw new Error("Cette carte n'existe pas");
-  }
   collection.doc(id).delete();
   getData();
+
+
   switch (collection) {
     case CARDHAND_COLLECTION:
       if(handArray.includes(id)){
@@ -160,7 +159,7 @@ function deleteCard(id, collection){
         throw new Error("Suppression du mot " + id + " échouée");
       }
   }
-  
+
 }
 
 

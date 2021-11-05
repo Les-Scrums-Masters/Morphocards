@@ -42,14 +42,14 @@ async function getData() {
 
     // Pour chaque carte plateau
     board.docs.forEach(element => {
-        boardCards.appendChild(makeItem(element.id));
+        boardCards.appendChild(makeItem(element.id, CARDBOARD_COLLECTION));
         wordBoard.appendChild(makeOption(element.id));
         wordArray.push(element.id);
     });
 
     // Pour chaque carte main
     hand.docs.forEach(element => {
-        handCards.appendChild(makeItem(element.id));
+        handCards.appendChild(makeItem(element.id, CARDHAND_COLLECTION));
         wordPrefix.appendChild(makeOption(element.id));
         wordSuffix.appendChild(makeOption(element.id));
         handArray.push(element.id);
@@ -57,15 +57,28 @@ async function getData() {
 
     // Pour chaque mot
     words.docs.forEach(element => {
-        wordList.appendChild(makeItem(element.id));
+        wordList.appendChild(makeItem(element.id, WORDS_COLLECTION));
         wordArray.push(element.id);
     });
 }
 
 // Fonction de création d'un objet d'une liste
-function makeItem(text) {
+function makeItem(id, collection) {
     let item = document.createElement("li");
-    item.innerHTML = text;
+
+    let text = document.createElement("p");
+    text.innerHTML = id;
+
+    let remove = document.createElement("button");
+    remove.innerHTML = "x";
+    remove.onclick = function() {
+        deleteCard(id, collection);
+    }
+    remove.className = "removeBtn";
+
+    item.appendChild(text);
+    item.appendChild(remove);
+
     return item;
 }
 

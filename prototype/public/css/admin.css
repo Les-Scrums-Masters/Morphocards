@@ -66,3 +66,38 @@ main>div>form>h5 {
     font-weight: bold;
     color: red;
 }
+
+li {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: .2rem .5rem;
+    margin: .2rem .5rem;
+    border-radius: 5px;
+}
+
+li p{
+    width: 100%;
+}
+
+li button{
+    width: 1.5rem;
+    height: 1.5rem;
+    border: none;
+    outline: none;
+    color:red;
+}
+
+li button:hover {
+    color:white;
+    background-color: red;
+}
+
+li button:focus {
+    color: white;
+    background-color: gray;
+}
+
+li button:active {
+    background-color: black;
+}

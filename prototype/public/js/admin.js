@@ -22,7 +22,7 @@ const wordError = document.querySelector("#wordError");
 
 // Fonction d'obtention des données
 async function getData() {
-    // Vider les listes 
+    // Vider les listes
     boardCards.innerHTML="";
     handCards.innerHTML="";
     wordList.innerHTML="";
@@ -101,8 +101,8 @@ function addHandCard(card) {
     handInput.focus();
 }
 
-// Fonction d'ajout d'un nouveau mot 
-function addWord(prefix, board, suffix) {  
+// Fonction d'ajout d'un nouveau mot
+function addWord(prefix, board, suffix) {
     if (prefix && board && suffix) {
         throw new Error("Vous ne pouvez définir uniquement un préfix OU un suffix");
     } else if (!board) {
@@ -118,13 +118,37 @@ function addWord(prefix, board, suffix) {
     if (wordArray.includes(id)) {
         throw new Error("Ce mot existe déjà !");
     }
-    
+
     let data = {root: CARDBOARD_COLLECTION.doc(board)};
     if (prefix) data["prefix"] = CARDHAND_COLLECTION.doc(prefix);
     if (suffix) data["suffix"] = CARDHAND_COLLECTION.doc(suffix)
 
     WORDS_COLLECTION.doc(id).set(data);
 
+}
+
+function deleteCard(id, collection){
+  if(!wordArray.includes(id)){
+    throw new Error("Cette carte n'existe pas");
+  }
+  collection.doc(id).delete();
+  getData();
+  switch (collection) {
+    case CARDHAND_COLLECTION:
+      if(handArray.includes(id)){
+        throw new Error("Suppression de la carte préfixe " + id + " échouée");
+      }
+      break;
+    case CARDBOARD_COLLECTION:
+      if(boardArray.includes(id)){
+        throw new Error("Suppression de la carte radicale " + id + " échouée");
+      }
+    default:
+      if(wordArray.includes(id)){
+        throw new Error("Suppression du mot " + id + " échouée");
+      }
+  }
+  
 }
 
 
@@ -143,8 +167,8 @@ document.querySelector("#boardForm").addEventListener("submit", (e) => {
 document.querySelector("#handForm").addEventListener("submit", (e) => {
     e.preventDefault();
     try {
-        addHandCard(handInput.value); 
-        handError.innerHTML = "";   
+        addHandCard(handInput.value);
+        handError.innerHTML = "";
         getData();
     } catch (e) {
         handError.innerHTML = e;

@@ -20,6 +20,69 @@ const boardError = document.querySelector("#boardError");
 const handError = document.querySelector("#handError");
 const wordError = document.querySelector("#wordError");
 
+// Récupération des sections de l'interface
+const adminLoader = document.querySelector("#admin-loader");
+const adminLogin = document.querySelector("#admin-login");
+const adminContent = document.querySelector("#admin-content");
+
+// Récupération des éléments de gestion de l'utilisateur
+const userSection = document.querySelector("#current-user");
+const userIdLabel = document.querySelector("#user-id");
+const logoutBtn = document.querySelector("#logout-btn");
+
+// Cacher le contenu de l'interface avant la connexion
+adminContent.style.display = 'none';
+userSection.style.display = 'none';
+
+// Initialisation de l'authentification firebase
+const auth = firebase.auth();
+var ui = new firebaseui.auth.AuthUI(auth);
+var uiConfig = {
+    callbacks: {
+        signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+            return false;
+        },
+        uiShown: function() {
+            adminLoader.style.display = 'none';
+        }
+    },
+    signInFlow: 'popup',
+    signInOptions: [
+      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+    ],
+  };
+
+function renderLogin() {
+    ui.start('#admin-login', uiConfig);
+}
+  
+renderLogin();
+
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        var uid = user.uid;
+
+        console.log("Logged !")
+        console.log(user);
+        
+        userIdLabel.innerHTML = uid;
+
+        adminContent.style.display = 'flex';
+        adminLogin.style.display = 'none';
+        userSection.style.display = 'inline-block';
+        
+    } else {
+        console.log("Signed out !")
+
+        adminContent.style.display = 'none';
+        adminLogin.style.display = 'block';
+        userSection.style.display = 'none';
+
+        renderLogin();
+    }
+  });
+
 // Fonction d'obtention des données
 async function getData() {
     // Vider les listes
@@ -54,7 +117,7 @@ async function getData() {
         wordSuffix.appendChild(makeOption(element.id));
         handArray.push(element.id);
     });
-
+    
     // Pour chaque mot
     words.docs.forEach(element => {
         wordList.appendChild(makeItem(element.id, WORDS_COLLECTION));
@@ -139,6 +202,7 @@ function addWord(prefix, board, suffix) {
 
 }
 
+// Fonction de suppression d'une carte
 function deleteCard(id, collection){
   collection.doc(id).delete();
   getData();
@@ -162,8 +226,8 @@ function deleteCard(id, collection){
 
 }
 
-
-// Au lancement, associer les boutons d'ajout à l'évènement
+// Au lancement, associer les boutons d'ajout à l'évènement :
+// Bouton d'ajout d'une carte plateau
 document.querySelector("#boardForm").addEventListener("submit", (e) => {
     e.preventDefault();
     try {
@@ -175,6 +239,7 @@ document.querySelector("#boardForm").addEventListener("submit", (e) => {
     }
 });
 
+// Bouton d'ajout d'une carte main
 document.querySelector("#handForm").addEventListener("submit", (e) => {
     e.preventDefault();
     try {
@@ -186,6 +251,7 @@ document.querySelector("#handForm").addEventListener("submit", (e) => {
     }
 });
 
+// Bouton d'ajout d'un mot
 document.querySelector("#wordForm").addEventListener("submit", (e) => {
     e.preventDefault();
     try {
@@ -197,6 +263,11 @@ document.querySelector("#wordForm").addEventListener("submit", (e) => {
     }
 });
 
+// Bouton déconnexion
+logoutBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    auth.signOut();
+});
 
 // Puis récupérer les données
 getData();

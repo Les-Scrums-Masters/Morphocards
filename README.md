@@ -25,6 +25,6 @@ Un clic sur une carte de sa main lui permettra d'écouter le son qu'elle représ
 
 Une partie se déroulera en 10 tours. L'objectif est de terminer la partie avec le meilleur temps possible. À chaque fois que le joueur demande une correction, une pénalité de temps sera ajoutée. 
 
-Le joeur pourra donc se mettre à la place d'une personne dyslexique qui interprète un mot d'une manière différente.
+Le joueur pourra donc se mettre à la place d'une personne dyslexique qui interprète un mot d'une manière différente.
 
 ![Mode 1](./images/Mode_1.png)

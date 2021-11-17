@@ -19,7 +19,12 @@ MorphoCards est un jeu sérieux ludique qui a pour vocation de faire comprendre 
 
 ![Menu principal](./images/Menu_principal.png)
 
-Il s'agit d'un jeu de cartes visuel. Le joueur se retrouvera avec une main de X cartes constituée de symboles représentant différents phonèmes. Le plateau de jeu, lui, contiendra une ou plusieurs cartes représentant différentes parties d'un mot, que le joueur devra compléter à l'aide des cartes de sa main. Pour l'aider, il pourra s'il le souhaite, écouter le mot à découvrir. Le but du joueur sera donc de retrouver le mot correspondant.
-Une partie se déroulera en X tours. Il faudra terminer la partie en faisant le moins d'erreur possible. A chaque mauvaise réponse, le joueur se verra indiquer le mot approprié avec ses phonèmes correspondant. Il pourra donc se mettre à la place d'une personne dyslexique qui interprète un mot d'une manière différente.
+Il s'agit d'un jeu de cartes visuel. Le joueur se retrouvera avec une main de X cartes constituée de symboles représentant différents phonèmes. Le plateau de jeu, lui, contiendra une ou plusieurs cartes représentant différentes parties d'un mot, que le joueur devra compléter à l'aide des cartes de sa main. Lors de chaque manche, le joueur entendra le mot à compléter, et pourra le réécouter autant qu'il le souhaite. Le but du joueur sera donc de reconstituer le mot entendu à l'aide des cartes de sa main.
+
+Un clic sur une carte de sa main lui permettra d'écouter le son qu'elle représente. Si le joueur complète correctement le mot, il passe à la manche suivante. Sinon, il peut réesayer autant de fois qu'il le souhaite, mais il peut demander la correction après avoir fait au moins une erreur.
+
+Une partie se déroulera en 10 tours. L'objectif est de terminer la partie avec le meilleur temps possible. À chaque fois que le joueur demande une correction, une pénalité de temps sera ajoutée. 
+
+Le joueur pourra donc se mettre à la place d'une personne dyslexique qui interprète un mot d'une manière différente.
 
 ![Mode 1](./images/Mode_1.png)

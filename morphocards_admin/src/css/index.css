@@ -56,7 +56,7 @@ html, body, #root {
 }
 
 .card {
-  @apply border border-gray-400 bg-gray-100 bg-opacity-50 rounded-lg p-4 shadow grid gap-1
+  @apply border border-gray-400 bg-gray-100 bg-opacity-50 rounded-lg p-4 shadow flex flex-col gap-y-1
 }
 
 .card h3 {
@@ -68,7 +68,7 @@ html, body, #root {
 }
 
 .card-element {
-  @apply rounded-lg bg-gray-200 flex align-middle pl-2 border bg-opacity-50 border-gray-300 hover:bg-opacity-100 transition ease-in-out duration-100
+  @apply rounded-lg bg-gray-200 flex items-center align-middle pl-2 border bg-opacity-50 border-gray-300 hover:bg-opacity-100 transition ease-in-out duration-100
 }
 
 .card-element p {
@@ -79,11 +79,11 @@ html, body, #root {
   @apply ml-3 text-indigo-600
 }
 
-.card-element button {
+.delete-btn {
   @apply w-8 h-8 text-center text-red-600 hover:bg-red-500 hover:text-white focus:bg-red-500 focus:text-white rounded-lg focus:shadow-xl transition ease-in-out duration-100
 }
 .wrapper {
-  @apply flex flex-col lg:flex-row gap-y-3 lg:gap-x-4
+  @apply flex flex-col lg:flex-row gap-y-3 lg:gap-x-4 pb-7
 }
 
 #Words {
@@ -98,28 +98,32 @@ html, body, #root {
   @apply bg-indigo-100 rounded-lg p-3 border border-indigo-300
 }
 
+.card-add h6 {
+  @apply font-bold text-lg
+}
+
 form {
-  @apply grid gap-1
+  @apply grid gap-2
 }
 
 form div {
   @apply flex flex-col md:flex-row items-center
 }
 
-label {
+form div label {
   @apply w-full md:w-16 font-light
 }
 
+form section {
+  @apply border border-indigo-300 p-3 rounded-lg flex flex-col gap-2
+}
+
 input[type=text] {
-  @apply outline-none py-1 px-2 rounded-lg block focus:ring flex-grow hover:shadow focus:shadow hover:bg-gray-50
+  @apply outline-none py-1 px-2 rounded-lg focus:ring flex-grow hover:shadow focus:shadow hover:bg-gray-50
 }
 
-form h6 {
-  @apply font-bold text-lg
-}
-
-input[type=submit] {
-  @apply outline-none bg-indigo-200 text-indigo-500 py-1 px-2 rounded-lg block focus:ring flex-grow hover:shadow focus:shadow hover:bg-indigo-500 focus:bg-indigo-500 hover:text-white focus:text-white transition ease-out duration-100 active:scale-95
+.btn {
+  @apply outline-none bg-indigo-200 text-indigo-500 py-1 px-3 rounded-lg block focus:ring flex-grow hover:shadow focus:shadow hover:bg-indigo-500 focus:bg-indigo-500 hover:text-white focus:text-white transition ease-out duration-100 active:scale-95
 }
 
 nav {
@@ -140,4 +144,49 @@ nav h1 {
 
 .user-panel p {
   @apply text-xs
+}
+
+
+.word-item {
+  @apply rounded-lg bg-gray-200 flex flex-col pl-2 pb-1 border bg-opacity-50 border-gray-300 hover:bg-opacity-100 transition ease-in-out duration-100
+}
+
+.word-item header {
+  @apply flex flex-row items-center flex-grow w-full
+}
+
+.word-item header p {
+  @apply text-lg font-bold flex-grow
+}
+
+.word-item .hand {
+  @apply font-bold text-indigo-500
+}
+
+.word-description {
+  @apply inline flex gap-2 text-sm
+}
+
+.word-description p {
+  @apply inline
+}
+
+.btn-container {
+  @apply flex-row gap-2
+}
+
+.btn-container button {
+  @apply flex-grow-0
+}
+
+.word-part {
+  @apply flex flex-row rounded-lg p-1 bg-indigo-200 items-center gap-2
+}
+
+.word-part span {
+  @apply text-indigo-500 font-bold
+}
+
+.word-part input[type=text] {
+  @apply flex-grow
 }

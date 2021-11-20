@@ -1,7 +1,8 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, doc, setDoc, getDoc } from 'firebase/firestore/lite';
+import { getFirestore, collection, getDocs, doc, setDoc, getDoc, deleteDoc } from 'firebase/firestore/lite';
 import { getAuth, GoogleAuthProvider  } from "firebase/auth";
 import HandCardModel from './models/HandCardModel';
+import WordModel from './models/WordModel';
 
 class FirebaseClass {
 
@@ -67,18 +68,22 @@ class FirebaseClass {
       throw new Error("Cette carte existe déjà")
     }
 
-    setDoc(docRef, {
+    await setDoc(docRef, {
       value: item.value
     });
 
   }
 
-  async removeHandCards() {
-
+  async removeHandCards(item) {
+    let docRef = doc(this.CARDHAND_COLLECTION, item.id);
+    await deleteDoc(docRef);
   }
 
   async getWords() {
-
+    let list = [];
+    let docs = await getDocs(this.WORDS_COLLECTION);
+    docs.forEach((element) => list.push(new WordModel(element.id, element.data()['cards'])));
+    return list;
   }
 
   async addWord() {
@@ -87,6 +92,10 @@ class FirebaseClass {
 
   async removeWord() {
     
+  }
+
+  refToString(item) {
+    return item.path.split('/')[1];
   }
 
 }

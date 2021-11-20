@@ -1,6 +1,6 @@
 import './css/index.css';
-import HandCards from './components/handcards/HandCards';
-import Words from './components/words/Words';
+import HandCards from './components/HandCards';
+import Words from './components/Words';
 import React from 'react';
 import Firebase from './Firebase';
 import LoginPage from './components/LoginPage';

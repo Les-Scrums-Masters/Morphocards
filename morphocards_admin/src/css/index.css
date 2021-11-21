@@ -197,9 +197,17 @@ nav h1 {
 }
 
 .loading {
-  @apply flex flex-row justify-center items-center text-center h-32 text-indigo-500 font-bold
+  @apply flex flex-col justify-center items-center text-center h-32 text-indigo-500 font-bold gap-3
 }
 
 .loading svg {
-  @apply animate-spin h-8 w-8 mr-3
+  @apply animate-spin h-10 w-10 mr-3 text-indigo-500
+}
+
+.loading svg circle {
+  @apply opacity-25
+}
+
+.loading svg path {
+  @apply opacity-75  
 }

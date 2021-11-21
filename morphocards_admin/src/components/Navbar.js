@@ -17,7 +17,7 @@ export default class Navbar extends React.Component {
                 <div className="user-panel">
                     <h6>{Firebase.auth.currentUser.displayName}</h6>
                     <p>{Firebase.auth.currentUser.uid}</p>
-                    <button className="logout-btn" onClick={this.logOut}>Deconnexion</button>
+                    <button className="btn btn-delete" onClick={this.logOut}>Deconnexion</button>
                 </div>
             );
         }

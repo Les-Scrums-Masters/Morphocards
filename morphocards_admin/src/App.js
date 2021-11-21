@@ -10,7 +10,10 @@ export default class App extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {isLogged: false};
+    this.state = {isLogged: false, handcards: []};
+
+    this.getData = this.getData.bind(this);
+
   }
 
   componentDidMount() {
@@ -22,8 +25,23 @@ export default class App extends React.Component {
         // PAS LOGGED :
         this.setState({isLogged: false});
       }
-    })
+    });
+
+    this._ismounted = true;
+    this.getData();
   }
+
+  componentWillUnmount() {
+      this._ismounted = false;
+  }
+
+
+  async getData() {
+    if  (this._ismounted) {
+      let data = await Firebase.getHandCards();
+      this.setState({handcards: data});
+    }
+  }  
 
   render() {
 
@@ -31,8 +49,8 @@ export default class App extends React.Component {
     if(this.state.isLogged) {
       content = (
           <div className="wrapper">
-            <HandCards/>
-            <Words />
+            <HandCards handcards={this.state.handcards} refresh={this.getData}/>
+            <Words handcards={this.state.handcards}/>
           </div>
         );
     } else {

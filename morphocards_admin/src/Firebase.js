@@ -86,16 +86,41 @@ class FirebaseClass {
     return list;
   }
 
-  async addWord() {
+  async addWord(item) {
+    let docRef = doc(this.WORDS_COLLECTION, item.id);
+    let docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      throw new Error("Ce mot existe déjà")
+    }
 
+    // Conversion des cartes plateau en références :
+    let newCards = []
+
+    item.cards.forEach((element) => {
+      if(element.isBoard) {
+        newCards.push(element);
+      } else {
+        let cardRef = doc(this.CARDHAND_COLLECTION, element.value);
+        newCards.push({isBoard: element.isBoard, value: cardRef});
+      }
+    })
+
+    await setDoc(docRef, {
+      cards: newCards
+    });
   }
 
-  async removeWord() {
-    
+  async removeWord(item) {
+    let docRef = doc(this.WORDS_COLLECTION, item.id);
+    await deleteDoc(docRef);
   }
 
   refToString(item) {
-    return item.path.split('/')[1];
+    if (item.path) {
+      return item.path.split('/')[1];
+    } else {
+      return "..."
+    }
   }
 
 }

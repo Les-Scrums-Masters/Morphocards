@@ -1,5 +1,6 @@
 import React, { createRef } from 'react';
 import Firebase from '../Firebase';
+import WordModel from '../models/WordModel';
 import Loading from './Loading';
 import NoResult from './NoResults';
 //import Firebase from './Firebase';
@@ -22,8 +23,8 @@ export default class Words extends React.Component {
         return(
             <div className="card" id="Words">
                 <h3>Mots</h3>
-                <AddWord refresh={this.refreshList} />
-                <WordList ref={this.listComponent} />
+                <AddWord refresh={this.refreshList} handcards={this.props.handcards}/>
+                <WordList ref={this.listComponent} handcards={this.props.handcards} refresh={this.refreshList}/>
             </div>
         );
     }
@@ -58,7 +59,7 @@ class WordList extends React.Component {
             return(
                 <ul>
                     {this.state.data.map((item) => {
-                        return(<WordItem element={item} key={item.id} />);
+                        return(<WordItem element={item} key={item.id} handcards={this.props.handcards} refresh={this.props.refresh}/>);
                     })}
                 </ul>);
         }
@@ -75,7 +76,8 @@ class WordItem extends React.Component {
     }
 
     async delete() {
-
+        await Firebase.removeWord(this.props.element);
+        this.props.refresh();
     }
 
     render() {
@@ -83,10 +85,10 @@ class WordItem extends React.Component {
             <li className="word-item">
                 <header>
                     <p>{this.props.element.id}</p>
-                    <button className="delete-btn">x</button>
+                    <button className="btn btn-delete" onClick={this.delete}>x</button>
                 </header>
                 <div className="word-description">
-                    <WordDescription data={this.props.element.cards} />
+                    <WordDescription data={this.props.element.cards} handcards={this.props.handcards}/>
                 </div>
                 
             </li>
@@ -107,9 +109,23 @@ class WordDescription extends React.Component {
                     ? element['value']
                     : Firebase.refToString(element['value']);
 
+                let content;
+                
+                if (isBoard) {
+                    content = value;
+                } else {
+                    let cardItem = this.props.handcards.filter(item => item.id === value)[0];
+
+                    let cardValue = (cardItem)
+                        ? cardItem['value']
+                        : "..."
+
+                    content = value + "(" + cardValue + ")"
+                }
+                
                 let style = (isBoard) ? "" : "hand";
 
-                return(<p key={value} className={style}>{value}</p>);
+                return(<p key={value} className={style}>{content}</p>);
             }
         );
     }
@@ -121,7 +137,7 @@ class AddWord extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {id: "", cards: [], loading: false};
+        this.state = {loading: false, cards: [], id: ''};
 
         this.handleCards = this.handleCards.bind(this);
         this.handleId = this.handleId.bind(this);
@@ -129,7 +145,7 @@ class AddWord extends React.Component {
         this.submitForm = this.submitForm.bind(this);
         this.addBoardCard = this.addBoardCard.bind(this);
         this.addHandCard = this.addHandCard.bind(this);
-        this.deleteItem = this.deleteItem.bind(this);
+        this.reset = this.reset.bind(this);
     }
 
     addBoardCard(e) {
@@ -151,7 +167,7 @@ class AddWord extends React.Component {
         let added = false;
         this.setState(function(state, props) {
             if (!added) {
-                state.cards.push({isBoard: false, value: ""})
+                state.cards.push({isBoard: false, value: this.props.handcards[0].id});
                 added=true;
                 return {
                     cards: state.cards
@@ -180,19 +196,9 @@ class AddWord extends React.Component {
         });
     }
 
-    deleteItem(e) {
+    reset(e) {
         e.preventDefault();
-        let index = e.target.getAttribute('index');
-        let deleted = false;
-        this.setState(
-            (state, props) => {
-                if(!deleted) {
-                    state.cards.splice(index, 1)
-                    deleted=true;
-                    return {cards: state.cards};
-                }
-            }
-        )
+        this.setState({cards: []});
     }
 
     async submitForm(e) {
@@ -206,6 +212,7 @@ class AddWord extends React.Component {
             }
 
             // UPLOAD TO FIREBASE
+            await Firebase.addWord(new WordModel(this.state.id, this.state.cards));
 
             this.props.refresh();
 
@@ -222,7 +229,10 @@ class AddWord extends React.Component {
 
     render() {
 
-        let content;
+        if (this.props.handcards.length === 0) {
+            return (<p>Vous devez ajouter des cartes main afin de pouvoir ajouter un mot !</p>);
+        } else {
+            let content;
 
         if (this.state.loading) {
             content = (<Loading />);
@@ -241,7 +251,7 @@ class AddWord extends React.Component {
                         <ul>
                             {
                                 this.state.cards.map(
-                                    (element, index) => (<CardItem key={index} index={index} isBoard={element['isBoard']} value={this.state.cards[index]['value']} handleChange={this.handleValue} delete={this.deleteItem}/>)
+                                    (element, index) => (<CardItem key={index} index={index} isBoard={element['isBoard']} value={this.state.cards[index]['value']} handleChange={this.handleValue} handcards={this.props.handcards} />)
                                 )
                             }
                         </ul>
@@ -249,6 +259,7 @@ class AddWord extends React.Component {
                         <div className="btn-container">
                             <button className="btn" onClick={this.addBoardCard}>Ajouter une carte plateau</button>
                             <button className="btn" onClick={this.addHandCard}>Ajouter une carte main</button>
+                            <button className="btn btn-delete" onClick={this.reset}>Supprimer</button>
                         </div>
                     </section>
 
@@ -263,6 +274,8 @@ class AddWord extends React.Component {
                 {content}
             </div>
         );
+        }
+
     }
 
 }
@@ -273,17 +286,27 @@ class CardItem extends React.Component {
 
         let content;
 
-        // if (this.props.isBoard) {
-            content = (<input type="text" placeholder="valeur" value={this.props.value} onChange={this.props.handleChange} data-index={this.props.index}></input>);
-        // } else {
-        //     content = ();
-        // }
+        if (this.props.isBoard) {
+            content = (
+                <input type="text" placeholder="valeur" value={this.props.value} onChange={this.props.handleChange} data-index={this.props.index}></input>
+            );
+        } else {
+            content = (
+                <select value={this.props.value} onChange={this.props.handleChange} data-index={this.props.index}>
+                    {this.props.handcards.map(
+                        (element, index) => (
+                            <option key={element.id} value={element.id}>{element.id} ({element.value})</option>
+                        )
+                    )}
+                </select>
+            );
+        }
 
         return(
             <li className="word-part">
                 <p><span>#{this.props.index}</span> : <i>{(this.props.isBoard) ? "plateau" : "main"}</i></p>
                 {content}
-                <button className="delete-btn" data-index={this.props.index} onClick={this.props.delete}>x</button>
+                {/* <button className="delete-btn" data-index={this.props.index} onClick={this.props.delete}>x</button> */}
             </li>
         );
     }

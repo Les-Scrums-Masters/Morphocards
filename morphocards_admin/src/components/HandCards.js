@@ -1,4 +1,4 @@
-import React, { createRef } from 'react';
+import React from 'react';
 import Firebase from '../Firebase';
 import Loading from './Loading';
 import NoResult from './NoResults';
@@ -6,22 +6,17 @@ import HandCardModel from '../models/HandCardModel';
 
 class HandCards extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.refreshList = this.refreshList.bind(this);
-        this.listComponent = createRef();
-    }
-
-    refreshList() {
-        this.listComponent.current.getData();
-    }
+    // constructor(props) {
+    //     super(props);
+    //     this.refreshList = this.refreshList.bind(this);
+    // }
 
     render() {
         return(
             <div className="card" id="Handcards">
                 <h3>Cartes </h3>
-                <AddHandCard refresh={this.refreshList}/>
-                <CardList ref={this.listComponent} />
+                <AddHandCard refresh={this.props.refresh} />
+                <CardList handcards={this.props.handcards} refresh={this.props.refresh}/>
             </div>
         );
     }
@@ -112,41 +107,18 @@ class AddHandCard extends React.Component {
 }
 
 class CardList extends React.Component {
-    constructor(props) {
-        super(props);
-
-
-    
-        this.getData = this.getData.bind(this);
-
-        this.state = {list: null};
-    }
-
-    componentDidMount() {
-        this._ismounted = true;
-        this.getData();
-    }
-
-    componentWillUnmount() {
-        this._ismounted = false;
-    }
-
-    async getData() {
-        if  (this._ismounted) {
-            let data = await Firebase.getHandCards();
-            this.setState({list: data});
-        }
-    }
 
     render() {
 
+        let data = this.props.handcards;
+
         let content;
-        if (this.state.list == null) {
+        if (data == null) {
             content = <Loading />;      
-        } else if (this.state.list.length === 0) {
+        } else if (data.length === 0) {
             content = <NoResult />;
         } else {
-            content = this.state.list.map((element) => <HandCardItem element={element} key={element.id} refreshList={this.getData}/>);
+            content = data.map((element) => <HandCardItem element={element} key={element.id} refreshList={this.props.refresh}/>);
         }
 
         return(
@@ -173,7 +145,7 @@ class HandCardItem extends React.Component {
         return(
             <li className="card-element">
                 <p><b>{this.props.element.id}</b><span>{this.props.element.value}</span></p>
-                <button className="delete-btn" onClick={this.deleteItem}>x</button>
+                <button className="btn btn-delete" onClick={this.deleteItem}>x</button>
             </li>
         );
     }

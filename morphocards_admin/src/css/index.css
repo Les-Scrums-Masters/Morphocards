@@ -79,9 +79,6 @@ html, body, #root {
   @apply ml-3 text-indigo-600
 }
 
-.delete-btn {
-  @apply w-8 h-8 text-center text-red-600 hover:bg-red-500 hover:text-white focus:bg-red-500 focus:text-white rounded-lg focus:shadow-xl transition ease-in-out duration-100
-}
 .wrapper {
   @apply flex flex-col lg:flex-row gap-y-3 lg:gap-x-4 pb-7
 }
@@ -118,12 +115,16 @@ form section {
   @apply border border-indigo-300 p-3 rounded-lg flex flex-col gap-2
 }
 
-input[type=text] {
+input[type=text], select {
   @apply outline-none py-1 px-2 rounded-lg focus:ring flex-grow hover:shadow focus:shadow hover:bg-gray-50
 }
 
 .btn {
   @apply outline-none bg-indigo-200 text-indigo-500 py-1 px-3 rounded-lg block focus:ring flex-grow hover:shadow focus:shadow hover:bg-indigo-500 focus:bg-indigo-500 hover:text-white focus:text-white transition ease-out duration-100 active:scale-95
+}
+
+.btn-delete {
+  @apply bg-opacity-0 text-red-600 hover:bg-red-500 hover:text-white focus:bg-red-500 focus:text-white focus:ring-red-300 flex-grow-0
 }
 
 nav {
@@ -135,7 +136,7 @@ nav h1 {
 }
 
 .user-panel {
-  @apply bg-indigo-100 rounded-lg p-3 border border-indigo-300
+  @apply bg-indigo-100 rounded-lg p-3 border border-indigo-300 flex flex-col gap-1 
 }
 
 .user-panel h6 {
@@ -189,4 +190,16 @@ nav h1 {
 
 .word-part input[type=text] {
   @apply flex-grow
+}
+
+.word-part p {
+  @apply w-32
+}
+
+.loading {
+  @apply flex flex-row justify-center items-center text-center h-32 text-indigo-500 font-bold
+}
+
+.loading svg {
+  @apply animate-spin h-8 w-8 mr-3
 }

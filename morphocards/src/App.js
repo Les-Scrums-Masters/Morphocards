@@ -5,10 +5,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { orderBy, range } from 'lodash';
-import Hand, {updateCard, getCard} from './hand';
-import CardPlacement, {updateCardPlacement} from './cardPlacement';
-import CardStatic from './cardStatic'
-import Board from './board';
+import Hand, {updateCard, getCard} from './components/hand';
+import CardPlacement, {updateCardPlacement} from './components/cardPlacement';
+import CardStatic from './components/cardStatic'
+import Board from './components/board';
 import cardData from './initial-data.js'
 
 

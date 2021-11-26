@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Card from './card';
 import { orderBy } from 'lodash';
 import { Droppable } from 'react-beautiful-dnd';
-import cardsData from './initial-data';
+import cardsData from '../initial-data';
 
 export default class Hand extends React.Component{
 
@@ -14,8 +14,6 @@ export default class Hand extends React.Component{
       updateCard = updateCard.bind(this);
       getCard = getCard.bind(this);
     }
-
-
 
     render (){
         return (

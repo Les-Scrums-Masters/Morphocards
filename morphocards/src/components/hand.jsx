@@ -11,8 +11,8 @@ export default class Hand extends React.Component{
       super(props);
       this.state = cardsData ?? null;
 
-      updateCard = updateCard.bind(this);
-      getCard = getCard.bind(this);
+      handUpdateCards = handUpdateCards.bind(this);
+      getCards = getCards.bind(this);
     }
 
     render (){
@@ -38,10 +38,11 @@ export default class Hand extends React.Component{
     }
 }
 
-export function updateCard(newCard){
-  this.state = newCard;
+export function handUpdateCards(newCards){
+  this.state = newCards;
 }
 
-export function getCard(){
+
+export function getCards(){
   return this.state;
 }

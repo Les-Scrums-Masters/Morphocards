@@ -17,6 +17,14 @@ export default class CardPlacement extends React.Component{
     this.state = newCard;
   }
 
+  getCardPlacement = () =>{
+    if(this.state !== null){
+
+      return this.state[0];
+    }
+    return null;
+  }
+
     render (){
         return (
             <Droppable droppableId={this.props.id}
@@ -40,6 +48,5 @@ export default class CardPlacement extends React.Component{
 }
 
 export function updateCardPlacement(newCard, index){
-  console.log(index + " " + this.props.id);
   this.state = newCard;
 }

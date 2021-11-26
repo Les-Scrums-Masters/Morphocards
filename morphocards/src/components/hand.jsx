@@ -9,7 +9,7 @@ export default class Hand extends React.Component{
 
     constructor(props){
       super(props);
-      this.state = cardsData ?? null;
+      this.state = this.props.cards ?? null;
 
       handUpdateCards = handUpdateCards.bind(this);
       getCards = getCards.bind(this);
@@ -28,7 +28,6 @@ export default class Hand extends React.Component{
                     >
                         { orderBy(this.state, "position").map((card, index)=> ( <Card index={index} key={card.id}  id={""+card.id} value={card.value} /> )) }
 
-
                         {provided.placeholder}
 
                     </div>
@@ -38,11 +37,15 @@ export default class Hand extends React.Component{
     }
 }
 
+
 export function handUpdateCards(newCards){
+  //Ne veut pas fonctionner avec setState - a voir
+  //this.setState(newCards)
   this.state = newCards;
 }
 
 
 export function getCards(){
-  return this.state;
+  return Object.values(this.state);
+  //return this.props.cards;
 }

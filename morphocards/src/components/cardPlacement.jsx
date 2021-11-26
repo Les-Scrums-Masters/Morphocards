@@ -7,34 +7,36 @@ export default class CardPlacement extends React.Component{
 
   constructor(props){
     super(props);
-    this.state = null;
+    this.state = {
+      card: null
+    };
 
-    updateCardPlacement = updateCardPlacement.bind(this);
-    //getCard = getCard.bind(this);
   }
 
   updateCardLocal = (newCard) =>{
-    this.state = newCard;
+    this.setState({
+      card:newCard
+    });
+    //this.state = newCard;
   }
 
   getCardPlacement = () =>{
-    if(this.state !== null){
-
-      return this.state[0];
+    if(this.state.card !== null){
+      return this.state.card;
     }
     return null;
   }
 
+  //{ this.state.card?.map((card, index)=> ( <Card index={index} key={card.id}  id={""+card.id} value={card.value} /> )) }
     render (){
         return (
-            <Droppable droppableId={this.props.id}
-            >
+            <Droppable droppableId={this.props.id}>
                 {provided =>(
                     <div className="cardPlacement"
                     ref={provided.innerRef}
                     {...provided.droppableProps}>
 
-                    { this.state?.map((card, index)=> ( <Card index={index} key={card.id}  id={""+card.id} value={card.value} /> )) }
+                    {this.state.card !== null ? <Card index={0} key={this.state.card.id}  id={""+this.state.card.id} value={this.state.card.value} /> : console.log("noting") }
 
 
                         {provided.placeholder}
@@ -45,8 +47,4 @@ export default class CardPlacement extends React.Component{
 
         )
     }
-}
-
-export function updateCardPlacement(newCard, index){
-  this.state = newCard;
 }

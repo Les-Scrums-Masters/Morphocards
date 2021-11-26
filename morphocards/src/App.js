@@ -1,15 +1,16 @@
 import './css/App.css';
 import './css/index.css';
 
+import Firebase from './Firebase';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { orderBy, range } from 'lodash';
 import Hand, {handUpdateCards, getCards} from './components/hand';
-import CardPlacement, {updateCardPlacement, getCardPlacement} from './components/cardPlacement';
+import CardPlacement from './components/cardPlacement';
 import CardStatic from './components/cardStatic'
-import Board from './components/board';
-import cardData from './initial-data.js'
+
+
 
 
 //Les items du boards, card ou emplacement
@@ -19,33 +20,24 @@ export default class App extends React.Component{
 
     constructor(props){
       super(props);
-      this.updatePlacement = this.updatePlacement.bind(this);
-
 
       this.hand = React.createRef();
 
-      //Tableau qui contiendra tout les élements du board
-      this.boardItems = [ <CardStatic value='m'/> ,<CardPlacement  />,  <CardStatic value='g'/> ,<CardPlacement />]
-
       //Tableau qui contiendra toutes les réferences des éléments dans le tableau
       this.boardRefs = []
-      this.boardItems.map( () => (
+      this.props.boardItems.map( () => (
         this.boardRefs.push(React.createRef())
-      ))
-    }
+      ));
 
-
-    updatePlacement (newCard, dropId) {
+      this.onDragEnd = this.onDragEnd.bind(this);
 
     }
 
-    onDragEnd = result => {
-        console.log(getCards());
+    onDragEnd(result) {
         const {destination, source, draggableId} = result;
         if(!destination){ //Si il le place dans un non droppable (donc pas de destination)
             return;
         }
-
 
 
         let direction;
@@ -68,17 +60,28 @@ export default class App extends React.Component{
         }
 
 
-
-        if(destination.droppableId !== 'hand'){
+        //Quand il met une carte de la main à un placement qui a déjà une carte
+        if(destination.droppableId !== 'hand' && source.droppableId === 'hand' && destination.droppableId !== source.droppableId){
           if(this.boardRefs[ parseInt(destination.droppableId) ].current.getCardPlacement() !== null){
             let newHand = getCards();
+
+            //Prend la carte qui était anciennement dans le placement et ka place à la fin de la main
             let card = this.boardRefs[ parseInt(destination.droppableId) ].current.getCardPlacement();
             card.position = getCards().length;
             newHand.push(card);
+
+            //Envoie la nouvelle liste de carte à la main
+            handUpdateCards(orderBy(newHand, "position"));
           }
         }
 
-
+        //Si l'action se fait entre 2 Placement
+        if(destination.droppableId !== 'hand' && source.droppableId !== 'hand'){
+          let destinationCard = this.boardRefs[ parseInt(destination.droppableId) ].current.getCardPlacement();
+          let sourceCard = this.boardRefs[ parseInt(source.droppableId) ].current.getCardPlacement();
+          this.boardRefs[ parseInt(destination.droppableId) ].current.updateCardLocal(sourceCard);
+          this.boardRefs[ parseInt(source.droppableId) ].current.updateCardLocal(destinationCard);
+        }
 
 
         //Action : une carte qui va de board -> hand
@@ -86,13 +89,10 @@ export default class App extends React.Component{
 
           //Récupère la carte en question du changement
           let card = this.boardRefs[ parseInt(source.droppableId) ].current.getCardPlacement();
-
           card.position = destination.index;
 
           //Enleve la carte dans le cardPlacement source (composant dans boardRefs)
           this.boardRefs[ parseInt(source.droppableId) ].current.updateCardLocal(null);
-
-
 
 
           let newHand = getCards().map(card => {
@@ -106,16 +106,17 @@ export default class App extends React.Component{
 
 
         } else{
+
           const reOrderedHand = getCards().map(card => {
 
-            let emplacement = this.boardRefs[ parseInt(destination.droppableId) ];
+
+
             //Quand on ne place pas dans le meme droppable
             if(destination.droppableId !== source.droppableId){
 
 
-
               //Quand on place dans le board -> recoit toutes les cartes sauf celle posé
-              if(card.id !== parseInt(result.draggableId)){
+              if(card.id !== result.draggableId){
 
                 //Si la carte (card) est à droite de celle posé (result)
                 if(card.position > result.source.index){
@@ -124,19 +125,14 @@ export default class App extends React.Component{
                 return card;
               }else{
 
-                //Récupère la carte en question du changement
-                let myCard = [card];
-
-                //Appelle la fonction updateCardLocal de l'élement droppé dans boards
+                //Appelle la fonction updateCardLocal du placeement droppé dans boards
                 //Ajout donc la carte dans l'emplacement demandé
                 if(destination.droppableId !== 'hand'){
-                  emplacement.current.updateCardLocal(myCard);
+                  let emplacement = this.boardRefs[ parseInt(destination.droppableId) ];
+                  emplacement.current.updateCardLocal(card);
                 }
 
-
               }
-
-
 
             }
 
@@ -145,7 +141,8 @@ export default class App extends React.Component{
             if(destination.droppableId === source.droppableId && destination.droppableId === 'hand'){
 
               //Si card est le meme que celle bougé
-              if(card.id === parseInt(result.draggableId)){
+              if(card.id === result.draggableId){
+                console.log(destination.index);
                 card.position = destination.index;
                 return card;
               }
@@ -178,34 +175,33 @@ export default class App extends React.Component{
 
 
 
-
-        console.log(getCards());
     } //Only required on ddcontext
 
 
 
     //<Board boardItems={boardItems} refs={this.boardRefs} />
     render(){
-        return (
-            <DragDropContext onDragEnd={this.onDragEnd} >
-                <div className='board'>
-                  {this.boardItems?.map( (item, index) => {
-                    if(item.type === CardPlacement){
-                      return <CardPlacement id={" " + index} key={index} index={index} ref={this.boardRefs[index]}  />;
 
-                    } else{
-                      return <CardStatic id={" " + index} key={index} index={index} ref={this.boardRefs[index]}  value={item.props.value}  />;
-                    }
 
-                  })}
-                </div>
-                <Hand ref={this.hand} />
-            </DragDropContext>
-        )
+      return (
+          <DragDropContext onDragEnd={this.onDragEnd} >
+              <div className='board'>
+                {this.props.boardItems?.map( (item, index) => {
+
+                  if(item.type === CardPlacement){
+                    return <CardPlacement id={" " + index} key={index} index={index} ref={this.boardRefs[index]}  />;
+
+                  } else{
+                    return <CardStatic id={" " + index} key={index} index={index} ref={this.boardRefs[index]}  value={item.props.value}  />;
+                  }
+
+                })}
+              </div>
+              <Hand ref={this.hand} cards={this.props.handCards} />
+          </DragDropContext>
+      )
+
     }
 
 
 }
-
-
-ReactDOM.render(<App />, document.getElementById('root') )

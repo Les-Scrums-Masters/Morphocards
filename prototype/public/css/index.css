@@ -43,11 +43,24 @@ main{
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  width: 100%;
 }
 
 #board{
   display: flex;
   align-items: center;
+}
+#board > *{
+  margin: .5rem;
+}
+
+#info{
+  position: absolute;
+  left : 0px;
+  display: flex;
+  flex-direction: column;
+  margin: 2rem;
+  background-color:
 }
 
 h2{

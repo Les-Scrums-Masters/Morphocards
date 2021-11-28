@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Card from './card';
-import { orderBy } from 'lodash';
 import { Droppable } from 'react-beautiful-dnd';
 
 export default class CardPlacement extends React.Component{
@@ -27,6 +26,13 @@ export default class CardPlacement extends React.Component{
     return null;
   }
 
+  getValue = () =>{
+    if(this.state.card !== null){
+      return this.state.card.id;
+    }
+    return "";
+  }
+
   //{ this.state.card?.map((card, index)=> ( <Card index={index} key={card.id}  id={""+card.id} value={card.value} /> )) }
     render (){
         return (
@@ -36,7 +42,7 @@ export default class CardPlacement extends React.Component{
                     ref={provided.innerRef}
                     {...provided.droppableProps}>
 
-                    {this.state.card !== null ? <Card index={0} key={this.state.card.id}  id={""+this.state.card.id} value={this.state.card.value} /> : console.log("noting") }
+                    {this.state.card !== null ? <Card index={0} key={this.state.card.id}  id={""+this.state.card.id} value={this.state.card.value} /> : null }
 
 
                         {provided.placeholder}

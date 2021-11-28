@@ -1,8 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Card from './card';
 import { orderBy } from 'lodash';
 import { Droppable } from 'react-beautiful-dnd';
-import cardsData from '../initial-data';
 
 export default class Hand extends React.Component{
 
@@ -11,9 +10,20 @@ export default class Hand extends React.Component{
       super(props);
       this.state = this.props.cards ?? null;
 
-      handUpdateCards = handUpdateCards.bind(this);
-      getCards = getCards.bind(this);
+      this.handUpdateCards = this.handUpdateCards.bind(this);
     }
+
+     handUpdateCards(newCards){
+      //Ne veut pas fonctionner avec setState - a voir
+      //this.setState(newCards)
+      this.state = newCards;
+    }
+
+     getCards = () =>{
+      return Object.values(this.state);
+      //return this.props.cards;
+    }
+
 
     render (){
         return (
@@ -35,17 +45,4 @@ export default class Hand extends React.Component{
             </Droppable>
         )
     }
-}
-
-
-export function handUpdateCards(newCards){
-  //Ne veut pas fonctionner avec setState - a voir
-  //this.setState(newCards)
-  this.state = newCards;
-}
-
-
-export function getCards(){
-  return Object.values(this.state);
-  //return this.props.cards;
 }

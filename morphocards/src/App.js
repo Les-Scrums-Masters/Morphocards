@@ -23,8 +23,8 @@ export default class App extends React.Component{
       ));
 
       this.onDragEnd = this.onDragEnd.bind(this);
-      this.getWord = getWord.bind(this);
-      this.wordFinished = wordFinished.bind(this);
+      getWord = getWord.bind(this);
+      wordFinished = wordFinished.bind(this);
 
     }
 
@@ -169,11 +169,8 @@ export default class App extends React.Component{
     } //Only required on ddcontext
 
 
-
     //<Board boardItems={boardItems} refs={this.boardRefs} />
     render(){
-
-
       return (
           <DragDropContext onDragEnd={this.onDragEnd} >
               <div className='board'>
@@ -190,33 +187,34 @@ export default class App extends React.Component{
               </div>
               <Hand ref={this.hand} cards={this.props.handCards} />
           </DragDropContext>
-      )
+      );
     }
+
+
 }
 
-
-//Retourne le mot sur le plateau de jeu
-function getWord(draggableId) {
-  let word = "";
-  this.boardRefs.map( (ref) =>{
-    word = word + ref.current.getValue();
-  });
-  return word;
-}
-
-//Renvoie true si le plateau est completement rempli
-function wordFinished(){
-  let nbEmpty = 0;
-
-  //Récupère le nombre de placement vide et le ref du dernier
-  this.boardRefs.map( (ref) =>{
-    if(ref.current.getValue() === ""){
-      nbEmpty++;
+    //Retourne le mot sur le plateau de jeu
+    function getWord(draggableId) {
+      let word = "";
+      this.boardRefs.map( (ref) =>{
+        word = word + ref.current.getValue();
+      });
+      return word;
     }
-  });
 
-  if (nbEmpty === 0){
-    return true
-  }
-  return false;
-}
+    //Renvoie true si le plateau est completement rempli
+    function wordFinished() {
+      let nbEmpty = 0;
+
+      //Récupère le nombre de placement vide et le ref du dernier
+      this.boardRefs.map( (ref) =>{
+        if(ref.current.getValue() === ""){
+          nbEmpty++;
+        }
+      });
+
+      if (nbEmpty === 0){
+        return true
+      }
+      return false;
+    }

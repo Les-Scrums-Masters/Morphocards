@@ -43,7 +43,7 @@ export default class Card extends React.Component{
             >
                 {provided => (
                     <div
-                    className="card"
+                    className="card draggable"
                     onClick={this.handleClick}
                     ref={provided.innerRef}
                     {...provided.draggableProps} 

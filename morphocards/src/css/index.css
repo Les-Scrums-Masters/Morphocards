@@ -60,21 +60,19 @@ body{
 }
 
 .card{
-  @apply m-2 p-2 w-20 h-32 bg-gray-100 rounded-2xl flex justify-center items-center transition ease-in-out duration-500
+  @apply m-2 w-20 h-32 rounded-xl flex justify-center items-center transition ease-in-out duration-200 shadow-sm text-2xl bg-gradient-to-br from-gray-200 to-gray-50
 }
-.card:hover{
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+
+.draggable:hover{
+  @apply shadow-xl bg-gradient-to-tl scale-110
+}
+
+.draggable:active {
+  @apply filter drop-shadow-2xl scale-125
 }
 
 .cardPlacement{
-  @apply m-4 w-24 h-36 rounded-2xl
-}
-
-.cardPlacement{
-  border-radius: 20px;
-  background: linear-gradient(145deg, #cacaca, #f0f0f0);
-  box-shadow:  20px 20px 60px #bebebe,
-              -20px -20px 60px #ffffff;
+  @apply m-4 w-24 h-36 rounded-2xl bg-gray-50 shadow-inner ring-4 ring-indigo-100
 }
 
 .board{
@@ -82,4 +80,20 @@ body{
 }
 .hand{
   @apply h-20 flex
+}
+
+.loading {
+  @apply flex flex-col justify-center items-center text-center h-32 text-indigo-500 font-bold gap-3
+}
+
+.loading svg {
+  @apply animate-spin h-10 w-10 mr-3 text-indigo-500
+}
+
+.loading svg circle {
+  @apply opacity-25
+}
+
+.loading svg path {
+  @apply opacity-75  
 }

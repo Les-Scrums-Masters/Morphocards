@@ -24,8 +24,14 @@ let handCards = []
 let boardCards = []
 
 
+//Nouvelles listes des nouveaux mots --> changement d'axe de jeu
+let wordsV2 = {}
+let cardsV2 = {}
+let cardTab = []
+
 let roundBar = document.getElementById('roundBar');
 let scoreBar = document.getElementById('scoreBar');
+let board = document.getElementById('board');
 
 
 // Fonction d'obtention des données
@@ -34,9 +40,21 @@ async function getData() {
   let handSnapshot = await CARDHAND_COLLECTION.get();
   let boardSnapshot = await CARDBOARD_COLLECTION.get();
 
+  let wordv2Snapshot = await WORDSV2_COLLECTION.get();
+  wordv2Snapshot.forEach(element => {
+    wordsV2[element.id] = element.data();
+  });
+
+  let handV2Snapshot = await CARDHANDV2_COLLECTION.get();
+  handV2Snapshot.forEach(element => {
+    cardTab.push(element.id);
+    cardsV2[element.id] = element.data();
+  });
+
    wordSnapshot.forEach(element => {
      words[element.id] = element.data();
    });
+
 
    handSnapshot.forEach(element => {
      handCards.push(element.id);
@@ -63,42 +81,86 @@ function play(){
 
   //mot à trouver choisi au hasard dans la listes des mots (words)
   let key = Math.floor(Math.random()*words.length);
-
   let word = getRandomWord(words);
 
-  console.log("Mot : " + word);
+
+  let wordV2 = getRandomWord(wordsV2);
+  console.log("Mot : " + wordV2);
+  getGoodCards(wordV2);
 
   //radical correspondant au mot choisi
   let radical = words[word].root.id;
-
-  console.log("Radical : " + radical);
-
   //bonne réponse à mettre
   let goodCard = (words[word].prefix) ? words[word].prefix.id : words[word].suffix.id;
+  //document.getElementById("radical").innerHTML = radical;
 
-  document.getElementById("radical").innerHTML = radical;
+
+
+  //List de toutes les cartes initial composant le mots
+  let initList = wordsV2[wordV2].boardCard;
+  console.log(initList);
+  initList.forEach((element) => {
+  });
+
+  //Simulation donc à changer !!! --------------
+  let word1 = document.createElement('p');
+  word1.innerHTML = "m";
+  board.appendChild(word1);
+
+  let emptyCase1 = document.createElement('input');
+  emptyCase1.id = "emptyCase1";
+  emptyCase1.type = "radio";
+  emptyCase1.name = "placement";
+  board.appendChild(emptyCase1);
+
+  let word2 = document.createElement('p');
+  word2.innerHTML = "g";
+  board.appendChild(word2);
+
+  let emptyCase2 = document.createElement('input');
+  emptyCase2.id = "emptyCase2";
+  emptyCase2.type = "radio";
+  emptyCase2.name = "placement";
+  board.appendChild(emptyCase2);
+  //Simulation fini ----------------------------
+
+
+
   let hand = document.getElementById("btn_container");
   hand.innerHTML = "";
 
   //Liste qui va contenir nos X cartes
-  let currentHand = [goodCard];
+  //let currentHand = [goodCard];
 
-  let random = Math.floor(Math.random()* (handCards.length-1));
+  let currentHand = getGoodCards(wordV2);
+  let nbGoodCards = currentHand.length;
 
+  //let random = Math.floor(Math.random()* (handCards.length-1));
+  let random = Math.floor(Math.random()* (cardTab.length-1));
   //CONSITUTION DE LA MAIN
   //Donne une distribution de clé aléatoire avec 1 seule bonne
-  for (let i = 0; i < HAND_LENGTH - 1; i++) {
-
+  for (let i = 0; i < HAND_LENGTH - nbGoodCards; i++) {
+    /*cardsV2
     //Tant que la carte n'est pas déjà présente
     while( currentHand.includes(handCards[random])){
       //Avoir un clé du tableau handCards
       random = Math.floor(Math.random()* (handCards.length-1));
+    }*/
+
+
+
+    //Tant que la carte n'est pas déjà présente
+
+    while( currentHand.includes(cardTab[random])){
+      console.log(cardTab[random]);
+      //Avoir un clé du tableau handCards
+      random = Math.floor(Math.random()* (cardTab.length));
     }
 
-    console.log(random + " " + handCards[random]);
-    currentHand.push(handCards[random]);
+    //console.log(random + " " + handCards[random]);
+    //currentHand.push(handCards[random])
+    currentHand.push(cardTab[random]);;
   }
-  console.log(currentHand);
 
   //Mélange de la main
   shuffle(currentHand);
@@ -146,6 +208,25 @@ function getRandomWord(obj) {
   var keys = Object.keys(obj);
   return keys[ keys.length * Math.random() << 0];
 };
+
+function getGoodCards(word){
+  let goodCards = [];
+  let initList = wordsV2[word].handCard;
+  initList.forEach(element => {
+
+    for (const [key, value] of Object.entries(cardsV2)) {
+        for (const [key2, value2] of Object.entries(cardsV2[key])) {
+          value2.forEach((item) => {
+            if(item == element){
+              console.log(item + " " + key);
+              goodCards.push(key);
+            }
+          });
+          }
+      }
+  });
+  return goodCards;
+}
 
 // Au lancement, récupérer les données :
 getData();

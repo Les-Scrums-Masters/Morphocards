@@ -1,19 +1,29 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Card from './card';
 import { orderBy } from 'lodash';
 import { Droppable } from 'react-beautiful-dnd';
-import cardsData from '../initial-data';
 
 export default class Hand extends React.Component{
 
 
     constructor(props){
       super(props);
-      this.state = cardsData ?? null;
+      this.state = this.props.cards ?? null;
 
-      updateCard = updateCard.bind(this);
-      getCard = getCard.bind(this);
+      this.handUpdateCards = this.handUpdateCards.bind(this);
     }
+
+     handUpdateCards(newCards){
+      //Ne veut pas fonctionner avec setState - a voir
+      //this.setState(newCards)
+      this.state = newCards;
+    }
+
+     getCards = () =>{
+      return Object.values(this.state);
+      //return this.props.cards;
+    }
+
 
     render (){
         return (
@@ -28,7 +38,6 @@ export default class Hand extends React.Component{
                     >
                         { orderBy(this.state, "position").map((card, index)=> ( <Card index={index} key={card.id}  id={""+card.id} value={card.value} /> )) }
 
-
                         {provided.placeholder}
 
                     </div>
@@ -36,12 +45,4 @@ export default class Hand extends React.Component{
             </Droppable>
         )
     }
-}
-
-export function updateCard(newCard){
-  this.state = newCard;
-}
-
-export function getCard(){
-  return this.state;
 }

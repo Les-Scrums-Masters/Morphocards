@@ -59,6 +59,14 @@ body{
   @apply flex-col flex justify-center items-center
 }
 
+.App {
+  @apply w-full h-full container mx-auto
+}
+
+.App h1 {
+  @apply text-6xl text-indigo-600 font-extrabold
+}
+
 .card{
   @apply m-2 p-2 w-20 h-32 bg-gray-100 rounded-2xl flex justify-center items-center transition ease-in-out duration-500
 }
@@ -82,4 +90,20 @@ body{
 }
 .hand{
   @apply h-20 flex
+}
+
+.loading {
+  @apply flex flex-col justify-center items-center text-center h-32 text-indigo-500 font-bold gap-3
+}
+
+.loading svg {
+  @apply animate-spin h-10 w-10 mr-3 text-indigo-500
+}
+
+.loading svg circle {
+  @apply opacity-25
+}
+
+.loading svg path {
+  @apply opacity-75  
 }

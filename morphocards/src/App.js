@@ -1,4 +1,3 @@
-import './css/App.css';
 import './css/index.css';
 
 import React from 'react';
@@ -9,11 +8,7 @@ import CardPlacement from './components/cardPlacement';
 import CardStatic from './components/cardStatic'
 
 
-
-
 //Les items du boards, card ou emplacement
-
-
 export default class App extends React.Component{
 
     constructor(props){
@@ -28,21 +23,16 @@ export default class App extends React.Component{
       ));
 
       this.onDragEnd = this.onDragEnd.bind(this);
-      getWord = getWord.bind(this);
-      wordFinished = wordFinished.bind(this);
+      this.getWord = getWord.bind(this);
+      this.wordFinished = wordFinished.bind(this);
 
     }
-
-
-
-
 
     onDragEnd(result) {
         const {destination, source, draggableId} = result;
         if(!destination){ //Si il le place dans un non droppable (donc pas de destination)
             return;
         }
-
 
         let direction;
 
@@ -62,7 +52,6 @@ export default class App extends React.Component{
         } else if (direction === 'LEFT'){
           affectedRange = range(destination.index, source.index);
         }
-
 
         //Quand il met une carte de la main à un placement qui a déjà une carte
         if(destination.droppableId !== 'hand' && source.droppableId === 'hand' && destination.droppableId !== source.droppableId){
@@ -87,7 +76,6 @@ export default class App extends React.Component{
           this.boardRefs[ parseInt(source.droppableId) ].current.updateCardLocal(destinationCard);
         }
 
-
         //Action : une carte qui va de board -> hand
         if(destination.droppableId === 'hand' && destination.droppableId !== source.droppableId){
 
@@ -98,7 +86,6 @@ export default class App extends React.Component{
           //Enleve la carte dans le cardPlacement source (composant dans boardRefs)
           this.boardRefs[ parseInt(source.droppableId) ].current.updateCardLocal(null);
 
-
           let newHand = this.hand.current.getCards().map(card => {
             if(destination.index <= card.position){
               card.position = card.position+1;
@@ -108,16 +95,12 @@ export default class App extends React.Component{
           newHand.push(card);
           this.hand.current.handUpdateCards(newHand);
 
-
         } else{
 
           const reOrderedHand = this.hand.current.getCards().map(card => {
 
-
-
             //Quand on ne place pas dans le meme droppable
             if(destination.droppableId !== source.droppableId){
-
 
               //Quand on place dans le board -> recoit toutes les cartes sauf celle posé
               if(card.id !== result.draggableId){
@@ -139,7 +122,6 @@ export default class App extends React.Component{
               }
 
             }
-
 
             //Carte posé dans la main
             if(destination.droppableId === source.droppableId && destination.droppableId === 'hand'){
@@ -174,7 +156,6 @@ export default class App extends React.Component{
           //Envoie la nouvelle liste de carte à la main
           this.hand.current.handUpdateCards(orderBy(filtered, "position"));
         }
-
 
         //Si tout les emplacements ont été rempli -> récupère le mot sur le plateau
         //Il faut un timeOut car il faut laisser le temps au state des placements de se mettre à jour

@@ -5,7 +5,7 @@ import App from './App'
 import Firebase from './Firebase'
 import './css/index.css'
 
-import Spinner from '@atlaskit/spinner';
+import Loading from './components/Loading';
 //import Loading from './components/Loading';
 
 export default class GameManager extends React.Component {
@@ -44,7 +44,7 @@ export default class GameManager extends React.Component {
   render() {
     if(this.state.handCards.length === 0 && this.state.words.length === 0 ){
       return (
-        <Spinner />
+        <Loading />
       )
     } else{
       return(<App handCards={this.state.handCards} boardItems={this.boardItems} />);

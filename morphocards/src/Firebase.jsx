@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, doc, setDoc, getDoc, deleteDoc } from 'firebase/firestore/lite';
+import { getFirestore, collection, getDocs} from 'firebase/firestore/lite';
 import { getAuth, GoogleAuthProvider  } from "firebase/auth";
 import HandCardModel from './models/HandCardModel';
 import WordModel from './models/WordModel';

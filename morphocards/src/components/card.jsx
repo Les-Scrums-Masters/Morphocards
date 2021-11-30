@@ -1,36 +1,30 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
+import { useSpeechSynthesis } from 'react-speech-kit';
 
-export default class Card extends React.Component{
-    state={
-        value: this.props.value
-    }
 
-    handleClick = (e) =>{
-        console.log(e.target);
-        //SON A JOUER LORS DU CLICK
-    }
+export default function Card(props) {
 
-    render (){
-        return (
-            <Draggable
-                //key={this.props.id}
-                draggableId={this.props.id}
-                index={this.props.index}
+    const { speak } = useSpeechSynthesis();
+   
+    return (
+        <Draggable
+        draggableId={props.id}
+        index={props.index}
+    >
+        {provided => (
+            <div
+            className="card draggable"
+            onClick={() => speak({ 
+                text: props.id, 
+            })}
+            ref={provided.innerRef}
+            {...provided.draggableProps} 
+            {...provided.dragHandleProps}
             >
-                {provided => (
-                    <div
-                    className="card"
-                    onClick={this.handleClick}
-                    ref={provided.innerRef}
-                    {...provided.draggableProps} 
-                    {...provided.dragHandleProps}
-                    >
-                        <h3>{this.state.value}</h3>
-                    </div>
-                )}
-            </Draggable>
-            
-        )
-    }
-}
+                <h3>{props.value}</h3>
+            </div>
+        )}
+    </Draggable>
+    );
+  }

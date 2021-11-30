@@ -1,3 +1,5 @@
+import '../css/index.css';
+
 import React from 'react';
 import Card from './card';
 import { orderBy } from 'lodash';

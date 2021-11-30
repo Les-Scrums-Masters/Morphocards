@@ -14,11 +14,15 @@ export default class App extends React.Component{
     constructor(props){
       super(props);
 
+      this.state = {
+        word:this.props.word
+      };
+
       this.hand = React.createRef();
 
       //Tableau qui contiendra toutes les réferences des éléments dans le tableau
       this.boardRefs = []
-      this.props.boardItems.map( () => (
+      this.props.word.cards.map( () => (
         this.boardRefs.push(React.createRef())
       ));
 
@@ -161,26 +165,36 @@ export default class App extends React.Component{
         //Il faut un timeOut car il faut laisser le temps au state des placements de se mettre à jour
         setTimeout (function(){
           if(wordFinished()){
-            console.log(getWord(draggableId));
+            let playerWord = getWord(draggableId);
+            if( playerWord == this.state.word.id){
+              //TODO : Gagner
+              alert("you won " + playerWord);
+            }else{
+
+              //TODO : Perdu
+              alert("you lose, it was " + this.state.word.id + " and you choose " + playerWord );
+            }
           }
-        }, 100)
+        }.bind(this), 100)
 
 
     } //Only required on ddcontext
 
 
-    //<Board boardItems={boardItems} refs={this.boardRefs} />
+
     render(){
       return (
           <DragDropContext onDragEnd={this.onDragEnd} >
               <div className='board'>
-                {this.props.boardItems?.map( (item, index) => {
 
-                  if(item.type === CardPlacement){
+
+                {this.state.word.cards?.map( (card, index) => {
+
+                  if(!card.isBoard){
                     return <CardPlacement id={" " + index} key={index} index={index} ref={this.boardRefs[index]}  />;
 
                   } else{
-                    return <CardStatic id={" " + index} key={index} index={index} ref={this.boardRefs[index]}  value={item.props.value}  />;
+                    return <CardStatic id={" " + index} key={index} index={index} ref={this.boardRefs[index]}  value={card.value}  />;
                   }
 
                 })}

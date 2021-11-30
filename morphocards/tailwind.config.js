@@ -6,10 +6,14 @@ module.exports = {
     fontFamily: {
       'sans': ['Plus Jakarta Sans']
     },
-    extend: {},
+    extend: {
+    },
   },
   variants: {
-    extend: {},
+    extend: {
+      dropShadow: ['hover', 'active'],
+      scale: ['hover', 'active'],
+    },
   },
   plugins: [],
 }

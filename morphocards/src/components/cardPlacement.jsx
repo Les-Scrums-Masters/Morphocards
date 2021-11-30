@@ -38,7 +38,7 @@ export default class CardPlacement extends React.Component{
         return (
             <Droppable droppableId={this.props.id}>
                 {provided =>(
-                    <div className="cardPlacement"
+                    <div className="w-14 h-20 m-2 md:m-4 md:w-24 md:h-36 rounded-xl md:rounded-2xl bg-black bg-opacity-20 shadow-inner ring-4 ring-green-100 flex justify-center items-center"
                     ref={provided.innerRef}
                     {...provided.droppableProps}>
 

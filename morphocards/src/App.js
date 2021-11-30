@@ -186,9 +186,7 @@ export default class App extends React.Component{
     render(){
       return (
           <DragDropContext onDragEnd={this.onDragEnd} >
-              <div className='board'>
-
-
+              <div className='h-80 flex justify-center items-center'>
                 {this.state.word.cards?.map( (card, index) => {
 
                   if(!card.isBoard){

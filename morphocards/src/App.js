@@ -32,6 +32,7 @@ export default class App extends React.Component{
 
     }
 
+    //Fonction appelé lorsque le joueur va poser une carte
     onDragEnd(result) {
         const {destination, source, draggableId} = result;
         if(!destination){ //Si il le place dans un non droppable (donc pas de destination)
@@ -166,7 +167,7 @@ export default class App extends React.Component{
         setTimeout (function(){
           if(wordFinished()){
             let playerWord = getWord(draggableId);
-            if( playerWord == this.state.word.id){
+            if( playerWord === this.state.word.id){
               //TODO : Gagner
               alert("you won " + playerWord);
             }else{

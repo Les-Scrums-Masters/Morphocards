@@ -6,7 +6,6 @@ import Firebase from './Firebase'
 import './css/index.css'
 
 import Loading from './components/Loading';
-//import Loading from './components/Loading';
 
 const GLOBAL_ROUND = 3;
 let ACTUAL_ROUND = 0;
@@ -21,30 +20,21 @@ export default class GameManager extends React.Component {
       handCards:[],
       words:[]
     };
-
-    //Tableau qui contiendra tout les élements du board
-    this.boardItems = [ <CardStatic value='m'/> ,<CardPlacement  />,  <CardStatic value='g'/> ,<CardPlacement />]
-
   }
+
   componentDidMount(){
     this.getData();
   }
 
   async getData(){
-    let handCards = await Firebase.getHandCards();
-    handCards.map( (card, index) =>(
-      card.position = index
-    ) );
+    let allHandCards = await Firebase.getHandCards();
+    console.log(allHandCards)
+    
 
     let words = await Firebase.getWords();
 
     this.setRandomListWords(words);
-
-    this.setState(
-      {handCards:handCards}
-    );
-
-    this.setRandomListHandCards();
+    this.setRandomListHandCards(allHandCards);
 
 
   }
@@ -80,21 +70,66 @@ export default class GameManager extends React.Component {
   *
   * param : allWords : tout les mots de notre base de données
   */
-  setRandomListHandCards(){
+  setRandomListHandCards(allHandCards){
+    //Une liste de toutes les mains de toutes les parties
     let handCardsList = [];
     for(let i = 0 ; i< GLOBAL_ROUND; i++ ){
 
-      //Récupère le nombre de trous qu'il y a dans le mot
-      let nbEmplacement = 0;
-      this.state.words[i].cards.map( (card) => {
-        console.log(card);
-        if(card.isBoard){
-          nbEmplacement++;
+      //Liste des cartes main d'un seul round
+      let handCards = [];
+
+      //Ajout des cartes qui sont les bonnes réponses
+      this.state.words[i].cards.map( (card, index) => {
+        if(!card.isBoard){
+          handCards.push( this.getHandCard( card.value.id, allHandCards) )
         }
       });
-      console.log(nbEmplacement);
 
+      //Rempli la main jusqu'à atteindre la taille de la main défini
+      while(handCards.length < HAND_SIZE){
+        handCards.push(this.getRandomCard(allHandCards, handCards));
+      }
+
+      //Mélange la main -> permet de ne pas avoir les bonnes cartes toujours au début
+      shuffle(handCards);
+
+      //Affection d'une position à chaque carte
+      handCards.map( (card, index) =>(
+        card.position = index
+      ) );
+
+      handCardsList.push(handCards);
     }
+
+    this.setState(
+      {handCards:handCardsList}
+    );
+  }
+
+  /*Fonction qui retourne une carte parmis allHandCards qui n'est pas inclus dans myHandCards
+  *
+  * param : allHandCards : toutes les cartes main de notre base de données
+  *         myHandCards : les cartes présent dans une des main
+  */
+  getRandomCard(allHandCards, myHandCards){
+    let random = Math.floor(Math.random() * allHandCards.length);
+    while(myHandCards.includes( allHandCards[random] )){
+      random = Math.floor(Math.random() * allHandCards.length);
+    }
+    return allHandCards[random];
+  }
+
+   /*Fonction qui retourne la carte qui a la valeur "value"
+  *
+  * param : allHandCards : toutes les cartes main de notre base de données
+  *         value : valeur de la carte recherché
+  */
+  getHandCard(value, allHandCards){
+    let i = 0;
+    while(allHandCards[i].id !== value){
+      i++
+    }
+    return allHandCards[i];
   }
 
   render() {
@@ -103,8 +138,14 @@ export default class GameManager extends React.Component {
         <Loading />
       )
     } else{
-      return(<App handCards={this.state.handCards} word={this.state.words[ACTUAL_ROUND]} />);
+      return(<App handCards={this.state.handCards[ACTUAL_ROUND]} word={this.state.words[ACTUAL_ROUND]} />);
     }
   }
 
+}
+
+
+//mélange un tableau
+function shuffle(array) {
+  array.sort(() => Math.random() - 0.5);
 }

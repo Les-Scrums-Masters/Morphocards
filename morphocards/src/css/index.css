@@ -79,7 +79,7 @@ body{
   @apply h-80 flex justify-center items-center
 }
 .hand{
-  @apply h-20 flex
+  @apply h-40 flex justify-center items-center min-w-full
 }
 
 .loading {

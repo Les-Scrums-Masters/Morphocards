@@ -14,7 +14,7 @@ export default function Card(props) {
     >
         {provided => (
             <div
-            className="card draggable"
+            className="card shadow-md hover:shadow-xl transform hover:scale-110 filter active:drop-shadow-2xl active:scale-125"
             onClick={() => speak({ 
                 text: props.id, 
             })}

@@ -34,7 +34,7 @@ export default class Hand extends React.Component{
             direction="horizontal"
             >
                 {provided =>(
-                    <div className="hand"
+                    <div className="h-40 flex justify-center items-center min-w-full"
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                     >

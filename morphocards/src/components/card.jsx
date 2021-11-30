@@ -1,6 +1,5 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import * as googleTTS from 'google-tts-api';
 import {Howl} from 'howler';
 
 
@@ -12,14 +11,9 @@ export default class Card extends React.Component{
     }
 
     componentDidMount() {
-        let url = googleTTS.getAudioUrl(this.props.value, {
-            lang: 'fr-FR',
-            slow: false,
-            host: 'https://translate.google.com',
-          });
-
+        
         this.sound = new Howl({
-            src: [url],
+            src: ['http://morphocards.franck-g.fr/tts/'+this.props.value],
             format: ['mp3']
         });
 

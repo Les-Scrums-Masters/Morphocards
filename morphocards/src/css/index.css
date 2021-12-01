@@ -64,3 +64,8 @@ body{
 .card{
   @apply w-10 h-16 m-1 md:m-2 md:w-20 md:h-32 rounded-lg md:rounded-xl flex justify-center items-center transition ease-in-out duration-200 text-lg md:text-2xl bg-gradient-to-tl from-gray-200 to-gray-50
 }
+
+.hearBtn {
+  @apply w-20 h-20 bg-white shadow-md rounded-full transform transition ease-in-out duration-200 hover:scale-110 active:scale-90 active:drop-shadow-2xl hover:shadow-xl focus:ring text-indigo-500 flex justify-center items-center
+}
+

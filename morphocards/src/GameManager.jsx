@@ -1,6 +1,4 @@
 import React from 'react';
-import CardPlacement from './components/cardPlacement';
-import CardStatic from './components/cardStatic'
 import App from './App'
 import Firebase from './Firebase'
 import './css/index.css'
@@ -30,12 +28,10 @@ export default class GameManager extends React.Component {
     let allHandCards = await Firebase.getHandCards();
     console.log(allHandCards)
     
-
     let words = await Firebase.getWords();
 
     this.setRandomListWords(words);
     this.setRandomListHandCards(allHandCards);
-
 
   }
 
@@ -79,10 +75,11 @@ export default class GameManager extends React.Component {
       let handCards = [];
 
       //Ajout des cartes qui sont les bonnes réponses
-      this.state.words[i].cards.map( (card, index) => {
+      this.state.words[i].cards.map((card, index) => {
         if(!card.isBoard){
           handCards.push( this.getHandCard( card.value.id, allHandCards) )
         }
+        return 0
       });
 
       //Rempli la main jusqu'à atteindre la taille de la main défini
@@ -96,7 +93,7 @@ export default class GameManager extends React.Component {
       //Affection d'une position à chaque carte
       handCards.map( (card, index) =>(
         card.position = index
-      ) );
+      ));
 
       handCardsList.push(handCards);
     }

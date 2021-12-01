@@ -13,8 +13,7 @@ export default function Card(props) {
         index={props.index}
     >
         {provided => (
-            <div
-            className="card shadow-md hover:shadow-xl transform hover:scale-110 filter active:drop-shadow-2xl active:scale-125"
+            <div className="card shadow-md hover:shadow-xl transform hover:scale-110 filter active:drop-shadow-2xl active:scale-125"
             onClick={() => speak({ 
                 text: props.id, 
             })}

@@ -2,7 +2,7 @@
 import React, { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 
-export default function Modal() {
+export default function Modal(props) {
   const [open, setOpen] = useState(true)
 
   const nextBtnRef = useRef(null)
@@ -46,8 +46,7 @@ export default function Modal() {
                     </Dialog.Title>
                     <div className="mt-6">
                       <p className="text-sm text-gray-500">
-                        Le mot était
-                      </p>
+                        Le mot était</p>
                       <p className="text-lg text-indigo-600 font-bold">manger</p>
                     </div>
                   </div>

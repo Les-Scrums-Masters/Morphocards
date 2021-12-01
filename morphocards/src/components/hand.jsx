@@ -7,25 +7,26 @@ import { Droppable } from 'react-beautiful-dnd';
 
 export default class Hand extends React.Component{
 
-
     constructor(props){
-      super(props);
-      this.state = this.props.cards ?? null;
+        super(props);
+        this.state = {cards: this.props.cards ?? null};
 
-      this.handUpdateCards = this.handUpdateCards.bind(this);
+        this.handUpdateCards = this.handUpdateCards.bind(this);
     }
 
-     handUpdateCards(newCards){
-      //Ne veut pas fonctionner avec setState - a voir
-      //this.setState(newCards)
-      this.state = newCards;
+    handUpdateCards(newCards){
+
+        // On s'assure que les positions sont correctes :
+        newCards.forEach((item, index) => item.position = index);
+
+        // Mise à jour des cartes
+        this.setState({cards: newCards});
+
     }
 
      getCards = () =>{
-      return Object.values(this.state);
-      //return this.props.cards;
+      return Object.values(this.state.cards);
     }
-
 
     render (){
         return (
@@ -38,7 +39,7 @@ export default class Hand extends React.Component{
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                     >
-                        { orderBy(this.state, "position").map((card, index)=> ( <Card index={index} key={card.id}  id={""+card.id} value={card.value} /> )) }
+                        { orderBy(this.state.cards, "position").map((card, index)=> ( <Card index={index} key={card.id}  id={""+card.id} value={card.value} /> )) }
 
                         {provided.placeholder}
 

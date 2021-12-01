@@ -1,5 +1,5 @@
 import React from 'react';
-import App from './App'
+import GameContext from './GameContext'
 import Firebase from './Firebase'
 import './css/index.css'
 
@@ -128,6 +128,14 @@ export default class GameManager extends React.Component {
     }
     return allHandCards[i];
   }
+  
+  appWin() {
+
+  }
+
+  appFail(playerWord) {
+
+  }
 
   render() {
     if(this.state.handCards.length === 0 && this.state.words.length === 0 ){
@@ -135,7 +143,7 @@ export default class GameManager extends React.Component {
         <Loading />
       )
     } else{
-      return(<App handCards={this.state.handCards[ACTUAL_ROUND]} word={this.state.words[ACTUAL_ROUND]} />);
+      return(<GameContext handCards={this.state.handCards[ACTUAL_ROUND]} word={this.state.words[ACTUAL_ROUND]} />);
     }
   }
 

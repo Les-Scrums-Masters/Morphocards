@@ -1,51 +1,61 @@
 import './css/index.css';
 
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { orderBy, range } from 'lodash';
 import Hand from './components/hand';
 import CardPlacement from './components/cardPlacement';
 import CardStatic from './components/cardStatic'
+import { useSpeechSynthesis } from 'react-speech-kit';
+import { VolumeUpIcon } from '@heroicons/react/outline'
+
 
 
 //Les items du boards, card ou emplacement
-export default class App extends React.Component{
+export default function GameContext(props) {
 
 
-    constructor(props){
-      super(props);
+    /* ---- "Constructeur" ----- */ 
+    const [word] = useState(props.word);
+    let hand = React.createRef();
+    
+    //Tableau qui contiendra toutes les réferences des éléments dans le tableau
+    let boardRefs = []
+    word.cards.map( () => (
+      boardRefs.push(React.createRef())
+    ));
 
-      this.state = {
-        word:this.props.word
-      };
+    /* ------------------------ */
 
-      this.hand = React.createRef();
+    //  TextToSpreech
+    const { speak, voices } = useSpeechSynthesis({onEnd: () => console.log("Word said")});
+    const [initialSpreech, setInitialSpreech] = useState(false);
+    const sayWord = useCallback(() => {
+      speak({text:" "});
+      speak({text: word.id})
+    }, [speak, word.id])
 
-      //Tableau qui contiendra toutes les réferences des éléments dans le tableau
-      this.boardRefs = []
-      this.props.word.cards.map( () => (
-        this.boardRefs.push(React.createRef())
-      ));
+    // Au lancement, le mot est dit une première fois
+    useEffect(() => {
+      if (!initialSpreech && voices.length !== 0) {
+        setInitialSpreech(true);
+        sayWord();
+      }
+    }, [initialSpreech, voices.length, sayWord])
 
-      this.onDragEnd = this.onDragEnd.bind(this);
-      this.updateHand = this.updateHand.bind(this);
-      this.getWord = this.getWord.bind(this);
-      this.checkWin = this.checkWin.bind(this);
-
-    }
 
     // Fonction d'obtention du mot formé par le plateau
-    getWord() {
-      let word = "";
-      this.boardRefs.forEach((ref) =>{
-        word += ref.current.getValue();
+    let getWord = () => {
+      let w = "";
+      boardRefs.forEach((ref) =>{
+        w += ref.current.getValue();
       });
-      return word;
+      return w;
     }
 
 
     // Fonction changement des cartes de main
-    updateHand(newHand) {
+    let updateHand = (newHand) => {
 
       // Suppression des emplacements sans cartes
       var filtered = newHand.filter(function(x) {
@@ -53,13 +63,13 @@ export default class App extends React.Component{
       });
 
       //Envoie la nouvelle liste de carte à la main, dans l'odre
-      this.hand.current.handUpdateCards(orderBy(filtered, "position"));
+      hand.current.handUpdateCards(orderBy(filtered, "position"));
 
     }
 
 
     // Fonction de vérification de victoire
-    checkWin() {
+    let checkWin = () => {
       
       // Il faut un timeOut car il faut laisser le temps au state des placements de se mettre à jour avant de vérifier la victoire
       setTimeout (() => {
@@ -67,7 +77,7 @@ export default class App extends React.Component{
         let nbEmpty = 0;
 
         // Récupère le nombre de placement vide et le ref du dernier
-        this.boardRefs.forEach((ref) => {
+        boardRefs.forEach((ref) => {
           if(ref.current.getValue() === ""){
             nbEmpty++;
           }
@@ -77,9 +87,9 @@ export default class App extends React.Component{
         if (nbEmpty === 0) {
 
           // On récupère le mot sur le plateau
-          let playerWord = this.getWord(/*draggableId*/);
+          let playerWord = getWord(/*draggableId*/);
 
-          if( playerWord === this.state.word.id){
+          if( playerWord === word.id){
 
             //TODO : Gagner
             alert("you won " + playerWord);
@@ -87,7 +97,7 @@ export default class App extends React.Component{
           }else{
 
             //TODO : Perdu
-            alert("you lose, it was " + this.state.word.id + " and you choose " + playerWord );
+            alert("you lose, it was " + word.id + " and you choose " + playerWord );
 
           }
 
@@ -101,7 +111,7 @@ export default class App extends React.Component{
 
 
     //Fonction appelé lorsque le joueur va poser une carte
-    onDragEnd(result) {
+    let onDragEnd = (result) => {
 
         const {destination, source, draggableId} = result;
         
@@ -124,16 +134,16 @@ export default class App extends React.Component{
         if( destination.droppableId !== 'hand' 
           && source.droppableId === 'hand' 
           && destination.droppableId !== source.droppableId
-          && this.boardRefs[ parseInt(destination.droppableId) ].current.getCardPlacement() !== null) {
+          && boardRefs[ parseInt(destination.droppableId) ].current.getCardPlacement() !== null) {
 
             // Obtenir l'emplacement cible
-            let emplacement = this.boardRefs[ parseInt(destination.droppableId) ].current;
+            let emplacement = boardRefs[ parseInt(destination.droppableId) ].current;
 
             // Prend la carte qui était anciennement dans le placement
             let oldCard = emplacement.getCardPlacement();
 
             // Création de la nouvelle main
-            let newHand = this.hand.current.getCards().map((cardItem) => {
+            let newHand = hand.current.getCards().map((cardItem) => {
               if (cardItem.id === draggableId) {
 
                 // Recopie de la position de la nouvelle carte dans celle à remettre dans la main
@@ -150,15 +160,11 @@ export default class App extends React.Component{
               return cardItem;
             });
 
-            // On place la carte anciennement sur le palcement à la fin de la main
-            // card.position = this.hand.current.getCards().length;
-            // newHand.push(card);
-
             // Mise à jour de la main
-            this.updateHand(newHand);
+            updateHand(newHand);
 
             // Vérification de la victoire 
-            this.checkWin();
+            checkWin();
 
             return;
 
@@ -170,19 +176,19 @@ export default class App extends React.Component{
         if(destination.droppableId !== 'hand' && source.droppableId !== 'hand') {
 
           // On récupère la carte qui était là avant
-          let destinationCard = this.boardRefs[ parseInt(destination.droppableId) ].current.getCardPlacement();
+          let destinationCard = boardRefs[ parseInt(destination.droppableId) ].current.getCardPlacement();
 
           // On récupère la carte qu'on veut déplacer
-          let sourceCard = this.boardRefs[ parseInt(source.droppableId) ].current.getCardPlacement();
+          let sourceCard = boardRefs[ parseInt(source.droppableId) ].current.getCardPlacement();
 
           // Mise à jour de la case de destination
-          this.boardRefs[ parseInt(destination.droppableId) ].current.updateCardLocal(sourceCard);
+          boardRefs[ parseInt(destination.droppableId) ].current.updateCardLocal(sourceCard);
 
           // Mise à jour de la case spurce
-          this.boardRefs[ parseInt(source.droppableId) ].current.updateCardLocal(destinationCard);
+          boardRefs[ parseInt(source.droppableId) ].current.updateCardLocal(destinationCard);
 
           // Vérification de la victoire
-          this.checkWin();
+          checkWin();
 
           return;
         }
@@ -194,7 +200,7 @@ export default class App extends React.Component{
         && destination.droppableId !== source.droppableId) {
 
           // Récupère le cardPlacement source (composant dans boardRefs)
-          let emplacement = this.boardRefs[ parseInt(source.droppableId) ].current;
+          let emplacement = boardRefs[ parseInt(source.droppableId) ].current;
 
           // Récupère la carte en question
           let card = emplacement.getCardPlacement();
@@ -206,7 +212,7 @@ export default class App extends React.Component{
           card.position = destination.index;
 
           // Déplacement de toutes les cartes étant après la carte posée 
-          let newHand = this.hand.current.getCards().map(cardItem => {
+          let newHand = hand.current.getCards().map(cardItem => {
             if(cardItem.position >= destination.index){
               cardItem.position++;
             }
@@ -217,7 +223,7 @@ export default class App extends React.Component{
           newHand.push(card);
 
           // Mise à jour de la main
-          this.updateHand(newHand);
+          updateHand(newHand);
 
           return;
 
@@ -236,7 +242,7 @@ export default class App extends React.Component{
           ? range(source.index, destination.index +1 ) 
           : range(destination.index, source.index);
 
-          let newHand = this.hand.current.getCards().map(card => {
+          let newHand = hand.current.getCards().map(card => {
 
             //Si card est le meme que celle bougé
             if(card.id === draggableId){
@@ -259,7 +265,7 @@ export default class App extends React.Component{
             return card;
           });
           
-          this.updateHand(newHand);
+          updateHand(newHand);
 
           return;
 
@@ -268,7 +274,7 @@ export default class App extends React.Component{
 
         /* ******************************* */
         // DERNIER CAS : Main --> Plateau
-        let newHand = this.hand.current.getCards().map(card => {
+        let newHand = hand.current.getCards().map(card => {
 
           // On remet toutes les cartes sauf celle posé sur le plateau
           if (card.id !== result.draggableId) {
@@ -286,66 +292,40 @@ export default class App extends React.Component{
           }
             
           // Si c'est la carte selectionnée, ajout de celle ci dans l'emplacement demandé
-          this.boardRefs[ parseInt(destination.droppableId) ].current.updateCardLocal(card);
+          boardRefs[ parseInt(destination.droppableId) ].current.updateCardLocal(card);
 
           return undefined;
 
         });
 
         // Mise à jour de la main
-        this.updateHand(newHand);
+        updateHand(newHand);
 
         // Vérification de la victoire
-        this.checkWin();
+        checkWin();
 
     }
 
 
-    render(){
       return (
-          <DragDropContext onDragEnd={this.onDragEnd} >
-              <div className='h-80 flex justify-center items-center'>
-                {this.state.word.cards?.map( (card, index) => {
+          <DragDropContext onDragEnd={onDragEnd} >
+            <div className="flex flex-col-reverse items-center justify-center py-10 md:flex-row">
+              <button onClick={sayWord} className="hearBtn md:mr-10"><VolumeUpIcon className="h-10 w-10"/></button>
+              <div className='py-10 flex justify-center items-center'>
+                {word.cards?.map( (card, index) => {
 
                   if(!card.isBoard){
-                    return <CardPlacement id={" " + index} key={index} index={index} ref={this.boardRefs[index]}  />;
+                    return <CardPlacement id={" " + index} key={index} index={index} ref={boardRefs[index]}  />;
 
                   } else{
-                    return <CardStatic id={" " + index} key={index} index={index} ref={this.boardRefs[index]}  value={card.value}  />;
+                    return <CardStatic id={" " + index} key={index} index={index} ref={boardRefs[index]}  value={card.value}  />;
                   }
 
                 })}
               </div>
-              <Hand ref={this.hand} cards={this.props.handCards} />
+              </div>
+              <Hand ref={hand} cards={props.handCards} />
           </DragDropContext>
       );
-    }
-
 
 }
-
-    // //Retourne le mot sur le plateau de jeu
-    // function getWord(draggableId) {
-    //   let word = "";
-    //   this.boardRefs.map( (ref) =>{
-    //     word = word + ref.current.getValue();
-    //   });
-    //   return word;
-    // }
-
-    // //Renvoie true si le plateau est completement rempli
-    // function wordFinished() {
-    //   let nbEmpty = 0;
-
-    //   //Récupère le nombre de placement vide et le ref du dernier
-    //   this.boardRefs.map( (ref) =>{
-    //     if(ref.current.getValue() === ""){
-    //       nbEmpty++;
-    //     }
-    //   });
-
-    //   if (nbEmpty === 0){
-    //     return true
-    //   }
-    //   return false;
-    // }

@@ -5,11 +5,13 @@ import './css/index.css'
 
 import Loading from './components/Loading';
 
-const GLOBAL_ROUND = 3;
-let ACTUAL_ROUND = 0;
-let HAND_SIZE = 6;
+
 
 export default class GameManager extends React.Component {
+
+  GLOBAL_ROUND = 3;
+  ACTUAL_ROUND = 0;
+  HAND_SIZE = 6;
 
   constructor(props) {
     super(props);
@@ -53,7 +55,7 @@ export default class GameManager extends React.Component {
   * param : allWords : tout les mots de notre base de données
   */
   setRandomListWords(allWords){
-    for(let i = 0 ; i< GLOBAL_ROUND; i++ ){
+    for(let i = 0 ; i< this.GLOBAL_ROUND; i++ ){
       this.state.words.push( this.getRandomWord(allWords) );
     }
   }
@@ -69,7 +71,7 @@ export default class GameManager extends React.Component {
   setRandomListHandCards(allHandCards){
     //Une liste de toutes les mains de toutes les parties
     let handCardsList = [];
-    for(let i = 0 ; i< GLOBAL_ROUND; i++ ){
+    for(let i = 0 ; i< this.GLOBAL_ROUND; i++ ){
 
       //Liste des cartes main d'un seul round
       let handCards = [];
@@ -83,7 +85,7 @@ export default class GameManager extends React.Component {
       });
 
       //Rempli la main jusqu'à atteindre la taille de la main défini
-      while(handCards.length < HAND_SIZE){
+      while(handCards.length < this.HAND_SIZE){
         handCards.push(this.getRandomCard(allHandCards, handCards));
       }
 

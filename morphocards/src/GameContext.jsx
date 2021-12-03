@@ -92,12 +92,14 @@ export default function GameContext(props) {
           if( playerWord === word.id){
 
             //TODO : Gagner
-            alert("you won " + playerWord);
+            props.onWin();
+            // alert("you won " + playerWord);
 
           }else{
 
             //TODO : Perdu
-            alert("you lose, it was " + word.id + " and you choose " + playerWord );
+            props.onFail();
+            // alert("you lose, it was " + word.id + " and you choose " + playerWord );
 
           }
 

@@ -169,6 +169,7 @@ export default function GameManager(props) {
   let appFail = (playerWord) => {
     setModalTitle(pickRandomList(wordFailedTitles));
     setModalEmoji(pickRandomList(winFailedEmojis));
+    console.log(playerWord);
     setModalWrongWord(playerWord);
     setModalOpen(true);
   }

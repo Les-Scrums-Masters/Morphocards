@@ -92,29 +92,20 @@ export default function GameContext(props) {
       
         // Si le mot est terminé :
         if (getEmptyCount() === 0) {
-
           // On récupère le mot sur le plateau
-          let playerWord = getWord(/*draggableId*/);
+          let playerWord = getWord();
 
           if( playerWord === word.id){
-
-            //TODO : Gagner
+            // Gagner
             props.onWin();
-            // alert("you won " + playerWord);
-
           }else{
-
-            //TODO : Perdu
-            props.onFail();
-            // alert("you lose, it was " + word.id + " and you choose " + playerWord );
-
+            // Perdu
+            props.onFail(playerWord);
           }
-
           return true;
         }
 
         return false;
-
     }
 
 

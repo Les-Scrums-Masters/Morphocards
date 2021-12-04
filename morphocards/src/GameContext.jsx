@@ -260,9 +260,13 @@ export default function GameContext(props) {
 
             //SINON
             return card;
+           
           });
           
           updateHand(newHand);
+
+          // On ne veux pas que le mot soit redit après un changement dans la main
+          return;
 
         }
         
@@ -298,15 +302,14 @@ export default function GameContext(props) {
           updateHand(newHand);
         }
 
-        // De toute façon, sauf si le drag & drop à été annulé :
-        // Si toutes les cases sont remplies, on dicte le mot automatiqueemnt après un petit délai pour laisser le changement se faire
+
+        // Dans tous les cas, si toutes les cases sont remplies, on dicte le mot automatiqueemnt après un petit délai pour laisser le changement se faire
         setTimeout(() => {
           if (getEmptyCount() === 0) {
             sayUserWord();
           } 
         }, 100);
         
-
     }
 
 

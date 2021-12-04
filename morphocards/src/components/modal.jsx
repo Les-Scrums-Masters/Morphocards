@@ -7,6 +7,13 @@ export default function Modal(props) {
 
   const nextBtnRef = useRef(null)
 
+  let wrongContent = (props.wrongWord === '') ? "" : (
+    <div className="mt-2">
+      <p className="text-sm text-gray-500">Vous avez formé le mot</p>
+      <p className="text-lg text-indigo-600 font-bold">{props.wrongWord}</p>
+    </div>
+  );
+
   return (
     <Transition.Root show={props.open} as={Fragment}>
       <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" initialFocus={nextBtnRef} onClose={props.onClose}>
@@ -48,6 +55,7 @@ export default function Modal(props) {
                       <p className="text-sm text-gray-500">
                         Le mot était</p>
                       <p className="text-lg text-indigo-600 font-bold">{props.word}</p>
+                      {wrongContent}
                     </div>
                   </div>
                 </div>

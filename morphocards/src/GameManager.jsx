@@ -46,7 +46,7 @@ export default function GameManager(props) {
 
   const [modalEmoji, setModalEmoji] = useState("");
   const [modalTitle, setModalTitle] = useState("");
-  
+  const [modalWrongWord, setModalWrongWord] = useState("");
 
     /*Fonction qui retourne une carte parmis allHandCards qui n'est pas inclus dans myHandCards
   *
@@ -148,16 +148,17 @@ export default function GameManager(props) {
       
       setModalTitle(pickRandomList(winTitles));
       setModalEmoji(pickRandomList(winEmojis));
-      setModalOpen(true);
+      
 
     } else {
       // Mot juste
 
       setModalTitle(pickRandomList(wordSuccessTitles));
       setModalEmoji(pickRandomList(wordSuccessEmoji));
-      setModalOpen(true);
-
     }
+
+    setModalWrongWord("");
+    setModalOpen(true);
 
   }
 
@@ -168,6 +169,7 @@ export default function GameManager(props) {
   let appFail = (playerWord) => {
     setModalTitle(pickRandomList(wordFailedTitles));
     setModalEmoji(pickRandomList(winFailedEmojis));
+    setModalWrongWord(playerWord);
     setModalOpen(true);
   }
 
@@ -199,9 +201,7 @@ export default function GameManager(props) {
     } else{
       return(
         <div className="w-full h-full overscroll-none overflow-hidden">
-          <Modal open={modalOpen} 
-          onClose={closeModal} 
-          emoji={modalEmoji} title={modalTitle} word={words[ACTUAL_ROUND].id}/>
+          <Modal open={modalOpen} onClose={closeModal} emoji={modalEmoji} title={modalTitle} word={words[ACTUAL_ROUND].id} wrongWord={modalWrongWord}/>
           <GameContext handCards={handCards[ACTUAL_ROUND]} word={words[ACTUAL_ROUND]} onWin={appWin} onFail={appFail} />
         </div>
       );

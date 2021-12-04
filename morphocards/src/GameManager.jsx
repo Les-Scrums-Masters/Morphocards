@@ -82,7 +82,7 @@ export default function GameManager(props) {
   let setRandomListHandCards = (allHandCards) => {
     //Une liste de toutes les mains de toutes les parties
     let handCardsList = [];
-    for(let i = 0 ; i< this.GLOBAL_ROUND; i++ ){
+    for(let i = 0 ; i< GLOBAL_ROUND; i++ ){
 
       //Liste des cartes main d'un seul round
       let handCards = [];

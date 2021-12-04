@@ -42,21 +42,47 @@ const wordFailedTitles = ['Dommage !', 'Retente ta chance !', 'va voir gossa', '
 export default function GameManager(props) {
 
   const [handCards, setHandCards] = useState([]);
-  const [words, setWords] = useState([]);
+  const [words, /*setWords*/] = useState([]);
 
   const [modalEmoji, setModalEmoji] = useState("");
   const [modalTitle, setModalTitle] = useState("");
   
 
+    /*Fonction qui retourne une carte parmis allHandCards qui n'est pas inclus dans myHandCards
+  *
+  * param : allHandCards : toutes les cartes main de notre base de données
+  *         myHandCards : les cartes présent dans une des main
+  */
+  let getRandomCard = useCallback((allHandCards, myHandCards) => {
+    let random = Math.floor(Math.random() * allHandCards.length);
+    while(myHandCards.includes( allHandCards[random] )){
+      random = Math.floor(Math.random() * allHandCards.length);
+    }
+    return allHandCards[random];
+  }, []);
+  
+   /*Fonction qui retourne la carte qui a la valeur "value"
+  *
+  * param : allHandCards : toutes les cartes main de notre base de données
+  *         value : valeur de la carte recherché
+  */
+  let getHandCard = useCallback((value, allHandCards) =>{
+    let i = 0;
+    while(allHandCards[i].id !== value){
+      i++
+    }
+    return allHandCards[i];
+  }, [])
+
 
 //Envoie un mot qui n'as pas déjà été selectionner
-  let getRandomWord = (allWords) => {
+  let getRandomWord = useCallback((allWords) => {
     let random = Math.floor(Math.random() * allWords.length);
     while(words.includes( allWords[random] )){
       random = Math.floor(Math.random() * allWords.length);
     }
     return allWords[random];
-  }
+  }, [words])
 
 
   /*Procédure qui permet de remplir la variable de state : words
@@ -65,11 +91,11 @@ export default function GameManager(props) {
 
   * param : allWords : tout les mots de notre base de données
   */
-  let setRandomListWords = (allWords) => {
+  let setRandomListWords = useCallback((allWords) => {
     for(let i = 0 ; i< GLOBAL_ROUND; i++ ) {
       words.push( getRandomWord(allWords) );
     }
-  }
+  }, [getRandomWord, words])
 
 
   /*Procédure qui permet de remplir la variable de state : handCards
@@ -79,7 +105,7 @@ export default function GameManager(props) {
   *
   * param : allWords : tout les mots de notre base de données
   */
-  let setRandomListHandCards = (allHandCards) => {
+  let setRandomListHandCards = useCallback((allHandCards) => {
     //Une liste de toutes les mains de toutes les parties
     let handCardsList = [];
     for(let i = 0 ; i< GLOBAL_ROUND; i++ ){
@@ -113,33 +139,8 @@ export default function GameManager(props) {
 
     setHandCards(handCardsList);
 
-  }
+  }, [setHandCards, getHandCard, getRandomCard, words])
 
-  /*Fonction qui retourne une carte parmis allHandCards qui n'est pas inclus dans myHandCards
-  *
-  * param : allHandCards : toutes les cartes main de notre base de données
-  *         myHandCards : les cartes présent dans une des main
-  */
-  let getRandomCard = (allHandCards, myHandCards) => {
-    let random = Math.floor(Math.random() * allHandCards.length);
-    while(myHandCards.includes( allHandCards[random] )){
-      random = Math.floor(Math.random() * allHandCards.length);
-    }
-    return allHandCards[random];
-  }
-
-   /*Fonction qui retourne la carte qui a la valeur "value"
-  *
-  * param : allHandCards : toutes les cartes main de notre base de données
-  *         value : valeur de la carte recherché
-  */
-  let getHandCard = (value, allHandCards) =>{
-    let i = 0;
-    while(allHandCards[i].id !== value){
-      i++
-    }
-    return allHandCards[i];
-  }
   
   let appWin = () => {
     if (ACTUAL_ROUND === GLOBAL_ROUND-1) {
@@ -197,7 +198,7 @@ export default function GameManager(props) {
       )
     } else{
       return(
-        <div>
+        <div className="w-full h-full overscroll-none overflow-hidden">
           <Modal open={modalOpen} 
           onClose={closeModal} 
           emoji={modalEmoji} title={modalTitle} word={words[ACTUAL_ROUND].id}/>

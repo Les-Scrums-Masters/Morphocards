@@ -7,7 +7,7 @@ import Hand from './components/hand';
 import CardPlacement from './components/cardPlacement';
 import CardStatic from './components/cardStatic'
 import { useSpeechSynthesis } from 'react-speech-kit';
-import { VolumeUpIcon } from '@heroicons/react/outline'
+import { CheckIcon, MicrophoneIcon, VolumeUpIcon } from '@heroicons/react/outline'
 
 
 
@@ -28,8 +28,9 @@ export default function GameContext(props) {
     /* ------------------------ */
 
     //  TextToSpreech
-    const { speak, voices } = useSpeechSynthesis({onEnd: () => console.log("Word said")});
+    const { speak, voices } = useSpeechSynthesis();
     const [initialSpreech, setInitialSpreech] = useState(false);
+
     const sayWord = useCallback(() => {
       speak({text:" "});
       speak({text: word.id})
@@ -53,6 +54,10 @@ export default function GameContext(props) {
       return w;
     }
 
+    // Fonction qui dicte le mot formé
+    let sayUserWord = () => {
+      speak({text: getWord()});
+    }
 
     // Fonction changement des cartes de main
     let updateHand = (newHand) => {
@@ -67,24 +72,26 @@ export default function GameContext(props) {
 
     }
 
+    let getEmptyCount = () => {
+      // On vérifie si tous les emplacements sont remplis :
+      let nbEmpty = 0;
+
+      // Récupère le nombre de placement vide et le ref du dernier
+      boardRefs.forEach((ref) => {
+        if(ref.current.getValue() === ""){
+          nbEmpty++;
+        }
+      });
+
+      return nbEmpty;
+    }
+
 
     // Fonction de vérification de victoire
     let checkWin = () => {
       
-      // Il faut un timeOut car il faut laisser le temps au state des placements de se mettre à jour avant de vérifier la victoire
-      setTimeout (() => {
-        // On vérifie si tous les emplacements sont remplis :
-        let nbEmpty = 0;
-
-        // Récupère le nombre de placement vide et le ref du dernier
-        boardRefs.forEach((ref) => {
-          if(ref.current.getValue() === ""){
-            nbEmpty++;
-          }
-        });
-
         // Si le mot est terminé :
-        if (nbEmpty === 0) {
+        if (getEmptyCount() === 0) {
 
           // On récupère le mot sur le plateau
           let playerWord = getWord(/*draggableId*/);
@@ -107,7 +114,6 @@ export default function GameContext(props) {
         }
 
         return false;
-      }, 100)
 
     }
 
@@ -126,14 +132,14 @@ export default function GameContext(props) {
 
         /* ******************************* */
         //Si il le place dans le meme droppable ET au meme endroit
-        if(destination.droppableId === source.droppableId && destination.index === source.index){
+         else if(destination.droppableId === source.droppableId && destination.index === source.index){
           return;
         }
 
 
         /* ******************************* */
         // Si il met une carte de la main à un placement plateau si qu'il y a déjà une carte dans l'emplacement en question
-        if( destination.droppableId !== 'hand' 
+        else if( destination.droppableId !== 'hand' 
           && source.droppableId === 'hand' 
           && destination.droppableId !== source.droppableId
           && boardRefs[ parseInt(destination.droppableId) ].current.getCardPlacement() !== null) {
@@ -165,17 +171,12 @@ export default function GameContext(props) {
             // Mise à jour de la main
             updateHand(newHand);
 
-            // Vérification de la victoire 
-            checkWin();
-
-            return;
-
         }
 
 
         /* ******************************* */
         // Si l'action se fait entre 2 placements
-        if(destination.droppableId !== 'hand' && source.droppableId !== 'hand') {
+        else if(destination.droppableId !== 'hand' && source.droppableId !== 'hand') {
 
           // On récupère la carte qui était là avant
           let destinationCard = boardRefs[ parseInt(destination.droppableId) ].current.getCardPlacement();
@@ -189,16 +190,12 @@ export default function GameContext(props) {
           // Mise à jour de la case spurce
           boardRefs[ parseInt(source.droppableId) ].current.updateCardLocal(destinationCard);
 
-          // Vérification de la victoire
-          checkWin();
-
-          return;
         }
 
 
         /* ******************************* */
         // Si on repose une carte qui était sur le plateau
-        if(destination.droppableId === 'hand' 
+        else if(destination.droppableId === 'hand' 
         && destination.droppableId !== source.droppableId) {
 
           // Récupère le cardPlacement source (composant dans boardRefs)
@@ -227,14 +224,12 @@ export default function GameContext(props) {
           // Mise à jour de la main
           updateHand(newHand);
 
-          return;
-
         }
         
 
         /* ******************************* */
         // Si le changement se fait uniquement dans la main
-        if (destination.droppableId === source.droppableId 
+        else if (destination.droppableId === source.droppableId 
           && destination.droppableId === 'hand') {
           
           let direction = destination.index > source.index ? "RIGHT" : "LEFT";
@@ -269,51 +264,66 @@ export default function GameContext(props) {
           
           updateHand(newHand);
 
-          return;
-
         }
         
 
         /* ******************************* */
         // DERNIER CAS : Main --> Plateau
-        let newHand = hand.current.getCards().map(card => {
+        else {
+          let newHand = hand.current.getCards().map(card => {
 
-          // On remet toutes les cartes sauf celle posé sur le plateau
-          if (card.id !== result.draggableId) {
-
-            // Si la carte (card) est à droite de celle posé (result)
-            if(card.position > result.source.index) {
-              
-              // On la décale d'un cran
-              card.position = card.position -1;
-
+            // On remet toutes les cartes sauf celle posé sur le plateau
+            if (card.id !== result.draggableId) {
+  
+              // Si la carte (card) est à droite de celle posé (result)
+              if(card.position > result.source.index) {
+                
+                // On la décale d'un cran
+                card.position = card.position -1;
+  
+              }
+  
+              return card;
+  
             }
+              
+            // Si c'est la carte selectionnée, ajout de celle ci dans l'emplacement demandé
+            boardRefs[ parseInt(destination.droppableId) ].current.updateCardLocal(card);
+  
+            return undefined;
+  
+          });
+  
+          // Mise à jour de la main
+          updateHand(newHand);
+        }
 
-            return card;
-
-          }
-            
-          // Si c'est la carte selectionnée, ajout de celle ci dans l'emplacement demandé
-          boardRefs[ parseInt(destination.droppableId) ].current.updateCardLocal(card);
-
-          return undefined;
-
-        });
-
-        // Mise à jour de la main
-        updateHand(newHand);
-
-        // Vérification de la victoire
-        checkWin();
+        // De toute façon, sauf si le drag & drop à été annulé :
+        // Si toutes les cases sont remplies, on dicte le mot automatiqueemnt après un petit délai pour laisser le changement se faire
+        setTimeout(() => {
+          if (getEmptyCount() === 0) {
+            sayUserWord();
+          } 
+        }, 100);
+        
 
     }
 
 
       return (
+        <div className="w-full h-full flex flex-col overscroll-none overflow-hidden">
+
+          {/* BARRE */}
+          <div className="w-full bg-white bg-opacity-10 flex items-center justify-center py-5">
+            <p className="text-white">Morphocards</p>
+          </div>
+
           <DragDropContext onDragEnd={onDragEnd} >
-            <div className="flex flex-col-reverse items-center justify-center py-10 md:flex-row">
-              <button onClick={sayWord} className="hearBtn md:mr-10"><VolumeUpIcon className="h-10 w-10"/></button>
-              <div className='py-10 flex justify-center items-center'>
+
+            {/* PLATEAU */}
+            <div className="flex flex-col items-center justify-center gap-6 flex-grow flex-wrap">
+
+              <div className='flex justify-center items-center flex-wrap'>
                 {word.cards?.map( (card, index) => {
 
                   if(!card.isBoard){
@@ -325,9 +335,30 @@ export default function GameContext(props) {
 
                 })}
               </div>
+
+              {/* BOUTONS */}
+              <div className="flex flex-row gap-5">
+                <div className="btnGroup">
+                  <button id="sayInitialWord" onClick={sayWord} className="roundBtn"><VolumeUpIcon/></button>
+                  <label htmlFor="sayInitialWord">Écouter le mot à reconstituer</label>
+                </div>
+                <div className="btnGroup">
+                  <button id="sayUserWord" onClick={sayUserWord} className="roundBtn"><MicrophoneIcon/></button>
+                  <label htmlFor="sayUserWord">Écouter le mot actuellement formé</label>
+                </div>
+                <div className="btnGroup">
+                  <button id="validateRound" onClick={checkWin} className="roundBtn focus:ring-green-300"><CheckIcon className="text-green-500"/></button>
+                  <label htmlFor="validateRound">Valider mon mot</label>
+                </div>
               </div>
-              <Hand ref={hand} cards={props.handCards} />
+
+            </div>
+
+            {/* MAIN */}
+            <Hand ref={hand} cards={props.handCards} />
+
           </DragDropContext>
+        </div>
       );
 
 }

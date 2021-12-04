@@ -62,7 +62,7 @@ body{
 }
 
 .card{
-  @apply w-10 h-16 m-1 md:m-2 md:w-20 md:h-32 rounded-lg md:rounded-xl flex justify-center items-center transition ease-in-out duration-200 text-lg md:text-2xl bg-gradient-to-tl from-gray-200 to-gray-50
+  @apply w-10 h-16 m-1 md:m-2 md:w-20 md:h-32 rounded-lg md:rounded-xl flex justify-center items-center transition ease-in-out duration-200 text-lg md:text-2xl from-gray-200 to-white bg-gradient-to-tl p-1 md:p-2 flex-col
 }
 
 .roundBtn {
@@ -79,8 +79,4 @@ body{
 
 .btnGroup label {
   @apply w-16 md:w-36 text-center font-medium uppercase text-white text-opacity-60 text-xs h-8 md:h-12 break-words select-none
-}
-
-#root {
-  @apply overscroll-none
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { useSpeechSynthesis } from 'react-speech-kit';
-
+import { VolumeUpIcon } from '@heroicons/react/outline';
 
 export default function Card(props) {
 
@@ -21,7 +21,10 @@ export default function Card(props) {
             {...provided.draggableProps} 
             {...provided.dragHandleProps}
             >
-                <h3 className="select-none">{props.value}</h3>
+                <VolumeUpIcon className="h-4 w-4 text-gray-500 self-end"/>
+                <div className="justify-self-center flex-grow grid mb-4 content-center">
+                    <h3 className="select-none text-indigo-500 ">{props.value}</h3>
+                </div>
             </div>
         )}
     </Draggable>

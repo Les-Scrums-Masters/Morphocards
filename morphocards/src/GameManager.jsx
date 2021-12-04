@@ -1,10 +1,11 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import GameContext from './GameContext'
 import Firebase from './Firebase'
-import Modal from './components/modal'
+import Modal from './components/Modal'
 import './css/index.css'
 
 import Loading from './components/Loading';
+import GameBar from './components/GameBar';
 
 const GLOBAL_ROUND = 3;
 
@@ -201,9 +202,14 @@ export default function GameManager(props) {
       )
     } else{
       return(
-        <div className="w-full h-full overscroll-none overflow-hidden">
+        <div className="w-full h-full overscroll-none overflow-hidden flex flex-col">
+
           <Modal open={modalOpen} onClose={closeModal} emoji={modalEmoji} title={modalTitle} word={words[ACTUAL_ROUND].id} wrongWord={modalWrongWord}/>
+
+          <GameBar />
+
           <GameContext handCards={handCards[ACTUAL_ROUND]} word={words[ACTUAL_ROUND]} onWin={appWin} onFail={appFail} />
+
         </div>
       );
     }

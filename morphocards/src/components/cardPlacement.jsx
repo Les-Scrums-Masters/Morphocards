@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from './card';
+import Card from './Card';
 import { Droppable } from 'react-beautiful-dnd';
 
 export default class CardPlacement extends React.Component{

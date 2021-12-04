@@ -1,7 +1,7 @@
 import '../css/index.css';
 
 import React from 'react';
-import Card from './card';
+import Card from './Card';
 import { orderBy } from 'lodash';
 import { Droppable } from 'react-beautiful-dnd';
 

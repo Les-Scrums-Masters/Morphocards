@@ -3,11 +3,11 @@ import './css/index.css';
 import React, { useCallback, useEffect, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { orderBy, range } from 'lodash';
-import Hand from './components/hand';
-import CardPlacement from './components/cardPlacement';
-import CardStatic from './components/cardStatic'
+import Hand from './components/Hand';
 import { useSpeechSynthesis } from 'react-speech-kit';
 import { CheckIcon, MicrophoneIcon, VolumeUpIcon } from '@heroicons/react/outline'
+import GameBoard from './components/GameBoard';
+import RoundButton from './components/RoundBtn';
 
 
 
@@ -305,45 +305,25 @@ export default function GameContext(props) {
 
 
       return (
-        <div className="w-full h-full flex flex-col overscroll-none overflow-hidden">
-
-          {/* BARRE */}
-          <div className="w-full bg-white bg-opacity-10 flex items-center justify-center py-5">
-            <p className="text-white">Morphocards</p>
-          </div>
-
           <DragDropContext onDragEnd={onDragEnd} >
 
-            {/* PLATEAU */}
+            
             <div className="flex flex-col items-center justify-center gap-6 flex-grow flex-wrap">
 
-              <div className='flex justify-center items-center flex-wrap'>
-                {word.cards?.map( (card, index) => {
-
-                  if(!card.isBoard){
-                    return <CardPlacement id={" " + index} key={index} index={index} ref={boardRefs[index]}  />;
-
-                  } else{
-                    return <CardStatic id={" " + index} key={index} index={index} ref={boardRefs[index]}  value={card.value}  />;
-                  }
-
-                })}
-              </div>
+              {/* PLATEAU */}
+              <GameBoard word={word} boardRefs={boardRefs} />
 
               {/* BOUTONS */}
               <div className="flex flex-row gap-5">
-                <div className="btnGroup">
-                  <button id="sayInitialWord" onClick={sayWord} className="roundBtn"><VolumeUpIcon/></button>
-                  <label htmlFor="sayInitialWord">Écouter le mot à reconstituer</label>
-                </div>
-                <div className="btnGroup">
-                  <button id="sayUserWord" onClick={sayUserWord} className="roundBtn"><MicrophoneIcon/></button>
-                  <label htmlFor="sayUserWord">Écouter le mot actuellement formé</label>
-                </div>
-                <div className="btnGroup">
-                  <button id="validateRound" onClick={checkWin} className="roundBtn focus:ring-green-300"><CheckIcon className="text-green-500"/></button>
-                  <label htmlFor="validateRound">Valider mon mot</label>
-                </div>
+                <RoundButton onClick={sayWord} label="Écouter le mot à reconstituer">
+                  <VolumeUpIcon/>
+                </RoundButton>
+                <RoundButton onClick={sayUserWord} label="Écouter le mot actuellement formé">
+                  <MicrophoneIcon/>
+                </RoundButton>
+                <RoundButton onClick={checkWin} label="Valider mon mot">
+                  <CheckIcon className="text-green-500"/>
+                </RoundButton>
               </div>
 
             </div>
@@ -352,7 +332,6 @@ export default function GameContext(props) {
             <Hand ref={hand} cards={props.handCards} />
 
           </DragDropContext>
-        </div>
       );
 
 }

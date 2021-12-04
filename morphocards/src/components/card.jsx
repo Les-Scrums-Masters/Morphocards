@@ -21,7 +21,7 @@ export default function Card(props) {
             {...provided.draggableProps} 
             {...provided.dragHandleProps}
             >
-                <h3>{props.value}</h3>
+                <h3 className="select-none">{props.value}</h3>
             </div>
         )}
     </Draggable>

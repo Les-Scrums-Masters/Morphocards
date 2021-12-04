@@ -17,7 +17,7 @@ export default class CardStatic extends React.Component{
             <div
                     className="card"
                     >
-                        <h3>{this.state.value}</h3>
+                        <h3 className="select-none">{this.state.value}</h3>
                     </div>
 
         )

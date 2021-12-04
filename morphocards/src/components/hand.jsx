@@ -1,7 +1,7 @@
 import '../css/index.css';
 
 import React from 'react';
-import Card from './card';
+import Card from './Card';
 import { orderBy } from 'lodash';
 import { Droppable } from 'react-beautiful-dnd';
 
@@ -35,7 +35,7 @@ export default class Hand extends React.Component{
             direction="horizontal"
             >
                 {provided =>(
-                    <div className="h-40 flex justify-center items-center min-w-full"
+                    <div className="flex h-24 md:h-40 justify-center items-center -mb-7"
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                     >

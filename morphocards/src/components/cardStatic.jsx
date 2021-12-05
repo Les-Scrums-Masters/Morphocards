@@ -1,25 +1,21 @@
-import React from 'react';
+import React, { forwardRef, useImperativeHandle } from 'react';
 
-export default class CardStatic extends React.Component{
-    state={
-        value: this.props.value
-    }
+const CardStatic = forwardRef((props, ref) => {
 
-    getValue = () =>{
-      if(this.state.card !== null){
-        return this.state.value;
-      }
-      return "";
-    }
+    useImperativeHandle(ref, () => (
+        {
+            getValue() {
+                return props.value;
+            }
+        }
+    ));
 
-    render (){
-        return (
-            <div
-                    className="card"
-                    >
-                        <h3 className="select-none">{this.state.value}</h3>
-                    </div>
+    return (
+        <div className="card">
+            <h3 className="select-none">{props.value}</h3>
+        </div>
+    );
 
-        )
-    }
-}
+})
+
+export default CardStatic;

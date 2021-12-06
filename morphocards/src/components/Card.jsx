@@ -3,6 +3,7 @@ import { Draggable } from 'react-beautiful-dnd';
 import { useSpeechSynthesis } from 'react-speech-kit';
 import { VolumeUpIcon } from '@heroicons/react/outline';
 
+
 export default function Card(props) {
 
     const { speak } = useSpeechSynthesis();

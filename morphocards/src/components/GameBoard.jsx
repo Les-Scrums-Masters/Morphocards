@@ -19,8 +19,8 @@ const GameBoard = React.forwardRef((props, ref) => {
         // Fonction d'obtention du mot formé par le plateau
         getWord() {
             let w = "";
-            boardRefs.forEach((ref) =>{
-            w += ref.current.getValue();
+            boardRefs.forEach((bRef) =>{
+                w += bRef.current.getValue();
             });
             return w;
         },
@@ -32,8 +32,8 @@ const GameBoard = React.forwardRef((props, ref) => {
             let nbEmpty = 0;
 
             // Récupère le nombre de placement vide et le ref du dernier
-            boardRefs.forEach((ref) => {
-                if(ref.current.getValue() === ""){
+            boardRefs.forEach((bRef) => {
+                if(bRef.current.getValue() === ""){
                     nbEmpty++;
                 }
             });

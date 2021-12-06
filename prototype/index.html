@@ -9,15 +9,30 @@
 </head>
 <body>
   <header>
-    <p><strong>Objectif </strong></p>
-
+    <h3><strong>Objectif</strong></h3>
+    <p id="roundBar"></p>
     <p id="scoreBar"></p>
   </header>
     <main>
+      <div id="info">
+        <p>ꚙ= in</p>
+        <p>ꝃ= o</p>
+        <p>Ꚛ= è</p>
+        <p>Ꜫ= an</p>
+        <p>Ꝕ= oi</p>
+        <p>ꝸ= ou</p>
+        <p>Ꝿ= on</p>
+        <p>ꞙ= eu</p>
+        <p>Ꙫ= i</p>
+      </div>
+
       <div id="board">
+
+        <!--
         <input id="left" type="radio" name="placement" value="">
         <h2 id="radical">{radical}</h2>
         <input id="right" type="radio" name="placement" value="" checked>
+        -->
       </div>
 
       <div id="btn_container">
@@ -33,20 +48,6 @@
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <script type="text/javascript">
-      // Your web app's Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyCIy172a-eDssYLn7uTCPvUlHLzrtOvV5s",
-        authDomain: "morphocards-3976f.firebaseapp.com",
-        projectId: "morphocards-3976f",
-        storageBucket: "morphocards-3976f.appspot.com",
-        messagingSenderId: "1048733341127",
-        appId: "1:1048733341127:web:39a31dd14a61a4f6d2b5e2"
-      };
-      
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-    </script>
     <script type="text/javascript" src="js/firebase.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
 

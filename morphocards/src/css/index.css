@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url('../fonts/PlusJakartaSans-ExtraBold.woff2') format('woff2'),
+      url('../fonts/PlusJakartaSans-ExtraBold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url('../fonts/PlusJakartaSans-Bold.woff2') format('woff2'),
+      url('../fonts/PlusJakartaSans-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url('../fonts/PlusJakartaSans-Light.woff2') format('woff2'),
+      url('../fonts/PlusJakartaSans-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url('../fonts/PlusJakartaSans-Regular.woff2') format('woff2'),
+      url('../fonts/PlusJakartaSans-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url('../fonts/PlusJakartaSans-Medium.woff2') format('woff2'),
+      url('../fonts/PlusJakartaSans-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+html, body, #root {
+  @apply w-full h-full
+}
+
+body{
+  background-image: url('../images/Background.png');
+  background-repeat: repeat;
+  @apply h-full flex justify-center items-center
+}
+
+#root{
+  @apply flex-col flex justify-center items-center
+}
+
+.card{
+  @apply w-10 h-16 m-1 md:m-2 md:w-20 md:h-32 rounded-lg md:rounded-xl flex justify-center items-center transition ease-in-out duration-200 text-lg md:text-2xl from-gray-200 to-white bg-gradient-to-tl p-1 md:p-2 flex-col
+}
+
+.roundBtn {
+  @apply w-10 h-10 md:w-20 md:h-20 bg-white shadow-md rounded-full transform transition ease-in-out duration-200 hover:scale-110 active:scale-90 active:drop-shadow-2xl hover:shadow-xl focus:ring text-indigo-500 flex justify-center items-center outline-none
+}
+
+.roundBtn svg {
+  @apply h-5 w-5 md:h-10 md:w-10
+}
+
+.btnGroup {
+  @apply flex flex-col justify-center gap-3 md:gap-5 items-center text-center mt-5
+}
+
+.btnGroup label {
+  @apply w-16 md:w-36 text-center font-medium uppercase text-white text-opacity-60 text-xs h-8 md:h-12 break-words select-none
+}

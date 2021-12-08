@@ -64,9 +64,12 @@ class FirebaseClass {
   async getWords() {
     let list = [];
     let docs = await getDocs(this.WORDS_COLLECTION);
-    docs.forEach((element) => list.push(new WordModel(element.id, element.data()['cards'])));
+    docs.forEach((element) =>{
+      list.push(new WordModel(element.id, element.data()['cards']));
+    } );
     return list;
   }
+
 
   refToString(item) {
     if (item.path) {

@@ -7,7 +7,7 @@ import Hand from './components/Hand';
 import { useSpeechSynthesis } from 'react-speech-kit';
 import { CheckIcon, MicrophoneIcon, VolumeUpIcon } from '@heroicons/react/outline'
 import GameBoard from './components/GameBoard';
-import RoundButton from './components/RoundBtn';
+import RoundButton from './components/RoundButton';
 
 
 //Les items du boards, card ou emplacement
@@ -79,122 +79,119 @@ export default function GameContext(props) {
 
   }
 
+  
+  // Fonction qui gère le cas de déplacement d'une carte de la main vers un emplacement plateau contenant déjà une carte
+  const handleHandToBoardReplaceCard = (destination, draggableId) => {
+    // Obtenir l'emplacement cible
+    let emplacement = boardRef.current.getEmplacement(destination.droppableId);
 
-  //Fonction appelé lorsque le joueur va poser une carte
-  const onDragEnd = (result) => {
+    // Prend la carte qui était anciennement dans le placement
+    let oldCard = emplacement.getCard();
 
-    const {destination, source, draggableId} = result;
-        
-    /* ******************************* */
-    //Si il le place dans un non droppable (donc pas de destination)
-    if(!destination){ 
-      return;
-    }
+    // Création de la nouvelle main
+    let newHand = handRef.current.getCards().map((cardItem) => {
+      if (cardItem.id === draggableId) {
 
+        // Recopie de la position de la nouvelle carte dans celle à remettre dans la main
+        oldCard.position = cardItem.position;
 
-    /* ******************************* */
-    //Si il le place dans le meme droppable ET au meme endroit
-    else if(destination.droppableId === source.droppableId && destination.index === source.index){
-      return;
-    }
+        // On met cette nouvelle carte dans la main
+        emplacement.updateCardLocal(cardItem);
 
+        // Et on met l'ancienne carte dans la main à la place
+        return oldCard;
+      }
 
-    /* ******************************* */
-    // Si il met une carte de la main à un placement plateau si qu'il y a déjà une carte dans l'emplacement en question
-    else if( destination.droppableId !== 'hand' 
-      && source.droppableId === 'hand' 
-      && destination.droppableId !== source.droppableId
-      && boardRef.current.getEmplacement(destination.droppableId).getCard() !== null) {
+      // Si pas de modif, on retourne la carte tel quel :
+      return cardItem;
+    });
 
-      // Obtenir l'emplacement cible
-      let emplacement = boardRef.current.getEmplacement(destination.droppableId);
+    // Mise à jour de la main
+    updateHand(newHand);
+  }
 
-      // Prend la carte qui était anciennement dans le placement
-      let oldCard = emplacement.getCard();
+    // Fonction qui gère un déplacement de la main au plateau 
+  const handleHandToBoard = (source, destination, draggableId) => {
 
-      // Création de la nouvelle main
-      let newHand = handRef.current.getCards().map((cardItem) => {
-        if (cardItem.id === draggableId) {
+    let newHand = handRef.current.getCards().map(card => {
 
-          // Recopie de la position de la nouvelle carte dans celle à remettre dans la main
-          oldCard.position = cardItem.position;
+      // On remet toutes les cartes sauf celle posé sur le plateau
+      if (card.id !== draggableId) {
 
-          // On met cette nouvelle carte dans la main
-          emplacement.updateCardLocal(cardItem);
+        // Si la carte (card) est à droite de celle posé (result)
+        if(card.position > source.index) {
+              
+          // On la décale d'un cran
+          card.position = card.position -1;
 
-          // Et on met l'ancienne carte dans la main à la place
-          return oldCard;
         }
 
-        // Si pas de modif, on retourne la carte tel quel :
-        return cardItem;
-      });
+        return card;
 
-      // Mise à jour de la main
-      updateHand(newHand);
+      }
+            
+      // Si c'est la carte selectionnée, ajout de celle ci dans l'emplacement demandé
+      boardRef.current.getEmplacement(destination.droppableId).updateCardLocal(card);
 
-    }
+      return undefined;
 
+    });
 
-    /* ******************************* */
-    // Si l'action se fait entre 2 placements
-    else if(destination.droppableId !== 'hand' && source.droppableId !== 'hand') {
-
-      // On récupère la carte qui était là avant
-      let destinationCard = boardRef.current.getEmplacement(destination.droppableId).getCard();
-
-      // On récupère la carte qu'on veut déplacer
-      let sourceCard = boardRef.current.getEmplacement(source.droppableId).getCard();
-
-      // Mise à jour de la case de destination
-      boardRef.current.getEmplacement(destination.droppableId).updateCardLocal(sourceCard);
-
-      // Mise à jour de la case spurce
-      boardRef.current.getEmplacement(source.droppableId).updateCardLocal(destinationCard);
-
-    }
+    // Mise à jour de la main
+    updateHand(newHand);
+    
+  }
 
 
-    /* ******************************* */
-    // Si on repose une carte qui était sur le plateau
-    else if(destination.droppableId === 'hand' 
-    && destination.droppableId !== source.droppableId) {
+  // Fonction qui gère l'échange de cartes de deux emplacements plateaux 
+  const handleSwitchPlacements = (source, destination, draggableId) => {
+    // On récupère la carte qui était là avant
+    let destinationCard = boardRef.current.getEmplacement(destination.droppableId).getCard();
 
-      // Récupère le cardPlacement source (composant dans boardRefs)
-      let emplacement = boardRef.current.getEmplacement(source.droppableId);
+    // On récupère la carte qu'on veut déplacer
+    let sourceCard = boardRef.current.getEmplacement(source.droppableId).getCard();
 
-      // Récupère la carte en question
-      let card = emplacement.getCard();
+    // Mise à jour de la case de destination
+    boardRef.current.getEmplacement(destination.droppableId).updateCardLocal(sourceCard);
 
-      // Enleve la carte dans l'emplacement source
-      emplacement.updateCardLocal(null);
+    // Mise à jour de la case spurce
+    boardRef.current.getEmplacement(source.droppableId).updateCardLocal(destinationCard);
+  }
 
-      // On la met à la position souhaitée
-      card.position = destination.index;
 
-      // Déplacement de toutes les cartes étant après la carte posée 
-      let newHand = handRef.current.getCards().map(cardItem => {
-        if(cardItem.position >= destination.index){
-          cardItem.position++;
-        }
-        return cardItem;
-      });
+  // Fonction qui gère la reprise dans la main d'une carte plateau
+  const handleBoardToHand = (source, destination) => {
+    // Récupère le cardPlacement source (composant dans boardRefs)
+    let emplacement = boardRef.current.getEmplacement(source.droppableId);
 
-      // Ajout de la nouvelle carte
-      newHand.push(card);
+    // Récupère la carte en question
+    let card = emplacement.getCard();
 
-      // Mise à jour de la main
-      updateHand(newHand);
+    // Enleve la carte dans l'emplacement source
+    emplacement.updateCardLocal(null);
 
-    }
-        
+    // On la met à la position souhaitée
+    card.position = destination.index;
 
-    /* ******************************* */
-    // Si le changement se fait uniquement dans la main
-    else if (destination.droppableId === source.droppableId 
-      && destination.droppableId === 'hand') {
-          
-      let direction = destination.index > source.index ? "RIGHT" : "LEFT";
+    // Déplacement de toutes les cartes étant après la carte posée 
+    let newHand = handRef.current.getCards().map(cardItem => {
+      if(cardItem.position >= destination.index){
+        cardItem.position++;
+      }
+      return cardItem;
+    });
+
+    // Ajout de la nouvelle carte
+    newHand.push(card);
+
+    // Mise à jour de la main
+    updateHand(newHand);
+  }
+
+
+  // Fonction qui gère le déplacement d'une carte au sein de la main
+  const handleHandMove = (source, destination, draggableId) => {
+    let direction = destination.index > source.index ? "RIGHT" : "LEFT";
 
       // Obtiens un tableau de nouveaux indexes réeordonnés dû au changement de position des cartes
       let affectedRange = (direction === "RIGHT") 
@@ -226,6 +223,65 @@ export default function GameContext(props) {
       });
           
       updateHand(newHand);
+  }
+
+
+  // Fonction appelé lorsque le joueur va poser une carte
+  const onDragEnd = (result) => {
+
+    const {destination, source, draggableId} = result;
+        
+    /* ******************************* */
+    //Si il le place dans un non droppable (donc pas de destination)
+    if(!destination){ 
+      return;
+    }
+
+
+    /* ******************************* */
+    //Si il le place dans le meme droppable ET au meme endroit
+    else if(destination.droppableId === source.droppableId && destination.index === source.index){
+      return;
+    }
+
+
+    /* ******************************* */
+    // Si il met une carte de la main à un placement plateau si qu'il y a déjà une carte dans l'emplacement en question
+    else if( destination.droppableId !== 'hand' 
+      && source.droppableId === 'hand' 
+      && destination.droppableId !== source.droppableId
+      && boardRef.current.getEmplacement(destination.droppableId).getCard() !== null) {
+
+      handleHandToBoardReplaceCard(destination, draggableId);
+
+    }
+
+
+    /* ******************************* */
+    // Si l'action se fait entre 2 placements
+    else if(destination.droppableId !== 'hand' && source.droppableId !== 'hand') {
+
+      handleSwitchPlacements(source, destination, draggableId);
+
+    }
+
+
+    /* ******************************* */
+    // Si on repose une carte qui était sur le plateau
+    else if(destination.droppableId === 'hand' 
+    && destination.droppableId !== source.droppableId) {
+
+      handleBoardToHand(source, destination);
+
+    }
+        
+
+    /* ******************************* */
+    // Si le changement se fait uniquement dans la main
+    else if (destination.droppableId === source.droppableId 
+      && destination.droppableId === 'hand') {
+          
+      handleHandMove(source, destination, draggableId);
 
       // On ne veux pas que le mot soit redit après un changement dans la main
       return;
@@ -236,32 +292,9 @@ export default function GameContext(props) {
     /* ******************************* */
     // DERNIER CAS : Main --> Plateau
     else {
-      let newHand = handRef.current.getCards().map(card => {
 
-        // On remet toutes les cartes sauf celle posé sur le plateau
-        if (card.id !== result.draggableId) {
-  
-          // Si la carte (card) est à droite de celle posé (result)
-          if(card.position > result.source.index) {
-                
-            // On la décale d'un cran
-            card.position = card.position -1;
-  
-          }
-  
-          return card;
-  
-        }
-              
-        // Si c'est la carte selectionnée, ajout de celle ci dans l'emplacement demandé
-        boardRef.current.getEmplacement(destination.droppableId).updateCardLocal(card);
-  
-        return undefined;
-  
-      });
-  
-      // Mise à jour de la main
-      updateHand(newHand);
+      handleHandToBoard(source, destination, draggableId);
+
     }
 
 
@@ -275,6 +308,7 @@ export default function GameContext(props) {
   }
 
 
+  // Rendu
   return (
     <DragDropContext onDragEnd={onDragEnd} >
 

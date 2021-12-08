@@ -62,7 +62,7 @@ export default function GameManager(props) {
   const HAND_SIZE = 6;
 
   // Round actuel :
-  const [actualRound, setActualRound] = useState(0);
+  const [actualRound, /*setActualRound*/] = useState(0);
   
 
   /* Fonction qui retourne une carte parmis allHandCards qui n'est pas inclus dans myHandCards
@@ -129,35 +129,35 @@ export default function GameManager(props) {
     for(let i = 0 ; i< GLOBAL_ROUND; i++ ){
 
       //Liste des cartes main d'un seul round
-      let handCards = [];
+      let roundCards = [];
 
       //Ajout des cartes qui sont les bonnes réponses
       words[i].cards.map((card, index) => {
         if(!card.isBoard){
-          handCards.push( getHandCard( card.value.id, allHandCards) )
+          roundCards.push( getHandCard( card.value.id, allHandCards) )
         }
         return 0
       });
 
       //Rempli la main jusqu'à atteindre la taille de la main défini
-      while(handCards.length < HAND_SIZE){
-        handCards.push(getRandomCard(allHandCards, handCards));
+      while(roundCards.length < HAND_SIZE){
+        roundCards.push(getRandomCard(allHandCards, handCards));
       }
 
       //Mélange la main -> permet de ne pas avoir les bonnes cartes toujours au début
-      shuffle(handCards);
+      shuffle(roundCards);
 
       //Affection d'une position à chaque carte
-      handCards.map( (card, index) =>(
+      roundCards.forEach( (card, index) =>(
         card.position = index
       ));
 
-      handCardsList.push(handCards);
+      handCardsList.push(roundCards);
     }
 
     setHandCards(handCardsList);
 
-  }, [setHandCards, getHandCard, getRandomCard, words])
+  }, [setHandCards, getHandCard, getRandomCard, words, handCards])
 
 
   // Fonction qui retourne un élément choisi au hasard dans la liste
@@ -201,9 +201,9 @@ export default function GameManager(props) {
   const getData = useCallback(async () => {
     let allHandCards = await Firebase.getHandCards();
       
-      let words = await Firebase.getWords();
+      let wordsList = await Firebase.getWords();
   
-      setRandomListWords(words);
+      setRandomListWords(wordsList);
       setRandomListHandCards(allHandCards);
   }, [setRandomListHandCards, setRandomListWords])
 

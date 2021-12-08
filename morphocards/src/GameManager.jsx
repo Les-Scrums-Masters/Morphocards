@@ -126,6 +126,7 @@ export default function GameManager(props) {
   const setRandomListHandCards = useCallback((allHandCards) => {
     //Une liste de toutes les mains de toutes les parties
     let handCardsList = [];
+
     for(let i = 0 ; i< GLOBAL_ROUND; i++ ){
 
       //Liste des cartes main d'un seul round
@@ -141,7 +142,7 @@ export default function GameManager(props) {
 
       //Rempli la main jusqu'à atteindre la taille de la main défini
       while(roundCards.length < HAND_SIZE){
-        roundCards.push(getRandomCard(allHandCards, handCards));
+        roundCards.push(getRandomCard(allHandCards, roundCards));
       }
 
       //Mélange la main -> permet de ne pas avoir les bonnes cartes toujours au début
@@ -157,7 +158,7 @@ export default function GameManager(props) {
 
     setHandCards(handCardsList);
 
-  }, [setHandCards, getHandCard, getRandomCard, words, handCards])
+  }, [setHandCards, getHandCard, getRandomCard, words])
 
 
   // Fonction qui retourne un élément choisi au hasard dans la liste

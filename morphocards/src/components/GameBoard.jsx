@@ -31,7 +31,7 @@ const GameBoard = React.forwardRef((props, ref) => {
             // On vérifie si tous les emplacements sont remplis :
             let nbEmpty = 0;
 
-            // Récupère le nombre de placement vide et le ref du dernier
+            // Récupère le nombre de placement vide
             boardRefs.forEach((bRef) => {
                 if(bRef.current.getValue() === ""){
                     nbEmpty++;
@@ -50,13 +50,31 @@ const GameBoard = React.forwardRef((props, ref) => {
 
         // Fonction qui vérifie la victoire
         checkWin() {
+            let res = true;
             if (this.getEmptyCount() === 0) {
 
+                //TODO : Verifier que chaque carte est celle attendue
                 
+                boardRefs.forEach((bRef, index) => {
 
-                return true;
+                    //Si c'est une carte qu'on a du placer
+                    if(!props.word.cards[index].isBoard){
+
+                        //Bricolage --> a voir meilleur méthode
+                        let path = props.word.cards[index].value.path;
+
+                        //Obtiens la valeur de la carte attendu
+                        let value = path.substring(path.indexOf('/') + 1);
+
+                        //Si la valeur attendue n'est pas la même que la valeur posé par le joueur
+                        if(value !== bRef.current.getValue()){
+                            res = false;
+                        }
+                    }
+                });
+                
             }
-            return false;
+            return res;
         }
 
     }))

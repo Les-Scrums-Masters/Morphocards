@@ -329,7 +329,7 @@ export default function GameContext(props) {
       </div>
 
       {/* MAIN */}
-      <Hand ref={handRef} cards={props.handCards} />
+      <Hand ref={handRef} cards={props.handCards} say={props.say} />
 
     </DragDropContext>
   );

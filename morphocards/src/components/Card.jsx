@@ -1,12 +1,9 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { useSpeechSynthesis } from 'react-speech-kit';
 import { VolumeUpIcon } from '@heroicons/react/outline';
 
 
 export default function Card(props) {
-
-    const { speak } = useSpeechSynthesis();
    
     return (
         <Draggable
@@ -15,9 +12,7 @@ export default function Card(props) {
     >
         {provided => (
             <div className="card shadow-md hover:shadow-xl transform hover:scale-110 filter active:drop-shadow-2xl active:scale-125"
-            onClick={() => speak({ 
-                text: props.id, 
-            })}
+            onClick={() => props.say(props.id)}
             ref={provided.innerRef}
             {...provided.draggableProps} 
             {...provided.dragHandleProps}

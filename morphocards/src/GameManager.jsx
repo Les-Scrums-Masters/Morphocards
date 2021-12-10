@@ -43,7 +43,7 @@ const wordFailedTitles = ['Dommage !', 'Retente ta chance !', 'va voir gossa', '
 export default function GameManager(props) {
 
   // Initialisation du text to spreech
-  const { speak, voices } = useSpeechSynthesis();
+  const { speak, voices, supported, cancel } = useSpeechSynthesis();
 
   // Créations des variables d'états
   const [handCards, setHandCards] = useState([]);
@@ -60,7 +60,7 @@ export default function GameManager(props) {
   const [modalOpen, setModalOpen] = useState(false);
 
   // Variable qui vérifie si le mot à été prononcé une première fois
-  const [initialSpreech, setInitialSpreech] = useState(false);
+  const [intialDataLoaded, setintialDataLoaded] = useState(false);
 
   // Nombre de round dans une partie :
   const GLOBAL_ROUND = 3;
@@ -71,14 +71,20 @@ export default function GameManager(props) {
   // Round actuel :
   const [actualRound, /*setActualRound*/] = useState(0);
 
+  // Variable qui vérifie si la voix préférée à déjà été initialisée
+  const [voiceInitialized, setVoiceInitialized] = useState(false);
+
   // Voix préférée :
   const [preferredVoice, setPreferredVoice] = useState({});
   
   
   // Fonction qui prononce un mot
   const say = useCallback((text) => {
-    speak({text: text});
-  }, [speak])
+    if (preferredVoice) {
+      cancel();
+      speak({text: text, voice: preferredVoice});
+    }
+  }, [speak, preferredVoice, cancel])
 
 
   /* Fonction qui retourne une carte parmis allHandCards qui n'est pas inclus dans myHandCards
@@ -256,11 +262,41 @@ export default function GameManager(props) {
 
   // Au lancement, le mot est dit une première fois
   useEffect(() => {
-    if (!initialSpreech) {
-      setInitialSpreech(true);
+    if (!intialDataLoaded) {
+      setintialDataLoaded(true);
       getData();
     }
-  }, [initialSpreech, getData])
+
+    if (!voiceInitialized) {
+      
+      if (voices.length > 0) {
+        setVoiceInitialized(true);
+        console.log(voices);
+
+        let defaultVoice = voices[0];
+
+        // Filter les voix FR
+        let frVoices = voices.filter((voice) => voice["lang"] === 'fr-FR');
+
+        if (frVoices.length !== 0) {
+          // Si il existe des voix française, on s'arrure que ce soit l'une d'elles qui soit sélectionné
+          defaultVoice = frVoices[0];
+        }
+
+        // Filter afin d'obtenir Denise 
+        let prefVoices = voices.filter((voice) => voice["voiceURI"] === 'Microsoft Denise Online (Natural) - French (France)');
+
+        if (prefVoices.length !== 0) {
+          // Si denise existe, on l'utilise
+          defaultVoice = prefVoices[0];
+        }
+
+        setPreferredVoice(defaultVoice);
+        
+      }
+    }
+
+  }, [intialDataLoaded, getData, voiceInitialized, voices, supported])
 
 
   // Fonction de fermeture de la boite de dialogue
@@ -268,7 +304,7 @@ export default function GameManager(props) {
 
 
   // Rendu
-  if(handCards.length === 0 && words.length === 0 ){
+  if(handCards.length === 0 || words.length === 0 || !preferredVoice){
     return (<Loading />);
   } else{
     return(

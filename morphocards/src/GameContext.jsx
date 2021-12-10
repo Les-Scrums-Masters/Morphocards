@@ -13,7 +13,7 @@ import RoundButton from './components/RoundButton';
 export default function GameContext(props) {
 
 
-  /* ---- "Constructeur" ----- */ 
+  /* ---- "Constructeur" ----- */
   const [word] = useState(props.word);
 
   // Références à la main et au plateau
@@ -22,7 +22,7 @@ export default function GameContext(props) {
 
   // Mot prononcé initialement
   const [initialSpreech, setInitialSpreech] = useState(false);
-    
+
   /* ------------------------ */
 
 
@@ -62,7 +62,7 @@ export default function GameContext(props) {
 
   // Fonction de vérification de victoire
   const checkWin = () => {
-      
+
     // Si le mot est terminé (si toutes les cases ont été rempli) :
     if (boardRef.current.checkWin()) {
       // Gagné
@@ -75,7 +75,7 @@ export default function GameContext(props) {
 
   }
 
-  
+
   // Fonction qui gère le cas de déplacement d'une carte de la main vers un emplacement plateau contenant déjà une carte
   const handleHandToBoardReplaceCard = (destination, draggableId) => {
     // Obtenir l'emplacement cible
@@ -106,7 +106,7 @@ export default function GameContext(props) {
     updateHand(newHand);
   }
 
-    // Fonction qui gère un déplacement de la main au plateau 
+    // Fonction qui gère un déplacement de la main au plateau
   const handleHandToBoard = (source, destination, draggableId) => {
 
     let newHand = handRef.current.getCards().map(card => {
@@ -116,7 +116,7 @@ export default function GameContext(props) {
 
         // Si la carte (card) est à droite de celle posé (result)
         if(card.position > source.index) {
-              
+
           // On la décale d'un cran
           card.position = card.position -1;
 
@@ -125,7 +125,7 @@ export default function GameContext(props) {
         return card;
 
       }
-            
+
       // Si c'est la carte selectionnée, ajout de celle ci dans l'emplacement demandé
       boardRef.current.getEmplacement(destination.droppableId).updateCardLocal(card);
 
@@ -135,11 +135,11 @@ export default function GameContext(props) {
 
     // Mise à jour de la main
     updateHand(newHand);
-    
+
   }
 
 
-  // Fonction qui gère l'échange de cartes de deux emplacements plateaux 
+  // Fonction qui gère l'échange de cartes de deux emplacements plateaux
   const handleSwitchPlacements = (source, destination, draggableId) => {
     // On récupère la carte qui était là avant
     let destinationCard = boardRef.current.getEmplacement(destination.droppableId).getCard();
@@ -169,7 +169,7 @@ export default function GameContext(props) {
     // On la met à la position souhaitée
     card.position = destination.index;
 
-    // Déplacement de toutes les cartes étant après la carte posée 
+    // Déplacement de toutes les cartes étant après la carte posée
     let newHand = handRef.current.getCards().map(cardItem => {
       if(cardItem.position >= destination.index){
         cardItem.position++;
@@ -190,8 +190,8 @@ export default function GameContext(props) {
     let direction = destination.index > source.index ? "RIGHT" : "LEFT";
 
       // Obtiens un tableau de nouveaux indexes réeordonnés dû au changement de position des cartes
-      let affectedRange = (direction === "RIGHT") 
-      ? range(source.index, destination.index +1 ) 
+      let affectedRange = (direction === "RIGHT")
+      ? range(source.index, destination.index +1 )
       : range(destination.index, source.index);
 
       let newHand = handRef.current.getCards().map(card => {
@@ -205,7 +205,7 @@ export default function GameContext(props) {
         //Si card est entre la position initiale et finale
         if(affectedRange.includes(card.position)){
 
-          card.position = (direction === "RIGHT") 
+          card.position = (direction === "RIGHT")
             ? card.position - 1
             : card.position + 1;
 
@@ -215,9 +215,9 @@ export default function GameContext(props) {
 
         //SINON
         return card;
-           
+
       });
-          
+
       updateHand(newHand);
   }
 
@@ -226,10 +226,10 @@ export default function GameContext(props) {
   const onDragEnd = (result) => {
 
     const {destination, source, draggableId} = result;
-        
+
     /* ******************************* */
     //Si il le place dans un non droppable (donc pas de destination)
-    if(!destination){ 
+    if(!destination){
       return;
     }
 
@@ -243,8 +243,8 @@ export default function GameContext(props) {
 
     /* ******************************* */
     // Si il met une carte de la main à un placement plateau si qu'il y a déjà une carte dans l'emplacement en question
-    else if( destination.droppableId !== 'hand' 
-      && source.droppableId === 'hand' 
+    else if( destination.droppableId !== 'hand'
+      && source.droppableId === 'hand'
       && destination.droppableId !== source.droppableId
       && boardRef.current.getEmplacement(destination.droppableId).getCard() !== null) {
 
@@ -264,26 +264,26 @@ export default function GameContext(props) {
 
     /* ******************************* */
     // Si on repose une carte qui était sur le plateau
-    else if(destination.droppableId === 'hand' 
+    else if(destination.droppableId === 'hand'
     && destination.droppableId !== source.droppableId) {
 
       handleBoardToHand(source, destination);
 
     }
-        
+
 
     /* ******************************* */
     // Si le changement se fait uniquement dans la main
-    else if (destination.droppableId === source.droppableId 
+    else if (destination.droppableId === source.droppableId
       && destination.droppableId === 'hand') {
-          
+
       handleHandMove(source, destination, draggableId);
 
       // On ne veux pas que le mot soit redit après un changement dans la main
       return;
 
     }
-        
+
 
     /* ******************************* */
     // DERNIER CAS : Main --> Plateau
@@ -298,9 +298,9 @@ export default function GameContext(props) {
     setTimeout(() => {
       if (boardRef.current.getEmptyCount() === 0) {
         sayUserWord();
-      } 
+      }
     }, 100);
-        
+
   }
 
 

@@ -2,6 +2,7 @@ import React, {useState, useEffect, useCallback} from 'react';
 import GameContext from './GameContext'
 import Firebase from './Firebase'
 import Modal from './components/Modal'
+import { useSpeechSynthesis } from 'react-speech-kit';
 
 import Loading from './components/Loading';
 import GameBar from './components/GameBar';
@@ -41,6 +42,9 @@ const wordFailedTitles = ['Dommage !', 'Retente ta chance !', 'va voir gossa', '
 
 export default function GameManager(props) {
 
+  // Initialisation du text to spreech
+  const { speak, voices } = useSpeechSynthesis();
+
   // Créations des variables d'états
   const [handCards, setHandCards] = useState([]);
   const [words, /*setWords*/] = useState([]);
@@ -50,8 +54,8 @@ export default function GameManager(props) {
   const [modalTitle, setModalTitle] = useState("");
   const [modalWrongWord, setModalWrongWord] = useState("");
   const [modalNextButtonText, setModalNextButtonText] = useState("");
-  const [modalRestartAction, setModalRestartAction] = useState();
-  const [modalNextAction, setModalNextAction] = useState();
+  const [modalRestartAction, setModalRestartAction] = useState(true);
+  const [modalNextAction, setModalNextAction] = useState(false);
 
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -66,6 +70,15 @@ export default function GameManager(props) {
 
   // Round actuel :
   const [actualRound, /*setActualRound*/] = useState(0);
+
+  // Voix préférée :
+  const [preferredVoice, setPreferredVoice] = useState({});
+  
+  
+  // Fonction qui prononce un mot
+  const say = useCallback((text) => {
+    speak({text: text});
+  }, [speak])
 
 
   /* Fonction qui retourne une carte parmis allHandCards qui n'est pas inclus dans myHandCards
@@ -177,7 +190,7 @@ export default function GameManager(props) {
 
       setModalTitle(pickRandomList(winTitles));
       setModalEmoji(pickRandomList(winEmojis));
-      setModalNextAction(newGame);
+      setModalNextAction(false);
       setModalNextButtonText("Nouvelle partie");
 
     } else {
@@ -185,12 +198,12 @@ export default function GameManager(props) {
 
       setModalTitle(pickRandomList(wordSuccessTitles));
       setModalEmoji(pickRandomList(wordSuccessEmoji));
-      setModalNextAction(nextRound);
+      setModalNextAction(true);
       setModalNextButtonText("Passer au mot suivant");
 
     }
 
-    setModalRestartAction(()=>{});
+    setModalRestartAction(false);
 
     setModalWrongWord("");
     setModalOpen(true);
@@ -204,8 +217,8 @@ export default function GameManager(props) {
     setModalEmoji(pickRandomList(winFailedEmojis));
     setModalWrongWord(playerWord);
 
-    setModalRestartAction(restartRound);
-    setModalNextAction(nextRound);
+    setModalRestartAction(true);
+    setModalNextAction(true);
     setModalNextButtonText("Passer au mot suivant");
 
     setModalOpen(true);
@@ -261,11 +274,11 @@ export default function GameManager(props) {
     return(
       <div className="w-full h-full overscroll-none overflow-hidden flex flex-col">
 
-        <Modal open={modalOpen} onClose={modalNextAction} emoji={modalEmoji} title={modalTitle} word={words[actualRound].id} wrongWord={modalWrongWord} onRestart={modalRestartAction} nextButtonText={modalNextButtonText} />
+        <Modal open={modalOpen} onClose={modalNextAction ? nextRound : newGame} emoji={modalEmoji} title={modalTitle} word={words[actualRound].id} wrongWord={modalWrongWord} onRestart={modalRestartAction ? restartRound : undefined} nextButtonText={modalNextButtonText} say={say}/>
 
         <GameBar />
 
-        <GameContext handCards={handCards[actualRound]} word={words[actualRound]} onWin={appWin} onFail={appFail} />
+        <GameContext handCards={handCards[actualRound]} word={words[actualRound]} onWin={appWin} onFail={appFail} say={say}/>
 
       </div>
     );

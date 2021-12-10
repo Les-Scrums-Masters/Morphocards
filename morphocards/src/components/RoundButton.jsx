@@ -7,7 +7,7 @@ export default function RoundButton(props) {
 
     return(
         <div className="btnGroup">
-            <button onClick={props.onClick} className={"roundBtn " +className}>{props.children}</button>
+            <button onClick={props.onClick} className={"roundBtn " + className}>{props.children}</button>
             <label>{props.label}</label>
         </div>
     );

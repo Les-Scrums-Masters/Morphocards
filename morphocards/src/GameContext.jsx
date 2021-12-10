@@ -4,7 +4,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { orderBy, range } from 'lodash';
 import Hand from './components/Hand';
-import { useSpeechSynthesis } from 'react-speech-kit';
 import { CheckIcon, MicrophoneIcon, VolumeUpIcon } from '@heroicons/react/outline'
 import GameBoard from './components/GameBoard';
 import RoundButton from './components/RoundButton';
@@ -21,8 +20,7 @@ export default function GameContext(props) {
   let handRef = useRef();
   const boardRef = useRef();
 
-  //  TextToSpreech
-  const { speak, voices } = useSpeechSynthesis();
+  // Mot prononcé initialement
   const [initialSpreech, setInitialSpreech] = useState(false);
 
   /* ------------------------ */
@@ -30,25 +28,23 @@ export default function GameContext(props) {
 
   // Fonction qui dicte le mot à reconstituer
   const sayWord = useCallback(() => {
-    speak({text:" "});
-    speak({text: word.id})
-  }, [speak, word.id])
+    props.say(word.id);
+  }, [word.id, props])
 
 
   // Fonction qui dicte le mot formé
   let sayUserWord = () => {
-    speak({text: boardRef.current.getWord()});
+    props.say(boardRef.current.getWord());
   }
 
 
   // Au lancement, le mot est dit une première fois
   useEffect(() => {
-    if (!initialSpreech && voices.length !== 0) {
-      setInitialSpreech(true);
+    if (!initialSpreech) {
       sayWord();
+      setInitialSpreech(true);
     }
-  }, [initialSpreech, voices.length, sayWord])
-
+  }, [initialSpreech, sayWord]);
 
   // Fonction changement des cartes de main
   const updateHand = (newHand) => {

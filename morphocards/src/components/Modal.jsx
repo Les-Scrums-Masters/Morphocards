@@ -1,21 +1,36 @@
 import React, { Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+import SpeakButton from './SpeakButton';
 
 export default function Modal(props) {
 
   const nextBtnRef = useRef(null)
 
+  const sayWrongWord = () => {
+    props.say(props.wrongWord);
+  }
+
+  const sayWord = () => {
+    props.say(props.word);
+  }
+
   let wrongContent = (props.wrongWord === '') ? '' : (
     <div className="mt-2">
       <p className="text-sm text-gray-500">Vous avez formé le mot</p>
-      <p className="text-lg text-indigo-600 font-bold">{props.wrongWord}</p>
+      <div className="speakable">
+        <p className="text-lg text-indigo-600 font-bold">{props.wrongWord}</p>
+        <SpeakButton onClick={sayWrongWord} />
+      </div>
     </div>
   );
 
   let rightContent = (props.word === '') ? '' : (
     <div>
       <p className="text-sm text-gray-500">Le mot était</p>
-      <p className="text-lg text-indigo-600 font-bold">{props.word}</p>
+      <div className="speakable">
+        <p className="text-lg text-indigo-600 font-bold">{props.word}</p>
+        <SpeakButton onClick={sayWord} />
+      </div>
     </div>
   );
 

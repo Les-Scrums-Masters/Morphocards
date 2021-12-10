@@ -319,7 +319,7 @@ export default function GameContext(props) {
 
         {/* BOUTONS */}
         <div className="flex flex-row gap-5">
-          <RoundButton onClick={sayWord} label="Écouter le mot à reconstituer">
+          <RoundButton animated={true} onClick={sayWord} label="Écouter le mot à reconstituer">
             <VolumeUpIcon/>
           </RoundButton>
           <RoundButton onClick={sayUserWord} label="Écouter le mot actuellement formé">

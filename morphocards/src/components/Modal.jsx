@@ -5,12 +5,28 @@ export default function Modal(props) {
 
   const nextBtnRef = useRef(null)
 
-  let wrongContent = (props.wrongWord === '') ? "" : (
+  let wrongContent = (props.wrongWord === '') ? '' : (
     <div className="mt-2">
       <p className="text-sm text-gray-500">Vous avez formé le mot</p>
       <p className="text-lg text-indigo-600 font-bold">{props.wrongWord}</p>
     </div>
   );
+
+  let rightContent = (props.word === '') ? '' : (
+    <div>
+      <p className="text-sm text-gray-500">Le mot était</p>
+      <p className="text-lg text-indigo-600 font-bold">{props.word}</p>
+    </div>
+  );
+
+  let restartBtn = (props.onRestart) ? (
+    <button
+      type="button"
+      className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 "
+      onClick={props.onRestart}>
+      Recommencer
+    </button>
+  ) : '';
 
   return (
     <Transition.Root show={props.open} as={Fragment}>
@@ -50,22 +66,21 @@ export default function Modal(props) {
                       {props.title}
                     </Dialog.Title>
                     <div className="mt-6">
-                      <p className="text-sm text-gray-500">
-                        Le mot était</p>
-                      <p className="text-lg text-indigo-600 font-bold">{props.word}</p>
+                      {rightContent}
                       {wrongContent}
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="bg-gray-50 px-4 py-3 ">
+              <div className="bg-gray-50 px-4 py-3 grid gap-3 ">
+                {restartBtn}
                 <button
                 ref={nextBtnRef}
                   type="button"
                   className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 "
                   onClick={props.onClose}
                 >
-                  Passer au mot suivant
+                  {props.nextButtonText}
                 </button>
               </div>
             </div>

@@ -2,7 +2,6 @@ import React, {useState, useEffect, useCallback} from 'react';
 import GameContext from './GameContext'
 import Firebase from './Firebase'
 import Modal from './components/Modal'
-import './css/index.css'
 
 import Loading from './components/Loading';
 import GameBar from './components/GameBar';
@@ -50,6 +49,10 @@ export default function GameManager(props) {
   const [modalEmoji, setModalEmoji] = useState("");
   const [modalTitle, setModalTitle] = useState("");
   const [modalWrongWord, setModalWrongWord] = useState("");
+  const [modalNextButtonText, setModalNextButtonText] = useState("");
+  const [modalRestartAction, setModalRestartAction] = useState();
+  const [modalNextAction, setModalNextAction] = useState();
+
   const [modalOpen, setModalOpen] = useState(false);
 
   // Variable qui vérifie si le mot à été prononcé une première fois
@@ -174,14 +177,20 @@ export default function GameManager(props) {
 
       setModalTitle(pickRandomList(winTitles));
       setModalEmoji(pickRandomList(winEmojis));
-
+      setModalNextAction(newGame);
+      setModalNextButtonText("Nouvelle partie");
 
     } else {
       // Mot juste
 
       setModalTitle(pickRandomList(wordSuccessTitles));
       setModalEmoji(pickRandomList(wordSuccessEmoji));
+      setModalNextAction(nextRound);
+      setModalNextButtonText("Passer au mot suivant");
+
     }
+
+    setModalRestartAction(()=>{});
 
     setModalWrongWord("");
     setModalOpen(true);
@@ -194,7 +203,30 @@ export default function GameManager(props) {
     setModalTitle(pickRandomList(wordFailedTitles));
     setModalEmoji(pickRandomList(winFailedEmojis));
     setModalWrongWord(playerWord);
+
+    setModalRestartAction(restartRound);
+    setModalNextAction(nextRound);
+    setModalNextButtonText("Passer au mot suivant");
+
     setModalOpen(true);
+  }
+
+
+  // Fonction de passage au round suivant
+  const nextRound = () => {
+    closeModal();
+  }
+
+
+  // Fonction qui recommence le round
+  const restartRound = () => {
+    closeModal();
+  }
+
+  
+  // Fonction qui démarre redémarre une nouvelle partie
+  const newGame = () => {
+    closeModal();
   }
 
 
@@ -229,7 +261,7 @@ export default function GameManager(props) {
     return(
       <div className="w-full h-full overscroll-none overflow-hidden flex flex-col">
 
-        <Modal open={modalOpen} onClose={closeModal} emoji={modalEmoji} title={modalTitle} word={words[actualRound].id} wrongWord={modalWrongWord}/>
+        <Modal open={modalOpen} onClose={modalNextAction} emoji={modalEmoji} title={modalTitle} word={words[actualRound].id} wrongWord={modalWrongWord} onRestart={modalRestartAction} nextButtonText={modalNextButtonText} />
 
         <GameBar />
 

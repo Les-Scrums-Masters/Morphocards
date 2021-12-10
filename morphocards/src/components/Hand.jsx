@@ -30,7 +30,7 @@ const Hand = forwardRef((props, ref) => {
                 <div className="flex h-24 md:h-40 justify-center items-center -mb-7"
                 ref={provided.innerRef}
                 {...provided.droppableProps}>
-                    { orderBy(cards, "position").map((card, index)=> ( <Card index={index} key={card.id}  id={""+card.id} value={card.value} /> )) }
+                    { orderBy(cards, "position").map((card, index)=> ( <Card index={index} key={card.id}  id={""+card.id} value={card.value} say={props.say}/> )) }
 
                     {provided.placeholder}
 

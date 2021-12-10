@@ -67,7 +67,7 @@ export default function GameContext(props) {
   // Fonction de vérification de victoire
   const checkWin = () => {
       
-    // Si le mot est terminé :
+    // Si le mot est terminé (si toutes les cases ont été rempli) :
     if (boardRef.current.checkWin()) {
       // Gagné
       props.onWin();

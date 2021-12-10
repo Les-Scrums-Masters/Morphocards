@@ -14,8 +14,8 @@ const wordSuccessEmoji = [String.fromCodePoint(0x1F600),
   String.fromCodePoint(0x1F60A),
   String.fromCodePoint(0x1F970)];
 const wordSuccessTitles = ['Bien joué !', 'Trop fort !', 'Bravo !', 'C\'est ça !']
-  
-  
+
+
 // Contenu de la boite de dialogue lorsque la partie est terminée :
 const winEmojis = [String.fromCodePoint(0x1F60D),
   String.fromCodePoint(0x1F929),
@@ -24,7 +24,7 @@ const winEmojis = [String.fromCodePoint(0x1F60D),
   String.fromCodePoint(0x1F973),
   String.fromCodePoint(0x1F60E)];
 const winTitles = ['Partie terminée !', 'Félicitations !', 'C\'etait une belle partie !', 'Belle performance !']
-  
+
 
 // Contenu de la boite de dialogue lorsque qu'un mot n'est pas trouvé
 const winFailedEmojis = [String.fromCodePoint(0x1F612),
@@ -66,7 +66,7 @@ export default function GameManager(props) {
 
   // Round actuel :
   const [actualRound, /*setActualRound*/] = useState(0);
-  
+
 
   /* Fonction qui retourne une carte parmis allHandCards qui n'est pas inclus dans myHandCards
   *
@@ -80,7 +80,7 @@ export default function GameManager(props) {
     }
     return allHandCards[random];
   }, []);
-  
+
 
   /* Fonction qui retourne la carte qui a la valeur "value"
   *
@@ -169,12 +169,12 @@ export default function GameManager(props) {
     return list[Math.floor(Math.random() * list.length)];
   }
 
-  
+
   // Fonction de victoire d'une manche
   const appWin = () => {
     if (actualRound === GLOBAL_ROUND-1) {
       // Victoire
-      
+
       setModalTitle(pickRandomList(winTitles));
       setModalEmoji(pickRandomList(winEmojis));
       setModalNextAction(newGame);
@@ -233,9 +233,9 @@ export default function GameManager(props) {
   // Fonction qui récupère les données depuis la base de donnée
   const getData = useCallback(async () => {
     let allHandCards = await Firebase.getHandCards();
-      
+
       let wordsList = await Firebase.getWords();
-  
+
       setRandomListWords(wordsList);
       setRandomListHandCards(allHandCards);
   }, [setRandomListHandCards, setRandomListWords])
@@ -249,7 +249,7 @@ export default function GameManager(props) {
     }
   }, [initialSpreech, getData])
 
-  
+
   // Fonction de fermeture de la boite de dialogue
   let closeModal = () => setModalOpen(false);
 

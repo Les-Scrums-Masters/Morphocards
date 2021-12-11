@@ -179,17 +179,17 @@ export default function GameManager(props) {
       position => position dans la main
       */
       //Affection d'une position à chaque carte
-      let temp;
+      //let temp;
       let newCard;
       let newRoundCard = [];
-      roundCards.forEach( (card, index) =>(
-        newCard = new HandCardModel("id"+index, card.value, card.id),
-        newCard.position = index,
+      roundCards.forEach( (card, index) => {
+        newCard = new HandCardModel("id"+index, card.value, card.id);
+        newCard.position = index;
 
-        //temp = card.id,
+        //temp = card.id;
         //card.prononciation = temp
         newRoundCard.push(newCard)
-      ));
+      });
       handCardsList.push(newRoundCard);
     }
 
@@ -286,7 +286,6 @@ export default function GameManager(props) {
 
       if (voices.length > 0) {
         setVoiceInitialized(true);
-        console.log(voices);
 
         let defaultVoice = voices[0];
 

@@ -12,10 +12,6 @@ import RoundButton from './components/RoundButton';
 //Les items du boards, card ou emplacement
 export default function GameContext(props) {
 
-
-  /* ---- "Constructeur" ----- */
-  const [word] = useState(props.word);
-
   // Références à la main et au plateau
   let handRef = useRef();
   const boardRef = useRef();
@@ -28,8 +24,8 @@ export default function GameContext(props) {
 
   // Fonction qui dicte le mot à reconstituer
   const sayWord = useCallback(() => {
-    props.say(word.id);
-  }, [word.id, props])
+    props.say(props.round.word.id);
+  }, [props])
 
 
   // Fonction qui dicte le mot formé
@@ -41,10 +37,11 @@ export default function GameContext(props) {
   // Au lancement, le mot est dit une première fois
   useEffect(() => {
     if (!initialSpreech) {
-      sayWord();
       setInitialSpreech(true);
+      sayWord();
     }
   }, [initialSpreech, sayWord]);
+
 
   // Fonction changement des cartes de main
   const updateHand = (newHand) => {
@@ -313,7 +310,7 @@ export default function GameContext(props) {
       <div className="flex flex-col items-center justify-center gap-6 flex-grow flex-wrap">
 
         {/* PLATEAU */}
-        <GameBoard ref={boardRef} word={word} say={props.say}/>
+        <GameBoard ref={boardRef} word={props.round.word} say={props.say}/>
 
         {/* BOUTONS */}
         <div className="flex flex-row gap-5">
@@ -331,7 +328,7 @@ export default function GameContext(props) {
       </div>
 
       {/* MAIN */}
-      <Hand ref={handRef} cards={props.handCards} say={props.say} />
+      <Hand ref={handRef} cards={props.round.handcards} say={props.say} />
 
     </DragDropContext>
   );

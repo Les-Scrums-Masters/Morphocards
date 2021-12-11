@@ -10,7 +10,7 @@ const GameBoard = React.forwardRef((props, ref) => {
     props.word.cards.map( () => (
       boardRefs.push(useRef())
     ));
-    
+
 
     // Fonctions incluses dans useImperativeHandle afin qu'elles soientaccésibles depuis le parent
     useImperativeHandle(ref, () => ({
@@ -37,7 +37,7 @@ const GameBoard = React.forwardRef((props, ref) => {
                     nbEmpty++;
                 }
             });
-            
+
             return nbEmpty;
         },
 
@@ -54,7 +54,7 @@ const GameBoard = React.forwardRef((props, ref) => {
             if (this.getEmptyCount() === 0) {
 
                 //TODO : Verifier que chaque carte est celle attendue
-                
+
                 boardRefs.forEach((bRef, index) => {
 
                     //Si c'est une carte qu'on a du placer
@@ -70,30 +70,31 @@ const GameBoard = React.forwardRef((props, ref) => {
                         if(value !== bRef.current.getValue()){
                             res = false;
                         }
+
                     }
                 });
-                
+
             }
             return res;
         }
 
     }))
-    
+
 
     // Rendu
     return(
         <div className='flex justify-center items-center flex-wrap'>
             {props.word.cards?.map( (card, index) => {
-    
+
                 if(!card.isBoard){
                     return <CardPlacement id={" " + index} key={index} index={index} ref={boardRefs[index]} />;
-    
+
                 } else{
                     return <CardStatic id={" " + index} key={index} index={index} ref={boardRefs[index]} value={card.value} />;
                 }
-    
+
             })}
-        </div>  
+        </div>
     );
 
 });

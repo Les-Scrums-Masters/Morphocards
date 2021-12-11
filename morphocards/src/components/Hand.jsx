@@ -12,10 +12,10 @@ const Hand = forwardRef((props, ref) => {
 
             // On s'assure que les positions sont correctes :
             newCards.forEach((item, index) => item.position = index);
-    
+
             // Mise à jour des cartes
             setCards(newCards);
-    
+
         },
 
         getCards() {
@@ -30,7 +30,7 @@ const Hand = forwardRef((props, ref) => {
                 <div className="flex h-24 md:h-40 justify-center items-center -mb-7"
                 ref={provided.innerRef}
                 {...provided.droppableProps}>
-                    { orderBy(cards, "position").map((card, index)=> ( <Card index={index} key={card.id}  id={""+card.id} value={card.value} say={props.say}/> )) }
+                    { orderBy(cards, "position").map((card, index)=> ( <Card index={index} key={index}  id={""+index} value={card.value} prononciation={card.prononciation} say={props.say}/> )) }
 
                     {provided.placeholder}
 

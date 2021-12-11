@@ -6,26 +6,26 @@ const CardPlacement = forwardRef((props, ref) => {
 
 
     const [card, setCard] = useState(null);
-  
+
     useImperativeHandle(ref, () => ({
-  
+
       updateCardLocal(newCard) {
         setCard(newCard);
       },
-    
+
       getCard() {
         return card;
       },
-    
+
       getValue() {
         if(card !== null){
-          return card.id;
+          return card.prononciation;
         }
         return "";
       }
-      
+
     }))
-  
+
     return (
       <Droppable droppableId={props.id}>
         {provided =>(

@@ -2,6 +2,7 @@ import React, {useState, useEffect, useCallback} from 'react';
 import GameContext from './GameContext'
 import Firebase from './Firebase'
 import Modal from './components/Modal'
+import HandCardModel from './models/HandCardModel'
 import { useSpeechSynthesis } from 'react-speech-kit';
 
 import Loading from './components/Loading';
@@ -76,8 +77,8 @@ export default function GameManager(props) {
 
   // Voix préférée :
   const [preferredVoice, setPreferredVoice] = useState({});
-  
-  
+
+
   // Fonction qui prononce un mot
   const say = useCallback((text) => {
     if (preferredVoice) {
@@ -170,12 +171,26 @@ export default function GameManager(props) {
       //Mélange la main -> permet de ne pas avoir les bonnes cartes toujours au début
       shuffle(roundCards);
 
-      //Affection d'une position à chaque carte
-      roundCards.forEach( (card, index) =>(
-        card.position = index
-      ));
 
-      handCardsList.push(roundCards);
+      /*Nouvelle structure de carte pour permettre les doublons dans la main
+      id => id unique
+      value => Symbole
+      prononciation => prononciation (id dans la bdd)
+      position => position dans la main
+      */
+      //Affection d'une position à chaque carte
+      let temp;
+      let newCard;
+      let newRoundCard = [];
+      roundCards.forEach( (card, index) =>(
+        newCard = new HandCardModel("id"+index, card.value, card.id),
+        newCard.position = index,
+
+        //temp = card.id,
+        //card.prononciation = temp
+        newRoundCard.push(newCard)
+      ));
+      handCardsList.push(newRoundCard);
     }
 
     setHandCards(handCardsList);
@@ -242,7 +257,7 @@ export default function GameManager(props) {
     closeModal();
   }
 
-  
+
   // Fonction qui démarre redémarre une nouvelle partie
   const newGame = () => {
     closeModal();
@@ -268,7 +283,7 @@ export default function GameManager(props) {
     }
 
     if (!voiceInitialized) {
-      
+
       if (voices.length > 0) {
         setVoiceInitialized(true);
         console.log(voices);
@@ -292,7 +307,7 @@ export default function GameManager(props) {
         // }
 
         setPreferredVoice(defaultVoice);
-        
+
       }
     }
 

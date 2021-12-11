@@ -86,7 +86,7 @@ export default function GameContext(props) {
 
     // Création de la nouvelle main
     let newHand = handRef.current.getCards().map((cardItem) => {
-      if (cardItem.id === draggableId) {
+      if (cardItem.position === draggableId) {
 
         // Recopie de la position de la nouvelle carte dans celle à remettre dans la main
         oldCard.position = cardItem.position;
@@ -111,8 +111,9 @@ export default function GameContext(props) {
 
     let newHand = handRef.current.getCards().map(card => {
 
+
       // On remet toutes les cartes sauf celle posé sur le plateau
-      if (card.id !== draggableId) {
+      if (card.position !== parseInt(draggableId)) {
 
         // Si la carte (card) est à droite de celle posé (result)
         if(card.position > source.index) {
@@ -195,9 +196,8 @@ export default function GameContext(props) {
       : range(destination.index, source.index);
 
       let newHand = handRef.current.getCards().map(card => {
-
         //Si card est le meme que celle bougé
-        if(card.id === draggableId){
+        if(card.position === parseInt(draggableId)){
           card.position = destination.index;
           return card;
         }
@@ -248,7 +248,7 @@ export default function GameContext(props) {
       && destination.droppableId !== source.droppableId
       && boardRef.current.getEmplacement(destination.droppableId).getCard() !== null) {
 
-      handleHandToBoardReplaceCard(destination, draggableId);
+      handleHandToBoardReplaceCard(destination, parseInt(draggableId));
 
     }
 
@@ -257,7 +257,7 @@ export default function GameContext(props) {
     // Si l'action se fait entre 2 placements
     else if(destination.droppableId !== 'hand' && source.droppableId !== 'hand') {
 
-      handleSwitchPlacements(source, destination, draggableId);
+      handleSwitchPlacements(source, destination, parseInt(draggableId));
 
     }
 
@@ -277,7 +277,7 @@ export default function GameContext(props) {
     else if (destination.droppableId === source.droppableId
       && destination.droppableId === 'hand') {
 
-      handleHandMove(source, destination, draggableId);
+      handleHandMove(source, destination, parseInt(draggableId));
 
       // On ne veux pas que le mot soit redit après un changement dans la main
       return;
@@ -289,7 +289,7 @@ export default function GameContext(props) {
     // DERNIER CAS : Main --> Plateau
     else {
 
-      handleHandToBoard(source, destination, draggableId);
+      handleHandToBoard(source, destination, parseInt(draggableId));
 
     }
 

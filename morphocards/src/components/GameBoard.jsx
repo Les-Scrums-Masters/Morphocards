@@ -10,7 +10,7 @@ const GameBoard = React.forwardRef((props, ref) => {
     props.word.cards.map( () => (
       boardRefs.push(useRef())
     ));
-
+    
 
     // Fonctions incluses dans useImperativeHandle afin qu'elles soientaccésibles depuis le parent
     useImperativeHandle(ref, () => ({
@@ -19,8 +19,8 @@ const GameBoard = React.forwardRef((props, ref) => {
         // Fonction d'obtention du mot formé par le plateau
         getWord() {
             let w = "";
-            boardRefs.forEach((bRef) =>{
-                w += bRef.current.getValue();
+            boardRefs.forEach((ref) =>{
+            w += ref.current.getValue();
             });
             return w;
         },
@@ -31,13 +31,13 @@ const GameBoard = React.forwardRef((props, ref) => {
             // On vérifie si tous les emplacements sont remplis :
             let nbEmpty = 0;
 
-            // Récupère le nombre de placement vide
-            boardRefs.forEach((bRef) => {
-                if(bRef.current.getValue() === ""){
+            // Récupère le nombre de placement vide et le ref du dernier
+            boardRefs.forEach((ref) => {
+                if(ref.current.getValue() === ""){
                     nbEmpty++;
                 }
             });
-
+            
             return nbEmpty;
         },
 
@@ -50,7 +50,7 @@ const GameBoard = React.forwardRef((props, ref) => {
 
         // Fonction qui vérifie la victoire
         checkWin() {
-            let res = true;
+            let res = false;
             if (this.getEmptyCount() === 0) {
 
                 //TODO : Verifier que chaque carte est celle attendue
@@ -79,22 +79,22 @@ const GameBoard = React.forwardRef((props, ref) => {
         }
 
     }))
-
+    
 
     // Rendu
     return(
         <div className='flex justify-center items-center flex-wrap'>
             {props.word.cards?.map( (card, index) => {
-
+    
                 if(!card.isBoard){
-                    return <CardPlacement id={" " + index} key={index} index={index} ref={boardRefs[index]} />;
-
+                    return <CardPlacement id={" " + index} key={index} index={index} ref={boardRefs[index]} say={props.say} />;
+    
                 } else{
                     return <CardStatic id={" " + index} key={index} index={index} ref={boardRefs[index]} value={card.value} />;
                 }
-
+    
             })}
-        </div>
+        </div>  
     );
 
 });

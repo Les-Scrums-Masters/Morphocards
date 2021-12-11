@@ -179,17 +179,17 @@ export default function GameManager(props) {
       position => position dans la main
       */
       //Affection d'une position à chaque carte
-      let temp;
+      //let temp;
       let newCard;
       let newRoundCard = [];
-      roundCards.forEach( (card, index) =>(
-        newCard = new HandCardModel("id"+index, card.value, card.id),
-        newCard.position = index,
+      roundCards.forEach( (card, index) => {
+        newCard = new HandCardModel("id"+index, card.value, card.id);
+        newCard.position = index;
 
-        //temp = card.id,
+        //temp = card.id;
         //card.prononciation = temp
         newRoundCard.push(newCard)
-      ));
+      });
       handCardsList.push(newRoundCard);
     }
 
@@ -286,7 +286,6 @@ export default function GameManager(props) {
 
       if (voices.length > 0) {
         setVoiceInitialized(true);
-        console.log(voices);
 
         let defaultVoice = voices[0];
 
@@ -298,13 +297,13 @@ export default function GameManager(props) {
           defaultVoice = frVoices[0];
         }
 
-        // Filter afin d'obtenir Denise
-        let prefVoices = voices.filter((voice) => voice["voiceURI"] === 'Microsoft Denise Online (Natural) - French (France)');
+        // // Filter afin d'obtenir Denise 
+        // let prefVoices = voices.filter((voice) => voice["voiceURI"] === 'Microsoft Denise Online (Natural) - French (France)');
 
-        if (prefVoices.length !== 0) {
-          // Si denise existe, on l'utilise
-          defaultVoice = prefVoices[0];
-        }
+        // if (prefVoices.length !== 0) {
+        //   // Si denise existe, on l'utilise
+        //   defaultVoice = prefVoices[0];
+        // }
 
         setPreferredVoice(defaultVoice);
 

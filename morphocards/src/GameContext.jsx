@@ -64,13 +64,15 @@ export default function GameContext(props) {
   const checkWin = () => {
 
     // Si le mot est terminé (si toutes les cases ont été rempli) :
-    if (boardRef.current.checkWin()) {
-      // Gagné
-      props.onWin();
-    }else{
-      // Perdu
-      let playerWord = boardRef.current.getWord();
-      props.onFail(playerWord);
+    if (boardRef.current.getEmptyCount() === 0) {
+      if (boardRef.current.checkWin()) {
+        // Gagné
+        props.onWin();
+      }else{
+        // Perdu
+        let playerWord = boardRef.current.getWord();
+        props.onFail(playerWord);
+      }
     }
 
   }
@@ -311,7 +313,7 @@ export default function GameContext(props) {
       <div className="flex flex-col items-center justify-center gap-6 flex-grow flex-wrap">
 
         {/* PLATEAU */}
-        <GameBoard ref={boardRef} word={word} />
+        <GameBoard ref={boardRef} word={word} say={props.say}/>
 
         {/* BOUTONS */}
         <div className="flex flex-row gap-5">

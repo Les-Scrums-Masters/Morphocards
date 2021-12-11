@@ -2,7 +2,7 @@ import React, {useState, useEffect, useCallback} from 'react';
 import GameContext from './GameContext'
 import Firebase from './Firebase'
 import Modal from './components/Modal'
-import HandCardModel from './models/HandCardModel'
+import RoundData from './models/RoundData'
 import { useSpeechSynthesis } from 'react-speech-kit';
 
 import Loading from './components/Loading';
@@ -43,14 +43,16 @@ const wordFailedTitles = ['Dommage !', 'Retente ta chance !', 'va voir gossa', '
 
 export default function GameManager(props) {
 
+  // ------- TTS -------
   // Initialisation du text to spreech
   const { speak, voices, supported, cancel } = useSpeechSynthesis();
+  // Variable qui vérifie si la voix préférée à déjà été initialisée
+  const [voiceInitialized, setVoiceInitialized] = useState(false);
+  // Voix préférée :
+  const [preferredVoice, setPreferredVoice] = useState({});
 
-  // Créations des variables d'états
-  const [handCards, setHandCards] = useState([]);
-  const [words, /*setWords*/] = useState([]);
 
-  // Variables pour la boite de dialogue d'echec/succès
+  // ------- Boite de dialogue d'echec/succès -------
   const [modalEmoji, setModalEmoji] = useState("");
   const [modalTitle, setModalTitle] = useState("");
   const [modalWrongWord, setModalWrongWord] = useState("");
@@ -60,8 +62,14 @@ export default function GameManager(props) {
 
   const [modalOpen, setModalOpen] = useState(false);
 
-  // Variable qui vérifie si le mot à été prononcé une première fois
+
+  // ------- Données du jeu -------
   const [intialDataLoaded, setintialDataLoaded] = useState(false);
+  const [initializedRounds, setInitializedRounds] = useState(false);
+
+  // Créations des variables d'états contenant les toutes données du jeu !
+  const [allHandCards, setAllHandCards] = useState([]);
+  const [allWords, setAllWords] = useState([]);
 
   // Nombre de round dans une partie :
   const GLOBAL_ROUND = 3;
@@ -69,15 +77,18 @@ export default function GameManager(props) {
   // Nombre de carte dans une main :
   const HAND_SIZE = 6;
 
-  // Round actuel :
-  const [actualRound, /*setActualRound*/] = useState(0);
 
-  // Variable qui vérifie si la voix préférée à déjà été initialisée
-  const [voiceInitialized, setVoiceInitialized] = useState(false);
+  // ------- Données des rounds -------
+  
+  // N° du round actuel :
+  const [actualRound, setActualRound] = useState(0);
 
-  // Voix préférée :
-  const [preferredVoice, setPreferredVoice] = useState({});
+  // Données des rounds
+  const [rounds, setRounds] = useState([]);
 
+
+
+  // ------- Fonctions -------
 
   // Fonction qui prononce un mot
   const say = useCallback((text) => {
@@ -86,122 +97,6 @@ export default function GameManager(props) {
       speak({text: text, voice: preferredVoice});
     }
   }, [speak, preferredVoice, cancel])
-
-
-  /* Fonction qui retourne une carte parmis allHandCards qui n'est pas inclus dans myHandCards
-  *
-  * param : allHandCards : toutes les cartes main de notre base de données
-  *         myHandCards : les cartes présent dans une des main
-  */
-  const getRandomCard = useCallback((allHandCards, myHandCards) => {
-    let random = Math.floor(Math.random() * allHandCards.length);
-    while(myHandCards.includes( allHandCards[random] )){
-      random = Math.floor(Math.random() * allHandCards.length);
-    }
-    return allHandCards[random];
-  }, []);
-
-
-  /* Fonction qui retourne la carte qui a la valeur "value"
-  *
-  * param : allHandCards : toutes les cartes main de notre base de données
-  *         value : valeur de la carte recherché
-  */
-  const getHandCard = useCallback((value, allHandCards) =>{
-    let i = 0;
-    while(allHandCards[i].id !== value){
-      i++
-    }
-    return allHandCards[i];
-  }, [])
-
-
-  // Envoie un mot qui n'as pas déjà été selectionner
-  const getRandomWord = useCallback((allWords) => {
-    let random = Math.floor(Math.random() * allWords.length);
-    while(words.includes( allWords[random] )){
-      random = Math.floor(Math.random() * allWords.length);
-    }
-    return allWords[random];
-  }, [words])
-
-
-  /* Procédure qui permet de remplir la variable de state : words
-  * Qui contiendra une liste de mot qui correspondront pour chaque partie
-  *         le mot attendu à la ième partie
-
-  * param : allWords : tout les mots de notre base de données
-  */
-  const setRandomListWords = useCallback((allWords) => {
-    for(let i = 0 ; i< GLOBAL_ROUND; i++ ) {
-      words.push( getRandomWord(allWords) );
-    }
-  }, [getRandomWord, words])
-
-
-  /* Procédure qui permet de remplir la variable de state : handCards
-  * Qui contiendra une liste de liste de "cartes main" qui correspondront pour chaque partie
-  *         la main du joueur à la ième partie
-  *
-  *
-  * param : allWords : tout les mots de notre base de données
-  */
-  const setRandomListHandCards = useCallback((allHandCards) => {
-    //Une liste de toutes les mains de toutes les parties
-    let handCardsList = [];
-
-    for(let i = 0 ; i< GLOBAL_ROUND; i++ ){
-
-      //Liste des cartes main d'un seul round
-      let roundCards = [];
-
-      //Ajout des cartes qui sont les bonnes réponses
-      words[i].cards.map((card, index) => {
-        if(!card.isBoard){
-          roundCards.push( getHandCard( card.value.id, allHandCards) )
-        }
-        return 0
-      });
-
-      //Rempli la main jusqu'à atteindre la taille de la main défini
-      while(roundCards.length < HAND_SIZE){
-        roundCards.push(getRandomCard(allHandCards, roundCards));
-      }
-
-      //Mélange la main -> permet de ne pas avoir les bonnes cartes toujours au début
-      shuffle(roundCards);
-
-
-      /*Nouvelle structure de carte pour permettre les doublons dans la main
-      id => id unique
-      value => Symbole
-      prononciation => prononciation (id dans la bdd)
-      position => position dans la main
-      */
-      //Affection d'une position à chaque carte
-      //let temp;
-      let newCard;
-      let newRoundCard = [];
-      roundCards.forEach( (card, index) => {
-        newCard = new HandCardModel("id"+index, card.value, card.id);
-        newCard.position = index;
-
-        //temp = card.id;
-        //card.prononciation = temp
-        newRoundCard.push(newCard)
-      });
-      handCardsList.push(newRoundCard);
-    }
-
-    setHandCards(handCardsList);
-
-  }, [setHandCards, getHandCard, getRandomCard, words])
-
-
-  // Fonction qui retourne un élément choisi au hasard dans la liste
-  const pickRandomList = (list) => {
-    return list[Math.floor(Math.random() * list.length)];
-  }
 
 
   // Fonction de victoire d'une manche
@@ -248,6 +143,7 @@ export default function GameManager(props) {
 
   // Fonction de passage au round suivant
   const nextRound = () => {
+    setActualRound(actualRound+1);
     closeModal();
   }
 
@@ -264,24 +160,126 @@ export default function GameManager(props) {
   }
 
 
+
+
+
+
+  
+  /* Fonction qui retourne un élément de allValues qui n'est pas déjà dans usedValues
+    *
+    * param : allValues : toutes les éléments
+    *         usedValues : les éléments déjà choisis
+    */
+  const getUniqueRandom = useCallback((allValues, usedValues) => {
+
+    let random;
+    do {
+      random = Math.floor(Math.random() * allValues.length);
+    } while(usedValues.includes(allValues[random]));
+
+    return allValues[random];
+
+  }, []);
+
+
+  // Fonction qui retourne un élément choisi au hasard dans la liste
+  const pickRandomList = (list) => {
+    return list[Math.floor(Math.random() * list.length)];
+  }
+
+  /* Fonction qui retourne la carte qui a la valeur "value"
+  *
+  * param : value : valeur de la carte recherché
+  */
+  const getHandCard = useCallback((value) =>{
+
+    return allHandCards.filter(item => item.prononciation === value)[0];
+
+  }, [allHandCards]);
+
+
+  // Fonction qui crée les rounds
+  const makeRounds = useCallback(() => {
+
+    // Création de la liste qui contiendra tous les rounds
+    let roundsList = [];
+
+    // Création d'une liste contenant tous les mots séléectionnés de chaque rounds
+    let roundWordsList = [];
+
+    // Pour chaque round
+    for(let i = 0 ; i< GLOBAL_ROUND; i++ ) {
+
+      // Sélection du mot du round
+      let roundWord = getUniqueRandom(allWords, roundWordsList);
+      roundWordsList.push(roundWord);
+
+      // Listes des cartes de la main du round :
+      let roundCards = [];
+
+      // Ajout des cartes correctes :
+      roundWord.cards.forEach((element) => {
+        if(!element.isBoard) {
+          roundCards.push(getHandCard(element.value.id));
+        }
+      });
+
+      // Puis remplissage de la main avec d'autres cartes aléatoire :
+      while(roundCards.length < HAND_SIZE) {
+        roundCards.push(getUniqueRandom(allHandCards, roundCards));
+      }
+
+      // On mélange les cartes :
+      shuffle(roundCards);
+
+      // Et on leur affecte leur position :
+      roundCards.forEach((element, index) => element.position = index);
+
+      // Ajout du round formé à la liste
+      roundsList.push(new RoundData(roundWord, roundCards));
+
+    }
+
+    // Définition des rounds du jeu :
+    setRounds(roundsList);
+
+  }, [getUniqueRandom, allHandCards, allWords, getHandCard]);
+
+
   // Fonction qui récupère les données depuis la base de donnée
   const getData = useCallback(async () => {
-    let allHandCards = await Firebase.getHandCards();
 
-      let wordsList = await Firebase.getWords();
+    setAllHandCards(await Firebase.getHandCards());
+    setAllWords(await Firebase.getWords());
 
-      setRandomListWords(wordsList);
-      setRandomListHandCards(allHandCards);
-  }, [setRandomListHandCards, setRandomListWords])
+  }, [setAllHandCards, setAllWords])
 
 
-  // Au lancement, le mot est dit une première fois
+
+
+
+
+
+  // Au au lancement
   useEffect(() => {
+
+    // SI ELLES NE SONT PAS DEJE CHARGES, CHARGEMENT DES DONNES
     if (!intialDataLoaded) {
       setintialDataLoaded(true);
+      // Obtention des données depuis la base :
       getData();
     }
 
+    // SI ILS NE SONT PAS DEJA CREES, CREER LES ROUNDS
+    if (!initializedRounds) {
+      if (allHandCards.length > 0 && allWords.length > 0) {
+        // Mots et cartes chargés, on peut créer les rounds
+        setInitializedRounds(true);
+        makeRounds();
+      }
+    }
+
+    // SI ELLE N'EST PAS DEJA INITIALISE, INITIALISER LES VOIX
     if (!voiceInitialized) {
 
       if (voices.length > 0) {
@@ -310,7 +308,7 @@ export default function GameManager(props) {
       }
     }
 
-  }, [intialDataLoaded, getData, voiceInitialized, voices, supported])
+  }, [intialDataLoaded, getData, voiceInitialized, voices, supported, makeRounds, allHandCards.length, allWords.length, initializedRounds])
 
 
   // Fonction de fermeture de la boite de dialogue
@@ -318,17 +316,17 @@ export default function GameManager(props) {
 
 
   // Rendu
-  if(handCards.length === 0 || words.length === 0 || !preferredVoice){
+  if(!initializedRounds || !intialDataLoaded || !preferredVoice){
     return (<Loading />);
   } else{
     return(
       <div className="w-full h-full overscroll-none overflow-hidden flex flex-col">
 
-        <Modal open={modalOpen} onClose={modalNextAction ? nextRound : newGame} emoji={modalEmoji} title={modalTitle} word={words[actualRound].id} wrongWord={modalWrongWord} onRestart={modalRestartAction ? restartRound : undefined} nextButtonText={modalNextButtonText} say={say}/>
+        <Modal open={modalOpen} onClose={modalNextAction ? nextRound : newGame} emoji={modalEmoji} title={modalTitle} word={rounds[actualRound].word.id} wrongWord={modalWrongWord} onRestart={modalRestartAction ? restartRound : undefined} nextButtonText={modalNextButtonText} say={say}/>
 
         <GameBar />
 
-        <GameContext handCards={handCards[actualRound]} word={words[actualRound]} onWin={appWin} onFail={appFail} say={say}/>
+        <GameContext round={rounds[actualRound]} onWin={appWin} onFail={appFail} say={say}/>
 
       </div>
     );

@@ -283,13 +283,13 @@ export default function GameManager(props) {
           defaultVoice = frVoices[0];
         }
 
-        // Filter afin d'obtenir Denise 
-        let prefVoices = voices.filter((voice) => voice["voiceURI"] === 'Microsoft Denise Online (Natural) - French (France)');
+        // // Filter afin d'obtenir Denise 
+        // let prefVoices = voices.filter((voice) => voice["voiceURI"] === 'Microsoft Denise Online (Natural) - French (France)');
 
-        if (prefVoices.length !== 0) {
-          // Si denise existe, on l'utilise
-          defaultVoice = prefVoices[0];
-        }
+        // if (prefVoices.length !== 0) {
+        //   // Si denise existe, on l'utilise
+        //   defaultVoice = prefVoices[0];
+        // }
 
         setPreferredVoice(defaultVoice);
         

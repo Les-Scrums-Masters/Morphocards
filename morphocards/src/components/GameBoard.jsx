@@ -47,7 +47,7 @@ const GameBoard = React.forwardRef((props, ref) => {
 
         // Fonction qui vérifie la victoire
         checkWin() {
-            let res = false;
+            let res = true;
             if (this.getEmptyCount() === 0) {
 
                 //TODO : Verifier que chaque carte est celle attendue

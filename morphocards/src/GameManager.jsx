@@ -224,9 +224,12 @@ export default function GameManager(props) {
     ));
 
     setModalButtons((
-      <ModalButton onClick={nextRound} color="text-white hover:bg-indigo-700 bg-indigo-600 focus:ring-indigo-500">
-        {getNextButtonText()}
-      </ModalButton>
+      <div className='py-3 grid gap-3'>
+        <ModalButton onClick={nextRound} color="text-white hover:bg-indigo-700 bg-indigo-600 focus:ring-indigo-500">
+          {getNextButtonText()}
+        </ModalButton>
+      </div>
+      
     ));
 
     setModalOpen(true);

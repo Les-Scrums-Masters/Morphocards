@@ -5,34 +5,48 @@ import { Droppable } from 'react-beautiful-dnd';
 const CardPlacement = forwardRef((props, ref) => {
 
 
-    const [card, setCard] = useState(null);
+    const [cards, setCards] = useState([]);
 
     useImperativeHandle(ref, () => ({
 
-      updateCardLocal(newCard) {
-        setCard(newCard);
+      updateCards(newCards) {
+        setCards(newCards);
       },
 
-      getCard() {
-        return card;
+      getCards() {
+        return cards;
       },
 
       getValue() {
-        if(card !== null){
-          return card.prononciation;
+        if(cards.length === 1){
+          return cards[0].id;
         }
         return "";
       }
 
     }))
 
+    const getStyle = isOver => {
+
+      let base = "w-14 h-20 m-2 md:m-4 md:w-24 md:h-36 rounded-xl md:rounded-2xl bg-black shadow-inner ring-4 flex justify-center items-center transition ease-in-out duration-100 bg-opacity-20";
+
+      let extension = isOver 
+        ? " ring-green-500 bg-white"
+        : " ring-green-100"
+
+      return base + extension;
+
+    }
+
     return (
       <Droppable droppableId={props.id}>
-        {provided =>(
-          <div className="w-14 h-20 m-2 md:m-4 md:w-24 md:h-36 rounded-xl md:rounded-2xl bg-black bg-opacity-20 shadow-inner ring-4 ring-green-100 flex justify-center items-center"
+        {(provided, snapshot) =>(
+          <div className={getStyle(snapshot.isDraggingOver)}
             ref={provided.innerRef}
             {...provided.droppableProps}>
-            {card !== null ? <Card index={0} key={card.id}  id={""+card.id} card={card} say={props.say} /> : null }
+            {cards.map((item) => (
+              <Card index={0} key={item.uniqueId} card={item} say={props.say} />
+            ))}
               {provided.placeholder}
           </div>
         )}

@@ -57,7 +57,7 @@ class FirebaseClass {
   async getHandCards() {
     let list = [];
     let docs = await getDocs(this.CARDHAND_COLLECTION);
-    docs.forEach((element, index) => list.push(new HandCardModel("id"+index, element.data()['value'], element.id)));
+    docs.forEach((element) => list.push(new HandCardModel(element.id, element.data()['value'])));
     return list;
   }
 

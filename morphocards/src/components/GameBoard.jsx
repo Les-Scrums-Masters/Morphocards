@@ -1,4 +1,4 @@
-import React, { useImperativeHandle, useRef } from "react";
+import React, { createRef, useImperativeHandle } from "react";
 import CardPlacement from './CardPlacement';
 import CardStatic from './CardStatic'
 
@@ -8,7 +8,7 @@ const GameBoard = React.forwardRef((props, ref) => {
     // Création d'une référence pour chaque emplacement plateau
     let boardRefs = []
     props.word.cards.map( () => (
-      boardRefs.push(useRef())
+      boardRefs.push(createRef())
     ));
     
 
@@ -19,9 +19,7 @@ const GameBoard = React.forwardRef((props, ref) => {
         // Fonction d'obtention du mot formé par le plateau
         getWord() {
             let w = "";
-            boardRefs.forEach((ref) =>{
-            w += ref.current.getValue();
-            });
+            boardRefs.forEach((ref) => w += ref.current.getValue());
             return w;
         },
 
@@ -33,9 +31,7 @@ const GameBoard = React.forwardRef((props, ref) => {
 
             // Récupère le nombre de placement vide et le ref du dernier
             boardRefs.forEach((ref) => {
-                if(ref.current.getValue() === ""){
-                    nbEmpty++;
-                }
+                if(ref.current.getValue() === "") nbEmpty++;
             });
             
             return nbEmpty;
@@ -44,7 +40,8 @@ const GameBoard = React.forwardRef((props, ref) => {
 
         // Fonction qui retourne l'emplacement demandé
         getEmplacement(droppableId) {
-            return boardRefs[parseInt(droppableId)].current;
+            let n = parseInt(droppableId.split('/')[1]);
+            return boardRefs[n].current;
         },
 
 
@@ -85,12 +82,14 @@ const GameBoard = React.forwardRef((props, ref) => {
     return(
         <div className='flex justify-center items-center flex-wrap'>
             {props.word.cards?.map( (card, index) => {
+
+                let id = props.word.id+"/"+index;
     
                 if(!card.isBoard){
-                    return <CardPlacement id={" " + index} key={index} index={index} ref={boardRefs[index]} say={props.say} />;
+                    return <CardPlacement id={id} key={index} index={index} ref={boardRefs[index]} say={props.say} />;
     
                 } else{
-                    return <CardStatic id={" " + index} key={index} index={index} ref={boardRefs[index]} value={card.value} />;
+                    return <CardStatic key={index} index={index} ref={boardRefs[index]} value={card.value} />;
                 }
     
             })}

@@ -2,13 +2,12 @@ export default class HandCardModel {
 
     id;
     value;
-    prononciation;
     position;
+    uniqueId;
 
-    constructor(id, value, prononciation) {
+    constructor(id, value) {
         this.id = id;
         this.value = value;
-        this.prononciation = prononciation;
     }
 
 }

@@ -7,14 +7,14 @@ export default function Card(props) {
 
     return (
         <Draggable
-        draggableId={props.id}
+        draggableId={props.card.uniqueId}
         value={props.card.value}
+        key={props.card.uniqueId}
         index={props.index}
-        prononciation={props.card.prononciation}
     >
         {provided => (
             <div className="card shadow-md hover:shadow-xl transform hover:scale-110 filter active:drop-shadow-2xl active:scale-125"
-            onClick={() => props.say(props.card.prononciation)}
+            onClick={() => props.say(props.card.id)}
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}

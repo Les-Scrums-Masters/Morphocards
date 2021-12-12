@@ -1,51 +1,11 @@
-import React, { Fragment, useRef } from 'react'
+import React, { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import SpeakButton from './SpeakButton';
 
 export default function Modal(props) {
 
-  const nextBtnRef = useRef(null)
-
-  const sayWrongWord = () => {
-    props.say(props.wrongWord);
-  }
-
-  const sayWord = () => {
-    props.say(props.word);
-  }
-
-  let wrongContent = (props.wrongWord === '') ? '' : (
-    <div className="mt-2">
-      <p className="text-sm text-gray-500">Vous avez formé le mot</p>
-      <div className="speakable">
-        <p className="text-lg text-indigo-600 font-bold">{props.wrongWord}</p>
-        <SpeakButton onClick={sayWrongWord} />
-      </div>
-    </div>
-  );
-
-  let rightContent = (props.word === '') ? '' : (
-    <div>
-      <p className="text-sm text-gray-500">Le mot était</p>
-      <div className="speakable">
-        <p className="text-lg text-indigo-600 font-bold">{props.word}</p>
-        <SpeakButton onClick={sayWord} />
-      </div>
-    </div>
-  );
-
-  let restartBtn = (props.onRestart) ? (
-    <button
-      type="button"
-      className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 "
-      onClick={props.onRestart}>
-      Recommencer
-    </button>
-  ) : '';
-
   return (
     <Transition.Root show={props.open} as={Fragment}>
-      <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" initialFocus={nextBtnRef} onClose={props.onClose}>
+      <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" initialFocus={props.focusedRef} onClose={props.onClose}>
         <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
             as={Fragment}
@@ -81,27 +41,19 @@ export default function Modal(props) {
                       {props.title}
                     </Dialog.Title>
                     <div className="mt-6">
-                      {rightContent}
-                      {wrongContent}
+                      {props.children}
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="bg-gray-50 px-4 py-3 grid gap-3 ">
-                {restartBtn}
-                <button
-                ref={nextBtnRef}
-                  type="button"
-                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 "
-                  onClick={props.onClose}
-                >
-                  {props.nextButtonText}
-                </button>
+              <div className="bg-gray-50 px-4">
+                {props.buttons}
               </div>
             </div>
           </Transition.Child>
         </div>
       </Dialog>
     </Transition.Root>
-  )
+  );
+
 }

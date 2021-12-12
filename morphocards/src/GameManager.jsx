@@ -8,6 +8,8 @@ import { useSpeechSynthesis } from 'react-speech-kit';
 import Loading from './components/Loading';
 import GameBar from './components/GameBar';
 import HandCardModel from './models/HandCardModel';
+import ModalButton from './components/ModalButton';
+import ModalWordDisplay from './components/ModalWordDisplay';
 
 
 // Contenu de la boite de dialogue si le mot est trouvé :
@@ -80,10 +82,9 @@ export default function GameManager(props) {
   // ------- Boite de dialogue d'echec/succès -------
   const [modalEmoji, setModalEmoji] = useState("");
   const [modalTitle, setModalTitle] = useState("");
-  const [modalWrongWord, setModalWrongWord] = useState("");
-  const [modalNextButtonText, setModalNextButtonText] = useState("");
-  const [modalRestartAction, setModalRestartAction] = useState(true);
-  const [modalNextAction, setModalNextAction] = useState(false);
+
+  const [modalContent, setModalContent] = useState(null);
+  const [modalButtons, setModalButtons] = useState(null);
 
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -110,10 +111,6 @@ export default function GameManager(props) {
   // Données des rounds
   const [rounds, setRounds] = useState([]);
   const [initializedRounds, setInitializedRounds] = useState(false);
-
-  // Composants des rounds 
-  const [roundComponents, setRoundComponents] = useState([]);
-  const [initializedComponents, setInitializedComponents] = useState(false);
 
   // ------- Fonctions -------
 
@@ -150,47 +147,51 @@ export default function GameManager(props) {
   }, [voices]);
 
 
-  // Fonction de victoire d'une manche
-  const appWin = useCallback(() => {
-
-    // Mot juste
-
-    setModalTitle(pickRandomList(wordSuccessTitles));
-    setModalEmoji(pickRandomList(wordSuccessEmoji));
-    setModalNextAction(true);
-    setModalNextButtonText("Passer au mot suivant");
-
-    setModalRestartAction(false);
-
-    setModalWrongWord("");
-    setModalOpen(true);
-
-  }, [setModalTitle, setModalEmoji, setModalNextAction, setModalNextButtonText, setModalRestartAction, setModalWrongWord, setModalOpen]);
+  // Fonction de fermeture de la boite de dialogue
+  let closeModal = () => setModalOpen(false);
 
 
-  // Fonction de défaite d'une manche
-  const appFail = useCallback((playerWord) => {
-    setModalTitle(pickRandomList(wordFailedTitles));
-    setModalEmoji(pickRandomList(winFailedEmojis));
-    setModalWrongWord(playerWord);
-
-    setModalRestartAction(true);
-    setModalNextAction(true);
-    setModalNextButtonText((actualRound===GLOBAL_ROUND-2) ? "Terminer la partie" : "Passer au mot suivant");
-
-    setModalOpen(true);
-  }, [setModalTitle, setModalEmoji, setModalWrongWord, setModalRestartAction, setModalNextAction, setModalNextButtonText, setModalOpen, actualRound]);
+  // Fonction qui retourne le texte devant être affiché dans le bouton suivant
+  const getNextButtonText = () => (actualRound===GLOBAL_ROUND-1) 
+    ? "Terminer la partie" 
+    : "Passer au mot suivant";
 
 
-  const roundFinished = () => {
+  // Fonction qui retourne le mot actuel
+  let getActualWord = () => rounds[actualRound].word.id;
+
+
+  // Fonction qui retourne le composant du round actuel
+  let getRoundComponent = () => {
+    let round = rounds[actualRound];
+    return (
+      <GameContext key={round.word.id} round={round} onWin={appWin} onFail={appFail} say={say}/>
+    );
+  }
+
+
+  const gameFinished = () => {
     setModalTitle(pickRandomList(winTitles));
     setModalEmoji(pickRandomList(winEmojis));
-    setModalNextAction(false);
-    setModalRestartAction(false);
-    setModalWrongWord("");
+
+    setModalContent((
+      <p>Afficher les résultats de la partie ici</p>
+    ));
+
+    setModalButtons((
+      <div className='py-3 grid gap-3'>
+        <ModalButton onClick={() => {}} color="focus:ring-red-500 text-white hover:bg-red-700 bg-red-600">
+          Retour au menu principal
+        </ModalButton>
+        <ModalButton onClick={() => {}} color="text-white hover:bg-indigo-700 bg-indigo-600 focus:ring-indigo-500">
+          Commencer une nouvelle partie
+        </ModalButton>
+      </div>
+    ));
+
     setModalOpen(true);
-    setModalNextButtonText("Nouvelle partie");
   }
+
 
   // Fonction de passage au round suivant
   const nextRound = () => {
@@ -198,8 +199,10 @@ export default function GameManager(props) {
     if (actualRound<GLOBAL_ROUND-1) {
       closeModal();
       setActualRound(actualRound+1);
+      console.log("Round suivant");
     } else {
-      roundFinished()
+      gameFinished()
+      console.log("Partie terminée");
     }
   }
 
@@ -210,10 +213,53 @@ export default function GameManager(props) {
   }
 
 
-  // Fonction qui démarre redémarre une nouvelle partie
-  const newGame = () => {
-    closeModal();
+  // Fonction de victoire d'une manche
+  const appWin = () => {
+
+    setModalTitle(pickRandomList(wordSuccessTitles));
+    setModalEmoji(pickRandomList(wordSuccessEmoji));
+
+    setModalContent((
+      <ModalWordDisplay word={getActualWord()} legend="Le mot était" say={say} />
+    ));
+
+    setModalButtons((
+      <ModalButton onClick={nextRound} color="text-white hover:bg-indigo-700 bg-indigo-600 focus:ring-indigo-500">
+        {getNextButtonText()}
+      </ModalButton>
+    ));
+
+    setModalOpen(true);
+
+  };
+
+
+  // Fonction de défaite d'une manche
+  const appFail = (playerWord) => {
+    setModalTitle(pickRandomList(wordFailedTitles));
+    setModalEmoji(pickRandomList(winFailedEmojis));
+    
+    setModalContent(
+      <div>
+        <ModalWordDisplay word={getActualWord()} legend="Le mot était" say={say} />
+        <ModalWordDisplay word={playerWord} legend="Vous avez constitué le mot" say={say} />
+      </div>
+    );
+
+    setModalButtons((
+      <div className='py-3 grid gap-3'>
+        <ModalButton onClick={restartRound} color="focus:ring-red-500 text-white hover:bg-red-700 bg-red-600">
+          Réessayer
+        </ModalButton>
+        <ModalButton onClick={nextRound} color="text-white hover:bg-indigo-700 bg-indigo-600 focus:ring-indigo-500">
+          {getNextButtonText()}
+        </ModalButton>
+      </div>
+    ));
+
+    setModalOpen(true);
   }
+
 
 
   /* Fonction qui retourne un élément de allValues qui n'est pas déjà dans usedValues
@@ -316,22 +362,8 @@ export default function GameManager(props) {
   }, [setAllHandCards, setAllWords])
 
 
-  // Fonction qui génére les GameContext de chaque rounds
-  const generateRoundComponents = useCallback(()=> {
-    let components = [];
-    rounds.forEach((item) => {
-      components.push(
-          ( 
-          <GameContext key={item.word.id} round={item} onWin={appWin} onFail={appFail} say={say}/>
-          )
-        );
-    });
-    setRoundComponents(components);
-  }, [setRoundComponents, appFail, appWin, rounds, say]);
-
-
-  // Au au lancement
   useEffect(() => {
+
 
     // SI ELLES NE SONT PAS DEJE CHARGES, CHARGEMENT DES DONNES
     if (!intialDataLoaded) {
@@ -348,15 +380,6 @@ export default function GameManager(props) {
       }
     }
 
-    // SI ILS NE SONT PAS DEJA CREES, CREER LES COMPOSANTS DE CHAQUE ROUNDS
-    if (!initializedComponents) {
-      // On attend que les données des rounds aient déjà été créés
-      if (rounds.length > 0) {
-        setInitializedComponents(true);
-        generateRoundComponents();
-      }
-    }
-
     // SI ELLE N'EST PAS DEJA INITIALISE, INITIALISER LES VOIX
     if (!voiceInitialized) {
       // On attend que le navigateur ai chargé les voix pour en sélectionner
@@ -366,25 +389,23 @@ export default function GameManager(props) {
       }
     }
 
-  }, [intialDataLoaded, getData, voiceInitialized, voices, supported, makeRounds, allHandCards.length, allWords.length, initializedRounds, generateRoundComponents, initializedComponents, rounds.length, initVoices])
-
-
-  // Fonction de fermeture de la boite de dialogue
-  let closeModal = () => setModalOpen(false);
+  }, [intialDataLoaded, getData, voiceInitialized, voices, supported, makeRounds, allHandCards.length, allWords.length, initializedRounds, rounds.length, initVoices])
 
 
   // ---------- RENDU --------
   
-  if(roundComponents.length > 0 && preferredVoice && supported) {
+  if(rounds.length > 0 && preferredVoice && supported) {
     // Si les componsants sont chargés et qu'il y a des voix disponibles, afficher le jeu
     return(
       <div className="w-full h-full overscroll-none overflow-hidden flex flex-col">
 
-        <Modal open={modalOpen} onClose={modalNextAction ? nextRound : newGame} emoji={modalEmoji} title={modalTitle} word={rounds[actualRound].word.id} wrongWord={modalWrongWord} onRestart={modalRestartAction ? restartRound : undefined} nextButtonText={modalNextButtonText} say={say}/>
+        <Modal open={modalOpen} emoji={modalEmoji} title={modalTitle} buttons={modalButtons} onClose={closeModal}>
+            {modalContent}
+        </Modal>
 
         <GameBar />
 
-        {roundComponents[actualRound]}
+        {getRoundComponent()}
 
       </div>
     );

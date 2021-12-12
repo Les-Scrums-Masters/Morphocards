@@ -152,30 +152,20 @@ export default function GameManager(props) {
 
   // Fonction de victoire d'une manche
   const appWin = useCallback(() => {
-    if (actualRound === GLOBAL_ROUND-1) {
-      // Victoire
 
-      setModalTitle(pickRandomList(winTitles));
-      setModalEmoji(pickRandomList(winEmojis));
-      setModalNextAction(false);
-      setModalNextButtonText("Nouvelle partie");
+    // Mot juste
 
-    } else {
-      // Mot juste
-
-      setModalTitle(pickRandomList(wordSuccessTitles));
-      setModalEmoji(pickRandomList(wordSuccessEmoji));
-      setModalNextAction(true);
-      setModalNextButtonText("Passer au mot suivant");
-
-    }
+    setModalTitle(pickRandomList(wordSuccessTitles));
+    setModalEmoji(pickRandomList(wordSuccessEmoji));
+    setModalNextAction(true);
+    setModalNextButtonText("Passer au mot suivant");
 
     setModalRestartAction(false);
 
     setModalWrongWord("");
     setModalOpen(true);
 
-  }, [setModalTitle, setModalEmoji, setModalNextAction, setModalNextButtonText, setModalRestartAction, setModalWrongWord, setModalOpen, actualRound]);
+  }, [setModalTitle, setModalEmoji, setModalNextAction, setModalNextButtonText, setModalRestartAction, setModalWrongWord, setModalOpen]);
 
 
   // Fonction de défaite d'une manche
@@ -186,16 +176,31 @@ export default function GameManager(props) {
 
     setModalRestartAction(true);
     setModalNextAction(true);
-    setModalNextButtonText("Passer au mot suivant");
+    setModalNextButtonText((actualRound===GLOBAL_ROUND-2) ? "Terminer la partie" : "Passer au mot suivant");
 
     setModalOpen(true);
-  }, [setModalTitle, setModalEmoji, setModalWrongWord, setModalRestartAction, setModalNextAction, setModalNextButtonText, setModalOpen]);
+  }, [setModalTitle, setModalEmoji, setModalWrongWord, setModalRestartAction, setModalNextAction, setModalNextButtonText, setModalOpen, actualRound]);
 
+
+  const roundFinished = () => {
+    setModalTitle(pickRandomList(winTitles));
+    setModalEmoji(pickRandomList(winEmojis));
+    setModalNextAction(false);
+    setModalRestartAction(false);
+    setModalWrongWord("");
+    setModalOpen(true);
+    setModalNextButtonText("Nouvelle partie");
+  }
 
   // Fonction de passage au round suivant
   const nextRound = () => {
-    setActualRound(actualRound+1);
-    closeModal();
+    console.log(actualRound);
+    if (actualRound<GLOBAL_ROUND-1) {
+      closeModal();
+      setActualRound(actualRound+1);
+    } else {
+      roundFinished()
+    }
   }
 
 
@@ -317,7 +322,7 @@ export default function GameManager(props) {
     rounds.forEach((item) => {
       components.push(
           ( 
-          <GameContext round={item} onWin={appWin} onFail={appFail} say={say}/>
+          <GameContext key={item.word.id} round={item} onWin={appWin} onFail={appFail} say={say}/>
           )
         );
     });

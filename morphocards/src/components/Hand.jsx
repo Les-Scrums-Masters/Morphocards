@@ -8,7 +8,7 @@ const Hand = forwardRef((props, ref) => {
 
     useImperativeHandle(ref, () => ({
         updateCards(newCards) {
-
+            
             // Mise à jour des cartes
             setCards(newCards);
 

@@ -80,3 +80,7 @@ body{
 .btnGroup label {
   @apply w-16 md:w-36 text-center font-medium uppercase text-white text-opacity-60 text-xs h-8 md:h-12 break-words select-none
 }
+
+.speakable {
+  @apply flex flex-row align-middle justify-center items-center gap-3
+}

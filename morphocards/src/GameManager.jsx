@@ -9,7 +9,8 @@ import Loading from './components/Loading';
 import GameBar from './components/GameBar';
 import HandCardModel from './models/HandCardModel';
 import ModalButton from './components/ModalButton';
-import ModalWordDisplay from './components/ModalWordDisplay';
+import WordDisplay from './components/WordDisplay';
+import EndPage from './EndPage';
 
 
 // Contenu de la boite de dialogue si le mot est trouvé :
@@ -161,35 +162,28 @@ export default function GameManager(props) {
   let getActualWord = () => rounds[actualRound].word.id;
 
 
-  // Fonction qui retourne le composant du round actuel
-  let getRoundComponent = () => {
+  // Fonction qui retourne le composant à afficher
+  let getMainComponent = () => {
     let round = rounds[actualRound];
-    return (
-      <GameContext key={round.word.id} round={round} onWin={appWin} onFail={appFail} say={say}/>
-    );
+    if (actualRound === GLOBAL_ROUND) {
+      // FIN DE PARTIE
+      return (
+        <EndPage say={say} rounds={rounds} title={modalTitle} emoji={modalEmoji} />
+      );
+    } else {
+      // ROUND
+      return (
+        <GameContext key={round.word.id} round={round} onWin={appWin} onFail={appFail} say={say}/>
+      );
+    }
   }
 
 
   const gameFinished = () => {
     setModalTitle(pickRandomList(winTitles));
     setModalEmoji(pickRandomList(winEmojis));
-
-    setModalContent((
-      <p>Afficher les résultats de la partie ici</p>
-    ));
-
-    setModalButtons((
-      <div className='py-3 grid gap-3'>
-        <ModalButton onClick={() => {}} color="focus:ring-red-500 text-white hover:bg-red-700 bg-red-600">
-          Retour au menu principal
-        </ModalButton>
-        <ModalButton onClick={() => {}} color="text-white hover:bg-indigo-700 bg-indigo-600 focus:ring-indigo-500">
-          Commencer une nouvelle partie
-        </ModalButton>
-      </div>
-    ));
-
-    setModalOpen(true);
+    setActualRound(actualRound+1);
+    setModalOpen(false);
   }
 
 
@@ -216,11 +210,16 @@ export default function GameManager(props) {
   // Fonction de victoire d'une manche
   const appWin = () => {
 
+    // On indique que le round est gagné :
+    rounds[actualRound].success = true;
+
+    // Préparation de la modal de résultat
+
     setModalTitle(pickRandomList(wordSuccessTitles));
     setModalEmoji(pickRandomList(wordSuccessEmoji));
 
     setModalContent((
-      <ModalWordDisplay word={getActualWord()} legend="Le mot était" say={say} />
+      <WordDisplay word={getActualWord()} legend="Le mot était" say={say} align="center" />
     ));
 
     setModalButtons((
@@ -239,13 +238,20 @@ export default function GameManager(props) {
 
   // Fonction de défaite d'une manche
   const appFail = (playerWord) => {
+
+    // On indique le mot comme raté :
+    rounds[actualRound].success = false;
+    rounds[actualRound].userWord = playerWord;
+
+    // Préparation de la modal :
+
     setModalTitle(pickRandomList(wordFailedTitles));
     setModalEmoji(pickRandomList(winFailedEmojis));
     
     setModalContent(
-      <div>
-        <ModalWordDisplay word={getActualWord()} legend="Le mot était" say={say} />
-        <ModalWordDisplay word={playerWord} legend="Vous avez constitué le mot" say={say} />
+      <div className='grid gap-3'>
+        <WordDisplay word={getActualWord()} legend="Le mot était" say={say} align="center" />
+        <WordDisplay word={playerWord} legend="Vous avez constitué le mot" say={say} align="center" />
       </div>
     );
 
@@ -367,7 +373,6 @@ export default function GameManager(props) {
 
   useEffect(() => {
 
-
     // SI ELLES NE SONT PAS DEJE CHARGES, CHARGEMENT DES DONNES
     if (!intialDataLoaded) {
       setintialDataLoaded(true);
@@ -397,7 +402,7 @@ export default function GameManager(props) {
 
   // ---------- RENDU --------
   
-  if(rounds.length > 0 && preferredVoice && supported) {
+  if(rounds.length > 0 && preferredVoice) {
     // Si les componsants sont chargés et qu'il y a des voix disponibles, afficher le jeu
     return(
       <div className="w-full h-full overscroll-none overflow-hidden flex flex-col">
@@ -406,9 +411,9 @@ export default function GameManager(props) {
             {modalContent}
         </Modal>
 
-        <GameBar />
+        <GameBar rounds={rounds} actualRound={actualRound}/>
 
-        {getRoundComponent()}
+        {getMainComponent()}
 
       </div>
     );

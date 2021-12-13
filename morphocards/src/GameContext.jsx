@@ -196,7 +196,7 @@ export default function GameContext(props) {
         <GameBoard ref={boardRef} word={props.round.word} say={props.say}/>
 
         {/* BOUTONS */}
-        <div className="flex flex-row gap-5">
+        <div className="flex flex-row gap-5 md:gap-8">
           <RoundButton animated={true} onClick={sayWord} label="Écouter le mot à reconstituer">
             <VolumeUpIcon/>
           </RoundButton>

@@ -6,6 +6,7 @@ import './css/index.css'
 
 import Loading from './components/Loading';
 import GameBar from './components/GameBar';
+import RoundModel from './models/RoundModel';
 
 
 // Contenu de la boite de dialogue si le mot est trouvé :
@@ -62,8 +63,12 @@ export default function GameManager(props) {
   const HAND_SIZE = 6;
 
   // Round actuel :
-  const [actualRound, /*setActualRound*/] = useState(0);
-  
+  const [actualRound, /*setActualRound*/] = useState(1);
+
+  // Si le mot est juste ou non (par défaut, tous à null)
+  const [historyRound, setHistoryRound] = useState([]);
+
+
 
   /* Fonction qui retourne une carte parmis allHandCards qui n'est pas inclus dans myHandCards
   *
@@ -90,6 +95,9 @@ export default function GameManager(props) {
       i++
     }
     return allHandCards[i];
+
+
+
   }, [])
 
 
@@ -157,7 +165,16 @@ export default function GameManager(props) {
 
     setHandCards(handCardsList);
 
-  }, [setHandCards, getHandCard, getRandomCard, words, handCards])
+
+    let tempHistory = []
+    for(let i = 1; i <= GLOBAL_ROUND; i++) {
+      let roundModel = new RoundModel(i, false, null, words[i], null );
+      tempHistory.push(roundModel);
+    }
+    setHistoryRound(tempHistory)
+
+  }, [setHandCards, getHandCard, getRandomCard, words, handCards, setHistoryRound])
+
 
 
   // Fonction qui retourne un élément choisi au hasard dans la liste
@@ -230,7 +247,7 @@ export default function GameManager(props) {
 
         <Modal open={modalOpen} onClose={closeModal} emoji={modalEmoji} title={modalTitle} word={words[actualRound].id} wrongWord={modalWrongWord}/>
 
-        <GameBar />
+        <GameBar round={GLOBAL_ROUND} actualRound={actualRound} historyRound={historyRound}/>
 
         <GameContext handCards={handCards[actualRound]} word={words[actualRound]} onWin={appWin} onFail={appFail} />
 

@@ -23,7 +23,7 @@ const Hand = forwardRef((props, ref) => {
     return (
         <Droppable droppableId={props.id} direction="horizontal">
             {provided =>(
-                <div className="flex h-24 md:h-40 justify-center items-center -mb-7"
+                <div className="flex h-24 md:h-40 justify-center items-center"
                 ref={provided.innerRef}
                 {...provided.droppableProps}>
                     {cards.map((item, index) => ( 

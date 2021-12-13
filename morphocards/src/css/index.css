@@ -72,7 +72,3 @@ body{
 .roundBtn svg {
   @apply h-5 w-5 md:h-10 md:w-10
 }
-
-.speakable {
-  @apply flex flex-row align-middle justify-center items-center gap-3
-}

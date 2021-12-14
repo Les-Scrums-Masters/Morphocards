@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "./components/Button";
 import RoundResult from "./components/RoundResult";
 
 export default function EndPage(props) {
@@ -16,7 +17,7 @@ export default function EndPage(props) {
                 <div className="flex flex-col gap-4 justify-center">
 
                     {props.rounds.map((item, index) => (
-                        <RoundResult key={index} say={props.say} round={item} number={index} />
+                        <RoundResult key={index} say={props.say} round={item} number={index+1} />
                     ))}
 
                 </div>
@@ -24,6 +25,18 @@ export default function EndPage(props) {
             </div>
 
             <p className="flex-1 justify-items-end">Petit conseil ;)</p>
+
+            <div className="flex gap-3 items-center">
+
+                <Button onClick={props.goToMenu} color="focus:ring-red-500 text-white hover:bg-red-700 bg-red-600">
+                    Retour au menu principal
+                </Button>
+                
+                <Button onClick={props.restartGame} color="text-white hover:bg-indigo-700 bg-indigo-600 focus:ring-indigo-500">
+                    Rejouer
+                </Button>
+                
+            </div>
 
         </div>
     </div>

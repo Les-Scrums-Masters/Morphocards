@@ -8,7 +8,7 @@ import { useSpeechSynthesis } from 'react-speech-kit';
 import Loading from './components/Loading';
 import GameBar from './components/GameBar';
 import HandCardModel from './models/HandCardModel';
-import ModalButton from './components/ModalButton';
+import Button from './components/Button';
 import WordDisplay from './components/WordDisplay';
 import EndPage from './EndPage';
 
@@ -85,7 +85,7 @@ export default function GameManager(props) {
   const [modalTitle, setModalTitle] = useState("");
 
   const [modalContent, setModalContent] = useState(null);
-  const [modalButtons, setModalButtons] = useState(null);
+  const [Buttons, setButtons] = useState(null);
 
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -101,7 +101,7 @@ export default function GameManager(props) {
   const GLOBAL_ROUND = 3;
 
   // Nombre de carte dans une main :
-  const HAND_SIZE = 6;
+  const HAND_SIZE = 10;
 
 
   // ------- Données des rounds -------
@@ -117,11 +117,11 @@ export default function GameManager(props) {
 
   // Fonction qui prononce un mot
   const say = useCallback((text) => {
-    if (preferredVoice) {
+    if (preferredVoice && supported) {
       cancel();
       speak({text: text, voice: preferredVoice});
     }
-  }, [speak, preferredVoice, cancel])
+  }, [speak, preferredVoice, cancel, supported])
 
 
   // Fonction d'intitialisation des voix
@@ -152,6 +152,18 @@ export default function GameManager(props) {
   let closeModal = () => setModalOpen(false);
 
 
+  // Fonction de retour au menu principal
+  let openMainMenu = () => props.setWindow("menu");
+
+
+  // Fonction qui démarre une nouvelle partie
+  let startNewGame = () => {
+    setRounds([]);
+    makeRounds();
+    setActualRound(0);
+  }
+
+
   // Fonction qui retourne le texte devant être affiché dans le bouton suivant
   const getNextButtonText = () => (actualRound===GLOBAL_ROUND-1) 
     ? "Terminer la partie" 
@@ -168,7 +180,7 @@ export default function GameManager(props) {
     if (actualRound === GLOBAL_ROUND) {
       // FIN DE PARTIE
       return (
-        <EndPage say={say} rounds={rounds} title={modalTitle} emoji={modalEmoji} />
+        <EndPage say={say} rounds={rounds} title={modalTitle} emoji={modalEmoji} goToMenu={openMainMenu} restartGame={startNewGame} />
       );
     } else {
       // ROUND
@@ -222,11 +234,11 @@ export default function GameManager(props) {
       <WordDisplay word={getActualWord()} legend="Le mot était" say={say} align="center" />
     ));
 
-    setModalButtons((
+    setButtons((
       <div className='py-3 grid gap-3'>
-        <ModalButton onClick={nextRound} color="text-white hover:bg-indigo-700 bg-indigo-600 focus:ring-indigo-500">
+        <Button onClick={nextRound} color="text-white hover:bg-indigo-700 bg-indigo-600 focus:ring-indigo-500">
           {getNextButtonText()}
-        </ModalButton>
+        </Button>
       </div>
       
     ));
@@ -255,14 +267,14 @@ export default function GameManager(props) {
       </div>
     );
 
-    setModalButtons((
+    setButtons((
       <div className='py-3 grid gap-3'>
-        <ModalButton onClick={restartRound} color="focus:ring-red-500 text-white hover:bg-red-700 bg-red-600">
+        <Button onClick={restartRound} color="focus:ring-red-500 text-white hover:bg-red-700 bg-red-600">
           Réessayer
-        </ModalButton>
-        <ModalButton onClick={nextRound} color="text-white hover:bg-indigo-700 bg-indigo-600 focus:ring-indigo-500">
+        </Button>
+        <Button onClick={nextRound} color="text-white hover:bg-indigo-700 bg-indigo-600 focus:ring-indigo-500">
           {getNextButtonText()}
-        </ModalButton>
+        </Button>
       </div>
     ));
 
@@ -333,7 +345,7 @@ export default function GameManager(props) {
 
       // Puis remplissage de la main avec d'autres cartes aléatoire :
       while(selectedCards.length < HAND_SIZE) {
-        selectedCards.push(getUniqueRandom(allHandCards, selectedCards));
+        selectedCards.push(pickRandomList(allHandCards));
       }
 
       // On mélange les cartes :
@@ -402,29 +414,31 @@ export default function GameManager(props) {
 
   // ---------- RENDU --------
   
-  if(rounds.length > 0 && preferredVoice) {
-    // Si les componsants sont chargés et qu'il y a des voix disponibles, afficher le jeu
-    return(
-      <div className="w-full h-full overscroll-none overflow-hidden flex flex-col">
-
-        <Modal open={modalOpen} emoji={modalEmoji} title={modalTitle} buttons={modalButtons} onClose={closeModal}>
-            {modalContent}
-        </Modal>
-
-        <GameBar rounds={rounds} actualRound={actualRound}/>
-
-        {getMainComponent()}
-
-      </div>
-    );
+  return (
+    <div className='game-bg w-full h-full'>
+      {
+        (rounds.length > 0 && preferredVoice)
+        // Si les componsants sont chargés et qu'il y a des voix disponibles, afficher le jeu
+        ? (
+          <div className="w-full h-full overscroll-none overflow-hidden flex flex-col">
     
-  } else {
-    // Sinon, afficher le chargement
-    return (<Loading />);
-  }
+            <Modal open={modalOpen} emoji={modalEmoji} title={modalTitle} buttons={Buttons} onClose={closeModal}>
+                {modalContent}
+            </Modal>
+    
+            <GameBar rounds={rounds} actualRound={actualRound} openMenu={openMainMenu}/>
+    
+            {getMainComponent()}
+    
+          </div>
+          )
+        // Sinon, afficher le chargement
+        : (<Loading />)
+      }
+    </div>
+  );
 
 }
-
 
 // Fonction qui mélange un tableau
 function shuffle(array) {

@@ -13,6 +13,9 @@ module.exports = {
     extend: {
       dropShadow: ['hover', 'active'],
       scale: ['hover', 'active'],
+      ringWidth: ['hover', 'active'],
+      backgroundColor: ['active'],
+      borderRadius: ['hover', 'focus'],
     },
   },
   plugins: [],

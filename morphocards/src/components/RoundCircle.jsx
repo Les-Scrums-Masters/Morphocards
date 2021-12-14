@@ -16,6 +16,8 @@ export default function RoundCircle(props) {
 
     return(
         <div>
+            <div className="bg-red-400 hidden"></div>
+            <div className="bg-green-400 hidden"></div>
             <div className={"bg-" + getColor() + " shadow-sm w-4 h-4 rounded-full"}></div>
         </div>
     );

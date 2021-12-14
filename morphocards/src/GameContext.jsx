@@ -46,7 +46,7 @@ export default function GameContext(props) {
     volume:0.2,
   });
 
-  const [playLoop, {stop, sound}] = useSound(loopCardSong, {
+  const [ , {sound}] = useSound(loopCardSong, {
     volume:0.10,
    });
    
@@ -161,7 +161,7 @@ export default function GameContext(props) {
   const onDragEnd = (result) => {
 
     //Arret du son Magique de carte en fade-out
-    sound.fade(0.07, 0, 300)
+    sound.fade(0.07, 0, 400)
 
     const {destination, source} = result;
 
@@ -226,7 +226,7 @@ export default function GameContext(props) {
         //Met un fade-in
         //Joue le son magique lorsqu'on prend la carte et
         sound.loop(true);
-        sound.fade(0, 0.08, 700) 
+        sound.fade(0, 0.07, 700) 
         sound.play();
     };
 

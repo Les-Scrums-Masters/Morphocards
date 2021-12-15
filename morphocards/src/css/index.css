@@ -90,3 +90,7 @@ html, body, #root {
     background-position: 100% 50%;
   }
 }
+
+h1, h2, h3, h4, h5, h6, p {
+  @apply select-none
+}

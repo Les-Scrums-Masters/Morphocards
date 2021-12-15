@@ -19,7 +19,12 @@ const wordSuccessEmoji = [
   String.fromCodePoint(0x1F603),
   String.fromCodePoint(0x1F601),
   String.fromCodePoint(0x1F60A),
-  String.fromCodePoint(0x1F970)
+  String.fromCodePoint(0x1F970),
+  String.fromCodePoint(0x1F60D),
+  String.fromCodePoint(0x1F929),
+  String.fromCodePoint(0x1F60B),
+  String.fromCodePoint(0x1F920),
+  String.fromCodePoint(0x1F60E)
 ];
 const wordSuccessTitles = [
   'Bien joué !',
@@ -30,14 +35,6 @@ const wordSuccessTitles = [
 
 
 // Contenu de la boite de dialogue lorsque la partie est terminée :
-const winEmojis = [
-  String.fromCodePoint(0x1F60D),
-  String.fromCodePoint(0x1F929),
-  String.fromCodePoint(0x1F60B),
-  String.fromCodePoint(0x1F920),
-  String.fromCodePoint(0x1F973),
-  String.fromCodePoint(0x1F60E)
-];
 const winTitles = [
   'Partie terminée !',
   'Félicitations !',
@@ -99,7 +96,7 @@ export default function GameManager(props) {
   const [allWords, setAllWords] = useState([]);
 
   // Nombre de round dans une partie :
-  const GLOBAL_ROUND = 1;
+  const GLOBAL_ROUND = 3;
 
   // Nombre de carte dans une main :
   const HAND_SIZE = 10;
@@ -182,7 +179,7 @@ export default function GameManager(props) {
     if (actualRound === GLOBAL_ROUND) {
       // FIN DE PARTIE
       return (
-        <EndPage say={say} rounds={rounds} title={modalTitle} emoji={modalEmoji} goToMenu={openMainMenu} restartGame={startNewGame} isLogged={props.isLogged} />
+        <EndPage say={say} rounds={rounds} title={modalTitle} goToMenu={openMainMenu} restartGame={startNewGame} isLogged={props.isLogged} />
       );
     } else {
       // ROUND
@@ -195,7 +192,6 @@ export default function GameManager(props) {
 
   const gameFinished = () => {
     setModalTitle(pickRandomList(winTitles));
-    setModalEmoji(pickRandomList(winEmojis));
     setActualRound(actualRound+1);
     setModalOpen(false);
   }
@@ -203,7 +199,6 @@ export default function GameManager(props) {
 
   // Fonction de passage au round suivant
   const nextRound = () => {
-    console.log(actualRound);
     if (actualRound<GLOBAL_ROUND-1) {
       closeModal();
       setActualRound(actualRound+1);
@@ -413,7 +408,7 @@ export default function GameManager(props) {
 
   // ---------- RENDU --------
   return (
-    <div className='game-bg w-full h-full'>
+    <div className='game-bg w-full h-screen fixed'>
       {
         (rounds.length > 0 && preferredVoice)
         // Si les componsants sont chargés et qu'il y a des voix disponibles, afficher le jeu

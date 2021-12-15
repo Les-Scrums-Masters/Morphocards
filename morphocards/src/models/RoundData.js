@@ -11,4 +11,17 @@ export default class RoundData {
         this.word = word;
     }
 
+    toMap() {
+        let map = {
+            isSuccess: this.success,
+            word: this.word.id
+        };
+
+        if (!this.success) {
+            map['userWord'] = this.userWord;
+        }
+
+        return map;
+    }
+
 }

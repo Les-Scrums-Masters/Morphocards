@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, doc, getDoc, setDoc} from 'firebase/firestore/lite';
-import { getAuth, GoogleAuthProvider  } from "firebase/auth";
+import { getFirestore, collection, getDocs, doc, getDoc, setDoc, updateDoc} from 'firebase/firestore/lite';
+import { getAuth, GoogleAuthProvider, signOut  } from "firebase/auth";
 import HandCardModel from './models/HandCardModel';
 import WordModel from './models/WordModel';
 
@@ -56,59 +56,61 @@ class FirebaseClass {
   }
 
 
-  async addUserRound(rounds,time) {
+  // Fonction qui enregistre une partie de l'utilisateur
+  async saveGame(rounds,time) {
 
-    //Récupère le document de l'utilisateur
+    // Récupère le document de l'utilisateur
     let docRef = doc(this.USERS_COLLECTION, Firebase.auth.currentUser.uid );
-    //let docSnap = await getDoc(docRef);
-    //Récupère les parties de ce joueur
-    let gameCollection = await collection(docRef, "games" );
+
+    // Récupération du numéro de partie de partie de l'utilisateur
+    let docSnap = await getDoc(docRef);
+
+    // Création de la variable du numéro de partie
+    let gameId = 0;
 
 
-    //Getting the biggest id
-    /*
-    let allGamesDoc = await getDocs( gameCollection );
-    let biggestId = 0;
-    console.log(allGamesDoc);
-    allGamesDoc.forEach((element) =>{
-      if(biggestId > element.id){
-        biggestId = element.id;
-      }
-    });
-    biggestId++;
-    console.log(biggestId+1);
-
-    let data = {
-      rounds:rounds,
-      time:time
+    let alreadyIncremend = false;
+    if (docSnap.exists()) {
+      // Le document existe, on défini le numéro de la partie à enregistrer
+      gameId = docSnap.get('gameId') + 1;
+    } else {
+      // Le document n'existe pas, on le crée
+      alreadyIncremend = true;
+      await setDoc(docRef, {gameId: 1});
     }
 
-    console.log(data);
-    let newDocRef = doc( gameCollection, 2 );
+    // Récupère les parties de ce joueur
+    let gamesCollection = collection(docRef, "games");
 
-    await setDoc(newDocRef, {
-      rounds: data
+    // Création des données de round
+    let array = [];
+    rounds.forEach((element) => {
+      array.push(element.toMap());
     });
 
-    let pushRound = [];*/
+    console.log(array);
 
-    /*
+    // Données à enregistrer dans la base
+    let data = {
+      rounds: array,
+      time:time ?? 0
+    }
 
-    // Conversion des cartes plateau en références :
-    let newCards = []
+    // Création du document dans lequel stocker la partie
+    let newDocRef = doc(gamesCollection, gameId.toString());
 
-    item.cards.forEach((element) => {
-      if(element.isBoard) {
-        newCards.push(element);
-      } else {
-        let cardRef = doc(this.CARDHAND_COLLECTION, element.value);
-        newCards.push({isBoard: element.isBoard, value: cardRef});
-      }
-    })
+    // Enregistrement du document de la partie
+    await setDoc(newDocRef, data);
 
-    await setDoc(docRef, {
-      cards: newCards
-    });*/
+    // Enregistrement du numéro de partie
+    if (!alreadyIncremend) {
+      await updateDoc(docRef, {gameId: gameId});
+    }
+
+  }
+
+  async logOut() {
+    await signOut(this.auth);
   }
 
   async getHandCards() {

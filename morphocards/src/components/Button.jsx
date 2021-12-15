@@ -7,7 +7,7 @@ import clickSound from '../sounds/button_click.ogg'
 export default function Button(props) {
 
     const [playClick] = useSound(clickSound, {
-      volume: 0.25,
+      volume: 0.3,
       interrupt: false
     })
 

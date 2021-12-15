@@ -3,6 +3,8 @@ import React, {useState, useEffect} from 'react';
 import Firebase from "./Firebase";
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import Button from './components/Button';
+import MusicSound from './components/MusicSound';
+import Loading from './components/Loading';
 
 
 export default function MainMenu(props){
@@ -58,6 +60,12 @@ export default function MainMenu(props){
           }
 
       </div>
+      { props.sound !== null ?
+
+          ( <MusicSound sound={props.sound} style={"absolute right-5 top-5" } /> )
+          : ""
+
+      }
 
       <a href="https://git.unistra.fr/les-scrums-masters/foc21-t3-a" className='absolute bottom-5 right-8 text-white text-opacity-50 hover:text-opacity-100'>
       Les Scrums Masters © 2021

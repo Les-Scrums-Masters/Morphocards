@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, doc, getDoc} from 'firebase/firestore/lite';
+import { getFirestore, collection, getDocs, doc, getDoc, setDoc} from 'firebase/firestore/lite';
 import { getAuth, GoogleAuthProvider  } from "firebase/auth";
 import HandCardModel from './models/HandCardModel';
 import WordModel from './models/WordModel';
@@ -56,19 +56,40 @@ class FirebaseClass {
   }
 
 
-  async addUserParty(rounds) {
+  async addUserRound(rounds,time) {
 
     //Récupère le document de l'utilisateur
     let docRef = doc(this.USERS_COLLECTION, Firebase.auth.currentUser.uid );
     //let docSnap = await getDoc(docRef);
-
     //Récupère les parties de ce joueur
-    let gameCollectionRef = collection(docRef, "game" );
+    let gameCollection = await collection(docRef, "games" );
 
-    
+    //Getting the biggest id
+    /*
+    let allGamesDoc = await getDocs( gameCollection );
+    let biggestId = 0;
+    console.log(allGamesDoc);
+    allGamesDoc.forEach((element) =>{
+      if(biggestId > element.id){
+        biggestId = element.id;
+      }
+    });
+    biggestId++;
+    console.log(biggestId+1);
 
-    console.log(gameCollectionRef);
-    let pushRound = [];
+    let data = {
+      rounds:rounds,
+      time:time
+    }
+
+    console.log(data);
+    let newDocRef = doc( gameCollection, 2 );
+
+    await setDoc(newDocRef, {
+      rounds: data
+    });
+
+    let pushRound = [];*/
 
     /*
 

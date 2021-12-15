@@ -231,7 +231,6 @@ export default function GameContext(props) {
     };
 
     const onDragUpdate = (update) => {
-      console.log(update)
       if(update.destination !== null){
         if( !isHand(update.destination.droppableId)){
           playHover();

@@ -18,7 +18,7 @@ export default function EndPage(props) {
         setconfetti( {fire: {}} );
 
         if(props.isLogged){
-          Firebase.addUserParty(props.rounds);
+          Firebase.addUserRound(props.rounds, 18.6);
         }
     }, [])
 

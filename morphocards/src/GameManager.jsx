@@ -11,6 +11,8 @@ import Button from './components/Button';
 import WordDisplay from './components/WordDisplay';
 import EndPage from './EndPage';
 
+import { get } from 'react-cookie';
+
 // Contenu de la boite de dialogue si le mot est trouvé :
 const wordSuccessEmoji = [
   String.fromCodePoint(0x1F600),
@@ -377,7 +379,6 @@ export default function GameManager(props) {
 
 
   useEffect(() => {
-
     // SI ELLES NE SONT PAS DEJE CHARGES, CHARGEMENT DES DONNES
     if (!intialDataLoaded) {
       setintialDataLoaded(true);
@@ -406,7 +407,6 @@ export default function GameManager(props) {
 
 
   // ---------- RENDU --------
-
   return (
     <div className='game-bg w-full h-screen fixed'>
       {
@@ -419,7 +419,7 @@ export default function GameManager(props) {
                 {modalContent}
             </Modal>
 
-            <GameBar rounds={rounds} actualRound={actualRound} openMenu={openMainMenu}/>
+            <GameBar rounds={rounds} actualRound={actualRound} openMenu={openMainMenu} sound={props.sound} cookies={props.cookies}/>
 
             {getMainComponent()}
 

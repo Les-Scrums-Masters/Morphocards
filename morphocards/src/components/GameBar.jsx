@@ -1,5 +1,6 @@
 import React from "react";
 import RoundList from "./RoundList";
+import MusicSound from './MusicSound';
 
 export default function GameBar(props) {
 
@@ -22,11 +23,14 @@ export default function GameBar(props) {
                 </p>
                 <RoundList rounds={props.rounds} actualRound={props.actualRound} />
             </div>
-            <div className="flex-1 flex justify-end">
+            <div className="flex-1 flex justify-end items-center gap-3">
                 {props.rounds.length === props.actualRound
                     ? ""
-                    : (<p className="text-white text-opacity-25 text-lg">0:00</p>)
+                    : (<p className="text-white text-opacity-50 text-lg">0:00</p>)
                 }
+
+                <MusicSound sound={props.sound} style={"" } />
+
             </div>
         </div>
     );

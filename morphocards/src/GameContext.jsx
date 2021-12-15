@@ -6,7 +6,12 @@ import Hand from './components/Hand';
 import { CheckIcon, MicrophoneIcon, VolumeUpIcon } from '@heroicons/react/outline'
 import GameBoard from './components/GameBoard';
 import RoundButton from './components/RoundButton';
+import useSound from 'use-sound';
 
+import dragCardSong from './sounds/card_drag_in.ogg';
+import dropCardSong from './sounds/card_drop_out.ogg';
+import loopCardSong from './sounds/card_loop_magical.ogg';
+import hoverCardSong from './sounds/small_mouseover.ogg'
 
 //Les items du boards, card ou emplacement
 export default function GameContext(props) {
@@ -22,6 +27,29 @@ export default function GameContext(props) {
   // Mot prononcé initialement
   const [initialSpreech, setInitialSpreech] = useState(false);
 
+
+  /*SON DE CARTE*/
+  const [playDrag] = useSound(dragCardSong ,{ 
+    playbackRate:0.8, //vitesse de lecture
+    interrupt: false,
+    volume:0.2,
+  });
+  const [playDrop] = useSound(dropCardSong,{
+    playbackRate:0.8, //vitesse de lecture
+    interrupt: false,
+    volume:0.2,
+  });
+
+  const [playHover] = useSound(hoverCardSong,{
+    playbackRate:0.8, //vitesse de lecture
+    interrupt: false,
+    volume:0.2,
+  });
+
+  const [ , {sound}] = useSound(loopCardSong, {
+    volume:0.10,
+   });
+   
   /* ------------------------ */
 
 
@@ -132,6 +160,9 @@ export default function GameContext(props) {
   // Fonction appelé lorsque le joueur va poser une carte
   const onDragEnd = (result) => {
 
+    //Arret du son Magique de carte en fade-out
+    sound.fade(0.07, 0, 400)
+
     const {destination, source} = result;
 
     /* ******************************* */
@@ -173,7 +204,7 @@ export default function GameContext(props) {
         for (const [key, value] of Object.entries(result)) {
           setList(key, value);
         }
-
+        playDrop();
     }
 
 
@@ -186,9 +217,38 @@ export default function GameContext(props) {
 
   }
 
+    // Fonction appelé lorsque le joueur va prendre une carte
+    const onDragStart = (result) => {
+      //Son de l'action prendre une carte
+        playDrag();
+
+        //Met la répétition du son
+        //Met un fade-in
+        //Joue le son magique lorsqu'on prend la carte et
+        sound.loop(true);
+        sound.fade(0, 0.07, 700) 
+        sound.play();
+    };
+
+    const onDragUpdate = (update) => {
+      console.log(update)
+      if(update.destination !== null){
+        if( !isHand(update.destination.droppableId)){
+          playHover();
+  
+        }
+      }
+
+  };
+
+  
   // Rendu
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
+    <DragDropContext
+    onDragEnd={onDragEnd}
+    onDragStart={onDragStart}
+    onDragUpdate={onDragUpdate}
+    >
 
       <div className="flex flex-col items-center justify-center gap-6 flex-grow flex-wrap">
 

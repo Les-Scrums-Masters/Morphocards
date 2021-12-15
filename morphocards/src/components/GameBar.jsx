@@ -1,8 +1,25 @@
-import React from "react";
+import React, {useRef, useImperativeHandle} from "react";
 import RoundList from "./RoundList";
 import MusicSound from './MusicSound';
+import Timer from './Timer';
 
-export default function GameBar(props) {
+const GameBar = React.forwardRef((props, ref) => {
+
+    // ---------- Timer ------------
+    const timerRef = useRef();
+
+    useImperativeHandle(ref, () => ({
+
+
+        getTime(){
+            //Renvoie le temps de son timer
+            return timerRef.current.getTime();
+        },
+
+        restartTimer(){
+            timerRef.current.restartTimer();
+        }
+    }))
 
     return(
         <div className="w-full flex flex-col md:flex-row items-center py-6 px-10 gap-4">
@@ -25,14 +42,14 @@ export default function GameBar(props) {
             </div>
             <div className="flex-1 flex justify-end items-center gap-3">
                 {props.rounds.length === props.actualRound
-                    ? ""
-                    : (<p className="text-white text-opacity-50 text-lg">0:00</p>)
+                    ? (<Timer classStyle={"hidden"} ref={timerRef}/>)
+                    : (<Timer ref={timerRef}/>)
                 }
-
                 <MusicSound sound={props.sound} />
-
             </div>
         </div>
     );
 
-}
+});
+
+export default GameBar;

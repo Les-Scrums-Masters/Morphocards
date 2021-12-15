@@ -41,7 +41,9 @@ export default function WindowManager(){
 
   // Rendu
   if( window === "game" ){
-    sound.fade(0.1, 0.05, 1000);
+    if(sound !== null){
+      sound.fade(0.1, 0.05, 1000);
+    }
 
     return (
       <GameManager setWindow={setWindow} isLogged={isLogged} sound={sound}  />

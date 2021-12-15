@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
 import GameContext from './GameContext'
 import Firebase from './Firebase'
 import Modal from './components/Modal'
@@ -94,7 +94,7 @@ export default function GameManager(props) {
   const [allWords, setAllWords] = useState([]);
 
   // Nombre de round dans une partie :
-  const GLOBAL_ROUND = 3;
+  const GLOBAL_ROUND = 5;
 
   // Nombre de carte dans une main :
   const HAND_SIZE = 10;
@@ -108,6 +108,9 @@ export default function GameManager(props) {
   // Données des rounds
   const [rounds, setRounds] = useState([]);
   const [initializedRounds, setInitializedRounds] = useState(false);
+
+  // ---------- GameBar ------------
+  const gameBarRef = useRef();
 
 
   // ------- Fonctions -------
@@ -155,6 +158,10 @@ export default function GameManager(props) {
 
   // Fonction qui démarre une nouvelle partie
   let startNewGame = () => {
+
+    //Recommence à 0 le timer
+    gameBarRef.current.restartTimer();
+
     setRounds([]);
     makeRounds();
     setActualRound(0);
@@ -171,18 +178,22 @@ export default function GameManager(props) {
   let getActualWord = () => rounds[actualRound].word.id;
 
 
+
+
+
   // Fonction qui retourne le composant à afficher
   let getMainComponent = () => {
     let round = rounds[actualRound];
     if (actualRound === GLOBAL_ROUND) {
       // FIN DE PARTIE
+
       return (
-        <EndPage say={say} rounds={rounds} title={modalTitle} goToMenu={openMainMenu} restartGame={startNewGame} isLogged={props.isLogged} />
+        <EndPage say={say} rounds={rounds} title={modalTitle} goToMenu={openMainMenu} restartGame={startNewGame} isLogged={props.isLogged} time={gameBarRef.current.getTime()} />
       );
     } else {
       // ROUND
       return (
-        <GameContext key={round.word.id} round={round} onWin={appWin} onFail={appFail} say={say}/>
+        <GameContext key={round.word.id} round={round} onWin={appWin} onFail={appFail} say={say} />
       );
     }
   }
@@ -417,7 +428,7 @@ export default function GameManager(props) {
                 {modalContent}
             </Modal>
 
-            <GameBar rounds={rounds} actualRound={actualRound} openMenu={openMainMenu} sound={props.sound} cookies={props.cookies}/>
+            <GameBar rounds={rounds} actualRound={actualRound} openMenu={openMainMenu} sound={props.sound} cookies={props.cookies} ref={gameBarRef} />
 
             {getMainComponent()}
 

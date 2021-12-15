@@ -16,7 +16,7 @@ import hoverCardSong from './sounds/small_mouseover.ogg'
 //Les items du boards, card ou emplacement
 export default function GameContext(props) {
 
-  
+
   // Références à la main et au plateau
   let handRef = useRef();
   const boardRef = useRef();
@@ -29,7 +29,7 @@ export default function GameContext(props) {
 
 
   /*SON DE CARTE*/
-  const [playDrag] = useSound(dragCardSong ,{ 
+  const [playDrag] = useSound(dragCardSong ,{
     playbackRate:0.8, //vitesse de lecture
     interrupt: false,
     volume:0.2,
@@ -49,7 +49,7 @@ export default function GameContext(props) {
   const [ , {sound}] = useSound(loopCardSong, {
     volume:0.10,
    });
-   
+
   /* ------------------------ */
 
 
@@ -161,7 +161,7 @@ export default function GameContext(props) {
   const onDragEnd = (result) => {
 
     //Arret du son Magique de carte en fade-out
-    sound.fade(0.07, 0, 400)
+    sound.fade(0.025, 0, 400)
 
     const {destination, source} = result;
 
@@ -180,9 +180,9 @@ export default function GameContext(props) {
 
     /* ******************************* */
     // Déplacement Main <-> Main
-    if (source.droppableId === destination.droppableId 
+    if (source.droppableId === destination.droppableId
       && isHand(destination.droppableId)) {
-    
+
       const items = reorder(
           getList(source.droppableId),
           source.index,
@@ -190,9 +190,9 @@ export default function GameContext(props) {
       );
 
       setList(handID,items);
-      
+
     /* ******************************* */
-    // Autre déplacement 
+    // Autre déplacement
     } else {
         const result = move(
             getList(source.droppableId),
@@ -226,22 +226,21 @@ export default function GameContext(props) {
         //Met un fade-in
         //Joue le son magique lorsqu'on prend la carte et
         sound.loop(true);
-        sound.fade(0, 0.07, 700) 
+        sound.fade(0, 0.025, 700)
         sound.play();
     };
 
     const onDragUpdate = (update) => {
-      console.log(update)
       if(update.destination !== null){
         if( !isHand(update.destination.droppableId)){
           playHover();
-  
+
         }
       }
 
   };
 
-  
+
   // Rendu
   return (
     <DragDropContext

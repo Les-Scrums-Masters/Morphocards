@@ -18,7 +18,7 @@ export default function EndPage(props) {
     })
 
     const [playFinishedSound] = useSound(finishedSound, {
-        volume: 0.2,
+        volume: 0.35,
         interrupt: false
     })
 
@@ -30,7 +30,7 @@ export default function EndPage(props) {
           Firebase.addUserRound(props.rounds, 18.6);
         }
 
-    }, [playFinishedSound])
+    }, [playFinishedSound, props.isLogged])
 
 
 
@@ -40,7 +40,7 @@ export default function EndPage(props) {
 
 
             <div className="bg-white rounded-xl p-10 text-center h-full flex flex-col gap-3">
-                <h1 className="text-6xl">{props.emoji}</h1>
+                <h1 className="text-6xl">{String.fromCodePoint(0x1F973)}</h1>
                 <h3 className="text-2xl text-gray-900 font-bold mt-5">{props.title}</h3>
 
                 <div className="mt-10 flex flex-col gap-3">

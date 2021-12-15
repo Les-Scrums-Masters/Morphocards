@@ -1,5 +1,5 @@
 import { ArrowRightIcon } from '@heroicons/react/outline';
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import Firebase from "./Firebase";
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import Button from './components/Button';
@@ -22,7 +22,7 @@ export default function MainMenu(props){
         props.setLogged(false);
       }
     });
-  }, [])
+  }, [props])
 
   return(
     <div className="w-full h-full overscroll-none overflow-hidden flex items-center

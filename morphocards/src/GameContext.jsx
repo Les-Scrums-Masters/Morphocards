@@ -34,22 +34,22 @@ export default function GameContext(props) {
   const [playDrag] = useSound(dragCardSong ,{
     playbackRate:0.8, //vitesse de lecture
     interrupt: false,
-    volume:0.2,
+    volume:0.25,
   });
   const [playDrop] = useSound(dropCardSong,{
     playbackRate:0.8, //vitesse de lecture
     interrupt: false,
-    volume:0.2,
+    volume:0.3,
   });
 
   const [playHover] = useSound(hoverCardSong,{
     playbackRate:0.8, //vitesse de lecture
     interrupt: false,
-    volume:0.2,
+    volume:0.3,
   });
 
   const [playSuccess] = useSound(roundSuccessSound, {
-    volume: 0.2,
+    volume: 0.3,
     interrupt: false
   });
 
@@ -58,9 +58,8 @@ export default function GameContext(props) {
     interrupt: false
   })
 
-  const [ , {sound}] = useSound(loopCardSong, {
-    volume:0.10,
-   });
+  const [ , {sound}] = useSound(loopCardSong, {});
+  const dropLoopVolume = 0.020;
 
   /* ------------------------ */
 
@@ -175,7 +174,7 @@ export default function GameContext(props) {
   const onDragEnd = (result) => {
 
     //Arret du son Magique de carte en fade-out
-    sound.fade(0.025, 0, 400)
+    sound.fade(dropLoopVolume, 0, 400)
 
     const {destination, source} = result;
 
@@ -240,7 +239,7 @@ export default function GameContext(props) {
         //Met un fade-in
         //Joue le son magique lorsqu'on prend la carte et
         sound.loop(true);
-        sound.fade(0, 0.025, 700)
+        sound.fade(0, dropLoopVolume, 700)
         sound.play();
     };
 

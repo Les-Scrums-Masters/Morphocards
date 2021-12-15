@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import Button from "./components/Button";
 import RoundResult from "./components/RoundResult";
 import ReactCanvasConfetti from 'react-canvas-confetti';
+import Firebase from './Firebase'
 
 
 
@@ -13,10 +14,12 @@ export default function EndPage(props) {
         reset:false
     })
 
-    
-
     useEffect(() => {
         setconfetti( {fire: {}} );
+
+        if(props.isLogged){
+          Firebase.addUserParty(props.rounds);
+        }
     }, [])
 
 
@@ -49,11 +52,11 @@ export default function EndPage(props) {
                     <Button onClick={props.goToMenu} color="focus:ring-red-500 text-white hover:bg-red-700 bg-red-600">
                         Retour au menu principal
                     </Button>
-                    
+
                     <Button onClick={props.restartGame} color="text-white hover:bg-indigo-700 bg-indigo-600 focus:ring-indigo-500">
                         Rejouer
                     </Button>
-                    
+
                 </div>
 
             </div>

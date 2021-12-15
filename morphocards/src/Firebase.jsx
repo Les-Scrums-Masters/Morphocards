@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs} from 'firebase/firestore/lite';
+import { getFirestore, collection, getDocs, doc, getDoc} from 'firebase/firestore/lite';
 import { getAuth, GoogleAuthProvider  } from "firebase/auth";
 import HandCardModel from './models/HandCardModel';
 import WordModel from './models/WordModel';
@@ -12,7 +12,7 @@ class FirebaseClass {
 
   constructor(){
    if(! FirebaseClass.instance){
-     
+
     // Your web app's Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyCIy172a-eDssYLn7uTCPvUlHLzrtOvV5s",
@@ -47,11 +47,46 @@ class FirebaseClass {
     // Récupération des collections :
     this.CARDHAND_COLLECTION = collection(db, "cards_handV2");
     this.WORDS_COLLECTION = collection(db, "wordsV2");
+    this.USERS_COLLECTION = collection(db, "users");
 
     FirebaseClass.instance = this;
    }
 
    return FirebaseClass.instance;
+  }
+
+
+  async addUserParty(rounds) {
+
+    //Récupère le document de l'utilisateur
+    let docRef = doc(this.USERS_COLLECTION, Firebase.auth.currentUser.uid );
+    //let docSnap = await getDoc(docRef);
+
+    //Récupère les parties de ce joueur
+    let gameCollectionRef = collection(docRef, "game" );
+
+    
+
+    console.log(gameCollectionRef);
+    let pushRound = [];
+
+    /*
+
+    // Conversion des cartes plateau en références :
+    let newCards = []
+
+    item.cards.forEach((element) => {
+      if(element.isBoard) {
+        newCards.push(element);
+      } else {
+        let cardRef = doc(this.CARDHAND_COLLECTION, element.value);
+        newCards.push({isBoard: element.isBoard, value: cardRef});
+      }
+    })
+
+    await setDoc(docRef, {
+      cards: newCards
+    });*/
   }
 
   async getHandCards() {

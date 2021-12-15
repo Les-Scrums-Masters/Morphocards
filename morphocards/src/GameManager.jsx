@@ -22,9 +22,9 @@ const wordSuccessEmoji = [
   String.fromCodePoint(0x1F970)
 ];
 const wordSuccessTitles = [
-  'Bien joué !', 
-  'Trop fort !', 
-  'Bravo !', 
+  'Bien joué !',
+  'Trop fort !',
+  'Bravo !',
   'C\'est ça !'
 ];
 
@@ -39,9 +39,9 @@ const winEmojis = [
   String.fromCodePoint(0x1F60E)
 ];
 const winTitles = [
-  'Partie terminée !', 
-  'Félicitations !', 
-  'C\'etait une belle partie !', 
+  'Partie terminée !',
+  'Félicitations !',
+  'C\'etait une belle partie !',
   'Belle performance !'
 ];
 
@@ -59,12 +59,12 @@ const winFailedEmojis = [
   String.fromCodePoint(0x1F615)
 ];
 const wordFailedTitles = [
-  'Dommage !', 
-  'Retente ta chance !', 
-  'va voir gossa', 
-  'Mince', 
-  'Misèricorde', 
-  'oups', 
+  'Dommage !',
+  'Retente ta chance !',
+  'va voir gossa',
+  'Mince',
+  'Misèricorde',
+  'oups',
   'Ce n\'est pas ça !'
 ];
 
@@ -98,14 +98,14 @@ export default function GameManager(props) {
   const [allWords, setAllWords] = useState([]);
 
   // Nombre de round dans une partie :
-  const GLOBAL_ROUND = 3;
+  const GLOBAL_ROUND = 1;
 
   // Nombre de carte dans une main :
   const HAND_SIZE = 10;
 
 
   // ------- Données des rounds -------
-  
+
   // N° du round actuel :
   const [actualRound, setActualRound] = useState(0);
 
@@ -119,7 +119,7 @@ export default function GameManager(props) {
   const say = useCallback((text) => {
     if (preferredVoice && supported) {
       cancel();
-      speak({text: text, voice: preferredVoice});
+      //speak({text: text, voice: preferredVoice});
     }
   }, [speak, preferredVoice, cancel, supported])
 
@@ -136,7 +136,7 @@ export default function GameManager(props) {
       defaultVoice = frVoices[0];
     }
 
-    // // Filter afin d'obtenir Denise 
+    // // Filter afin d'obtenir Denise
     // let prefVoices = voices.filter((voice) => voice["voiceURI"] === 'Microsoft Denise Online (Natural) - French (France)');
 
     // if (prefVoices.length !== 0) {
@@ -165,8 +165,8 @@ export default function GameManager(props) {
 
 
   // Fonction qui retourne le texte devant être affiché dans le bouton suivant
-  const getNextButtonText = () => (actualRound===GLOBAL_ROUND-1) 
-    ? "Terminer la partie" 
+  const getNextButtonText = () => (actualRound===GLOBAL_ROUND-1)
+    ? "Terminer la partie"
     : "Passer au mot suivant";
 
 
@@ -180,7 +180,7 @@ export default function GameManager(props) {
     if (actualRound === GLOBAL_ROUND) {
       // FIN DE PARTIE
       return (
-        <EndPage say={say} rounds={rounds} title={modalTitle} emoji={modalEmoji} goToMenu={openMainMenu} restartGame={startNewGame} />
+        <EndPage say={say} rounds={rounds} title={modalTitle} emoji={modalEmoji} goToMenu={openMainMenu} restartGame={startNewGame} isLogged={props.isLogged} />
       );
     } else {
       // ROUND
@@ -240,7 +240,7 @@ export default function GameManager(props) {
           {getNextButtonText()}
         </Button>
       </div>
-      
+
     ));
 
     setModalOpen(true);
@@ -259,7 +259,7 @@ export default function GameManager(props) {
 
     setModalTitle(pickRandomList(wordFailedTitles));
     setModalEmoji(pickRandomList(winFailedEmojis));
-    
+
     setModalContent(
       <div className='grid gap-3'>
         <WordDisplay word={getActualWord()} legend="Le mot était" say={say} align="center" />
@@ -370,7 +370,7 @@ export default function GameManager(props) {
     // Définition des rounds du jeu :
     setRounds(roundsList);
 
-    
+
   }, [getUniqueRandom, allHandCards, allWords, getHandCard]);
 
 
@@ -413,7 +413,7 @@ export default function GameManager(props) {
 
 
   // ---------- RENDU --------
-  
+
   return (
     <div className='game-bg w-full h-full'>
       {
@@ -421,15 +421,15 @@ export default function GameManager(props) {
         // Si les componsants sont chargés et qu'il y a des voix disponibles, afficher le jeu
         ? (
           <div className="w-full h-full overscroll-none overflow-hidden flex flex-col">
-    
+
             <Modal open={modalOpen} emoji={modalEmoji} title={modalTitle} buttons={Buttons} onClose={closeModal}>
                 {modalContent}
             </Modal>
-    
+
             <GameBar rounds={rounds} actualRound={actualRound} openMenu={openMainMenu}/>
-    
+
             {getMainComponent()}
-    
+
           </div>
           )
         // Sinon, afficher le chargement

@@ -94,7 +94,7 @@ export default function GameManager(props) {
   const [allWords, setAllWords] = useState([]);
 
   // Nombre de round dans une partie :
-  const GLOBAL_ROUND = 1;
+  const GLOBAL_ROUND = 5;
 
   // Nombre de carte dans une main :
   const HAND_SIZE = 10;
@@ -158,6 +158,10 @@ export default function GameManager(props) {
 
   // Fonction qui démarre une nouvelle partie
   let startNewGame = () => {
+
+    //Recommence à 0 le timer
+    gameBarRef.current.restartTimer();
+
     setRounds([]);
     makeRounds();
     setActualRound(0);
@@ -183,13 +187,8 @@ export default function GameManager(props) {
     if (actualRound === GLOBAL_ROUND) {
       // FIN DE PARTIE
 
-      //Obligé de faire ainsi car il va demander une fois de trop quand la gameBar n'aura plus de timer
-      let gameTime;
-      if(gameBarRef.current.getTime()){
-        gameTime = gameBarRef.current.getTime();
-      }
       return (
-        <EndPage say={say} rounds={rounds} title={modalTitle} goToMenu={openMainMenu} restartGame={startNewGame} isLogged={props.isLogged} time={gameTime} />
+        <EndPage say={say} rounds={rounds} title={modalTitle} goToMenu={openMainMenu} restartGame={startNewGame} isLogged={props.isLogged} time={gameBarRef.current.getTime()} />
       );
     } else {
       // ROUND

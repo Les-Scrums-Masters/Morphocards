@@ -7,20 +7,17 @@ const GameBar = React.forwardRef((props, ref) => {
 
     // ---------- Timer ------------
     const timerRef = useRef();
-    let gameTime;
 
     useImperativeHandle(ref, () => ({
 
 
         getTime(){
             //Renvoie le temps de son timer
-            if(timerRef.current !== null){
-                gameTime = timerRef.current.getTime();
-                return gameTime;
-            }
-            //Repetition donc quand il l'a demandé une fois, renvoie false car timerRef.current devient null (plus affiché dans la gameBar)
-            console.log(gameTime);
-            return gameTime;
+            return timerRef.current.getTime();
+        },
+
+        restartTimer(){
+            timerRef.current.restartTimer();
         }
     }))
 

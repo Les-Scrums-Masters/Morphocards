@@ -4,14 +4,12 @@ import Firebase from './Firebase'
 import Modal from './components/Modal'
 import RoundData from './models/RoundData'
 import { useSpeechSynthesis } from 'react-speech-kit';
-
 import Loading from './components/Loading';
 import GameBar from './components/GameBar';
 import HandCardModel from './models/HandCardModel';
 import Button from './components/Button';
 import WordDisplay from './components/WordDisplay';
 import EndPage from './EndPage';
-
 
 // Contenu de la boite de dialogue si le mot est trouvé :
 const wordSuccessEmoji = [
@@ -69,6 +67,7 @@ const wordFailedTitles = [
 ];
 
 
+// Composant
 export default function GameManager(props) {
 
   // ------- TTS -------
@@ -112,6 +111,7 @@ export default function GameManager(props) {
   // Données des rounds
   const [rounds, setRounds] = useState([]);
   const [initializedRounds, setInitializedRounds] = useState(false);
+
 
   // ------- Fonctions -------
 
@@ -269,10 +269,10 @@ export default function GameManager(props) {
 
     setButtons((
       <div className='py-3 grid gap-3'>
-        <Button onClick={restartRound} color="focus:ring-red-500 text-white hover:bg-red-700 bg-red-600">
+        <Button onClick={restartRound} color="ring-red-200 text-white hover:bg-red-700 bg-red-600">
           Réessayer
         </Button>
-        <Button onClick={nextRound} color="text-white hover:bg-indigo-700 bg-indigo-600 focus:ring-indigo-500">
+        <Button onClick={nextRound} color="text-white hover:bg-indigo-700 bg-indigo-600 ring-indigo-200">
           {getNextButtonText()}
         </Button>
       </div>
@@ -421,6 +421,8 @@ export default function GameManager(props) {
         // Si les componsants sont chargés et qu'il y a des voix disponibles, afficher le jeu
         ? (
           <div className="w-full h-full overscroll-none overflow-hidden flex flex-col">
+
+{console.log(preferredVoice)}
     
             <Modal open={modalOpen} emoji={modalEmoji} title={modalTitle} buttons={Buttons} onClose={closeModal}>
                 {modalContent}

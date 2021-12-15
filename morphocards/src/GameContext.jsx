@@ -11,7 +11,9 @@ import useSound from 'use-sound';
 import dragCardSong from './sounds/card_drag_in.ogg';
 import dropCardSong from './sounds/card_drop_out.ogg';
 import loopCardSong from './sounds/card_loop_magical.ogg';
-import hoverCardSong from './sounds/small_mouseover.ogg'
+import hoverCardSong from './sounds/small_mouseover.ogg';
+import roundSuccessSound from './sounds/round_success.ogg';
+import roundFailSound from './sounds/round_fail.ogg';
 
 //Les items du boards, card ou emplacement
 export default function GameContext(props) {
@@ -46,9 +48,20 @@ export default function GameContext(props) {
     volume:0.2,
   });
 
+  const [playSuccess] = useSound(roundSuccessSound, {
+    volume: 0.2,
+    interrupt: false
+  });
+
+  const [playFail] = useSound(roundFailSound, {
+    volume: 0.4,
+    interrupt: false
+  })
+
   const [ , {sound}] = useSound(loopCardSong, {
     volume:0.10,
    });
+
    
   /* ------------------------ */
 
@@ -82,10 +95,12 @@ export default function GameContext(props) {
       if (boardRef.current.checkWin()) {
         // Gagné
         props.onWin();
+        playSuccess();
       }else{
         // Perdu
         let playerWord = boardRef.current.getWord();
         props.onFail(playerWord);
+        playFail();
       }
     }
 

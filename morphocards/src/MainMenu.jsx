@@ -1,5 +1,6 @@
 import { ArrowRightIcon } from '@heroicons/react/outline';
 import React from 'react';
+import Button from './components/Button';
 
 export default function MainMenu(props){
 
@@ -25,15 +26,13 @@ export default function MainMenu(props){
 
         <p className='text-center'>Jouez a morphocards parce que c'est un bon jeu :)</p>
 
-        <button onClick={play} className='bg-indigo-500 w-full font-bold text-white text-lg rounded-xl py-3 px-5 hover:ring-4 ring-indigo-200 transition-all duration-200 ease-out hover:bg-indigo-400 active:bg-indigo-800 flex gap-3 items-center justify-center mt-5'>
+        <Button onClick={play} color='bg-indigo-500 text-white ring-indigo-200 hover:bg-indigo-400 active:bg-indigo-800 mt-5' paddingY="py-3" textSize="text-lg">
           <div className='flex-1'></div>
           Jouer 
           <div className='flex-1 flex justify-end'>
             <ArrowRightIcon className='h-8 w-8'/>
           </div>
-        </button>
-
-
+        </Button>
       </div>
       
       <a href="https://git.unistra.fr/les-scrums-masters/foc21-t3-a" className='absolute bottom-5 right-8 text-white text-opacity-50 hover:text-opacity-100'>

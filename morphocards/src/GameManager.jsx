@@ -11,6 +11,8 @@ import Button from './components/Button';
 import WordDisplay from './components/WordDisplay';
 import EndPage from './EndPage';
 
+import { get } from 'react-cookie';
+
 // Contenu de la boite de dialogue si le mot est trouvé :
 const wordSuccessEmoji = [
   String.fromCodePoint(0x1F600),
@@ -119,7 +121,7 @@ export default function GameManager(props) {
   const say = useCallback((text) => {
     if (preferredVoice && supported) {
       cancel();
-      //speak({text: text, voice: preferredVoice});
+      speak({text: text, voice: preferredVoice});
     }
   }, [speak, preferredVoice, cancel, supported])
 
@@ -205,10 +207,8 @@ export default function GameManager(props) {
     if (actualRound<GLOBAL_ROUND-1) {
       closeModal();
       setActualRound(actualRound+1);
-      console.log("Round suivant");
     } else {
       gameFinished()
-      console.log("Partie terminée");
     }
   }
 
@@ -384,7 +384,6 @@ export default function GameManager(props) {
 
 
   useEffect(() => {
-
     // SI ELLES NE SONT PAS DEJE CHARGES, CHARGEMENT DES DONNES
     if (!intialDataLoaded) {
       setintialDataLoaded(true);
@@ -413,7 +412,6 @@ export default function GameManager(props) {
 
 
   // ---------- RENDU --------
-
   return (
     <div className='game-bg w-full h-full'>
       {
@@ -426,7 +424,7 @@ export default function GameManager(props) {
                 {modalContent}
             </Modal>
 
-            <GameBar rounds={rounds} actualRound={actualRound} openMenu={openMainMenu}/>
+            <GameBar rounds={rounds} actualRound={actualRound} openMenu={openMainMenu} sound={props.sound} cookies={props.cookies}/>
 
             {getMainComponent()}
 

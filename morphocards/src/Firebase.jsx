@@ -64,6 +64,7 @@ class FirebaseClass {
     //Récupère les parties de ce joueur
     let gameCollection = await collection(docRef, "games" );
 
+
     //Getting the biggest id
     /*
     let allGamesDoc = await getDocs( gameCollection );

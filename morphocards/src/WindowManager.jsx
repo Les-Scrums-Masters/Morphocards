@@ -6,8 +6,14 @@ import GameManager from './GameManager'
 import useSound from 'use-sound';
 import musicSound from './sounds/lofi.ogg';
 
+//cookie
+import { useCookies } from 'react-cookie';
+import Cookies from 'universal-cookie';
+
+
 
 export default function WindowManager(){
+
 
 
 
@@ -17,7 +23,7 @@ export default function WindowManager(){
   const [ , {sound}] = useSound(musicSound, {
     volume: 0.05,
     interrupt: false
-  })  
+  })
 
   //menu, game
   const [window, setWindow] = useState("menu");
@@ -25,27 +31,31 @@ export default function WindowManager(){
   //Si l'utilisateur est connecté ou pas
   const [ isLogged, setLogged ] = useState(false);
   useEffect(()=> {
-    
+
     // LANCER LA MUSIQUE LORSQU'ELLE EST ACTUALISEE
     if (sound !== null && !initializedSound) {
       // LANCER LA MUSIQUE
-      console.log("Music launched");
       setInitializedSound(true);
       sound.loop(true);
+      sound.fade(0, 0.1, 1000);
       sound.play();
-      
     }
+
+
+
   }, [sound, initializedSound]);
 
-  
+
   // Rendu
   if( window === "game" ){
+    sound.fade(0.1, 0.05, 1000);
+
     return (
-      <GameManager setWindow={setWindow} isLogged={isLogged} />
+      <GameManager setWindow={setWindow} isLogged={isLogged} sound={sound}  />
     );
   } else{
     return(
-      <MainMenu setWindow={setWindow} setLogged={setLogged} isLogged={isLogged} />
+      <MainMenu setWindow={setWindow} setLogged={setLogged} isLogged={isLogged} sound={sound}  />
     );
   }
 

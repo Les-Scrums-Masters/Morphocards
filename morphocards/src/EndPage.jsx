@@ -2,8 +2,11 @@ import React, {useState, useEffect} from "react";
 import Button from "./components/Button";
 import RoundResult from "./components/RoundResult";
 import ReactCanvasConfetti from 'react-canvas-confetti';
+
+import useSound from "use-sound";
 import Firebase from './Firebase'
 
+import finishedSound from './sounds/win.ogg';
 
 
 export default function EndPage(props) {
@@ -14,13 +17,21 @@ export default function EndPage(props) {
         reset:false
     })
 
+    const [playFinishedSound] = useSound(finishedSound, {
+        volume: 0.2,
+        interrupt: false
+    })
+
     useEffect(() => {
         setconfetti( {fire: {}} );
+        playFinishedSound();
 
         if(props.isLogged){
           Firebase.addUserRound(props.rounds, 18.6);
         }
-    }, [])
+
+    }, [playFinishedSound])
+
 
 
     return(

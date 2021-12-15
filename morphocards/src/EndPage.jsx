@@ -2,7 +2,9 @@ import React, {useState, useEffect} from "react";
 import Button from "./components/Button";
 import RoundResult from "./components/RoundResult";
 import ReactCanvasConfetti from 'react-canvas-confetti';
+
 import useSound from "use-sound";
+import Firebase from './Firebase'
 
 import finishedSound from './sounds/win.ogg';
 
@@ -19,12 +21,17 @@ export default function EndPage(props) {
         volume: 0.2,
         interrupt: false
     })
-    
 
     useEffect(() => {
         setconfetti( {fire: {}} );
         playFinishedSound();
+
+        if(props.isLogged){
+          Firebase.addUserRound(props.rounds, 18.6);
+        }
+
     }, [playFinishedSound])
+
 
 
     return(
@@ -56,11 +63,11 @@ export default function EndPage(props) {
                     <Button onClick={props.goToMenu} color="focus:ring-red-500 text-white hover:bg-red-700 bg-red-600">
                         Retour au menu principal
                     </Button>
-                    
+
                     <Button onClick={props.restartGame} color="text-white hover:bg-indigo-700 bg-indigo-600 focus:ring-indigo-500">
                         Rejouer
                     </Button>
-                    
+
                 </div>
 
             </div>

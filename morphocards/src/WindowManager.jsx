@@ -22,6 +22,8 @@ export default function WindowManager(){
   //menu, game
   const [window, setWindow] = useState("menu");
 
+  //Si l'utilisateur est connecté ou pas
+  const [ isLogged, setLogged ] = useState(false);
   useEffect(()=> {
     
     // LANCER LA MUSIQUE LORSQU'ELLE EST ACTUALISEE
@@ -35,14 +37,15 @@ export default function WindowManager(){
     }
   }, [sound, initializedSound]);
 
+  
   // Rendu
   if( window === "game" ){
     return (
-      <GameManager setWindow={setWindow} />
+      <GameManager setWindow={setWindow} isLogged={isLogged} />
     );
   } else{
-    return( 
-      <MainMenu setWindow={setWindow} /> 
+    return(
+      <MainMenu setWindow={setWindow} setLogged={setLogged} isLogged={isLogged} />
     );
   }
 

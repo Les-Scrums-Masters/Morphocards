@@ -4,11 +4,8 @@ import Firebase from "./Firebase";
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import Button from './components/Button';
 import MusicSound from './components/MusicSound';
-import Loading from './components/Loading';
-
 
 export default function MainMenu(props){
-
 
   const play = () => {
     props.setWindow("game");
@@ -73,8 +70,7 @@ export default function MainMenu(props){
 
       </div>
       { props.sound !== null ?
-
-          ( <MusicSound sound={props.sound} style={"absolute right-5 top-5" } /> )
+          ( <MusicSound sound={props.sound} additionnalStyle="absolute right-10 top-8" />)
           : ""
 
       }

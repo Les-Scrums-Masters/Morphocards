@@ -6,15 +6,8 @@ import GameManager from './GameManager'
 import useSound from 'use-sound';
 import musicSound from './sounds/lofi.ogg';
 
-//cookie
-import { useCookies } from 'react-cookie';
-import Cookies from 'universal-cookie';
-
-
 
 export default function WindowManager(){
-
-
 
 
   // ------- Musique -------

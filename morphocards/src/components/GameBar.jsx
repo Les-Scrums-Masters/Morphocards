@@ -29,7 +29,7 @@ export default function GameBar(props) {
                     : (<p className="text-white text-opacity-50 text-lg">0:00</p>)
                 }
 
-                <MusicSound sound={props.sound} style={"" } />
+                <MusicSound sound={props.sound} />
 
             </div>
         </div>

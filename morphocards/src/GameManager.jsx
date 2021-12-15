@@ -11,8 +11,6 @@ import Button from './components/Button';
 import WordDisplay from './components/WordDisplay';
 import EndPage from './EndPage';
 
-import { get } from 'react-cookie';
-
 // Contenu de la boite de dialogue si le mot est trouvé :
 const wordSuccessEmoji = [
   String.fromCodePoint(0x1F600),

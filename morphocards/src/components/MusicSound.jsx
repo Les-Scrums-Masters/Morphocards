@@ -1,6 +1,4 @@
 import React, {useState, useEffect} from "react";
-import useSound from 'use-sound';
-
 
 export default function MusicSound(props) {
 
@@ -24,14 +22,13 @@ export default function MusicSound(props) {
       // Affiche le bon état de la musique, (attente pour que la musique ai le temps de charger)
       setTimeout(() => {
         if(props.sound !== null){
-          console.log(props.sound.playing());
           if( !props.sound.playing() ){
             setMusicLogo(logoStop);
           }
         }
-      }, 50);
+      }, 150);
 
-    }, [setMusicLogo])
+    }, [setMusicLogo, logoStop, props.sound])
 
 
     const playStop = () =>{
@@ -48,7 +45,7 @@ export default function MusicSound(props) {
 
     return(<button
         type="button"
-        className={" "+ props.style}
+        className={" "+ props.additionnalStyle}
         onClick={() => {
           playStop();
         }}>

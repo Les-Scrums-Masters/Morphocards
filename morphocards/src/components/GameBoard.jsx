@@ -12,7 +12,7 @@ const GameBoard = React.forwardRef((props, ref) => {
     ));
     
 
-    // Fonctions incluses dans useImperativeHandle afin qu'elles soientaccésibles depuis le parent
+    // Fonctions incluses dans useImperativeHandle afin qu'elles soient accésibles depuis le parent
     useImperativeHandle(ref, () => ({
 
 

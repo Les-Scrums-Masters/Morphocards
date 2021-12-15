@@ -17,27 +17,35 @@ export default function EndPage(props) {
         reset:false
     })
 
-    const [playFinishedSound] = useSound(finishedSound, {
+    const [playFinishedSound, {sound}] = useSound(finishedSound, {
         volume: 0.35,
         interrupt: false
     })
 
-    useEffect(() => {
-        setconfetti( {fire: {}} );
-        playFinishedSound();
+    const [initialized, setInitialized] = useState(false);
+    const [played, setPlayed] = useState(false);
 
-        if(props.isLogged){
-          Firebase.addUserRound(props.rounds, 18.6);
+    useEffect(() => {
+        
+        if(!initialized) {
+            setInitialized(true);
+            setconfetti( {fire: {}} );
+            if(props.isLogged){
+                Firebase.saveGame(props.rounds, 18.6);
+            }
         }
 
-    }, [playFinishedSound, props.isLogged])
+        if(!played && sound !== null) {
+            setPlayed(false);
+            playFinishedSound();
+        }
+
+    }, [playFinishedSound, props.isLogged, props.rounds, initialized, played, sound])
 
 
 
     return(
         <div className="container mx-auto h-full pt-5 pb-10">
-
-
 
             <div className="bg-white rounded-xl p-10 text-center h-full flex flex-col gap-3">
                 <h1 className="text-6xl">{String.fromCodePoint(0x1F973)}</h1>
@@ -60,11 +68,11 @@ export default function EndPage(props) {
 
                 <div className="flex gap-3 items-center">
 
-                    <Button onClick={props.goToMenu} color="focus:ring-red-500 text-white hover:bg-red-700 bg-red-600">
+                    <Button onClick={props.goToMenu} color="ring-red-200 text-white hover:bg-red-700 bg-red-600">
                         Retour au menu principal
                     </Button>
 
-                    <Button onClick={props.restartGame} color="text-white hover:bg-indigo-700 bg-indigo-600 focus:ring-indigo-500">
+                    <Button onClick={props.restartGame} color="text-white hover:bg-indigo-700 bg-indigo-600 ring-indigo-200">
                         Rejouer
                     </Button>
 

@@ -197,14 +197,11 @@ export default function GameManager(props) {
 
   // Fonction de passage au round suivant
   const nextRound = () => {
-    console.log(actualRound);
     if (actualRound<GLOBAL_ROUND-1) {
       closeModal();
       setActualRound(actualRound+1);
-      console.log("Round suivant");
     } else {
       gameFinished()
-      console.log("Partie terminée");
     }
   }
 
@@ -411,7 +408,7 @@ export default function GameManager(props) {
   // ---------- RENDU --------
 
   return (
-    <div className='game-bg w-full h-full'>
+    <div className='game-bg w-full h-screen fixed'>
       {
         (rounds.length > 0 && preferredVoice)
         // Si les componsants sont chargés et qu'il y a des voix disponibles, afficher le jeu

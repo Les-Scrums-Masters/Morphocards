@@ -49,17 +49,29 @@ export default function MainMenu(props){
             <ArrowRightIcon className='h-8 w-8'/>
           </div>
         </Button>
-          {
-            props.isLogged ?
-              Firebase.auth.currentUser.displayName
-              :       (<div id="login">
-                          <StyledFirebaseAuth uiConfig={Firebase.uiConfig} firebaseAuth={Firebase.auth} />
-                      </div>)
-          }
+          
+        <div className='mt-5' >
+        {
+          props.isLogged 
+            ? (
+              <div id="user" className='text-center' >
+                <p>Vous êtes connecté en tant que <span className='font-bold'>{Firebase.auth.currentUser.displayName}</span>
+                </p>
+                <button className='text-red-500 hover:text-red-400 active:text-red-600' onClick={() => {
+                  Firebase.logOut();
+                }}>Se déconnecter</button>
+              </div>
+            ) 
+            : (<div id="login">
+                <p className='italic text-gray-500 text-center'>Connectez vous pour enregistrer vos parties et entrer dans le classement !</p>
+                <StyledFirebaseAuth uiConfig={Firebase.uiConfig} firebaseAuth={Firebase.auth} />
+              </div>)
+        }
+        </div>
 
       </div>
 
-      <a href="https://git.unistra.fr/les-scrums-masters/foc21-t3-a" className='absolute bottom-5 right-8 text-white text-opacity-50 hover:text-opacity-100'>
+      <a target='_blank' href="https://git.unistra.fr/les-scrums-masters/foc21-t3-a" className='absolute bottom-5 right-8 text-white text-opacity-50 hover:text-opacity-100' rel="noopener noreferrer">
       Les Scrums Masters © 2021
       </a>
 

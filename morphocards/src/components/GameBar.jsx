@@ -3,6 +3,25 @@ import RoundCircleList from "./RoundCircleList";
 import MusicSound from './MusicSound';
 import Timer from './Timer';
 
+
+
+/**
+ * Bar de jeu : la bar situé au haut de l'écran durant le jeu
+ *
+ * @component GameBar
+ *
+ * @param   {RoundData[]} rounds  listes des rounds
+ * @param   {RoundData} actualRound  le round actuel
+ * @param   {function} openMenu  Fonction de retour au menu principal
+ * @param   {function} sound  Fonction pour faire parler la synthèse vocale
+ * @param   {Ref} ref  Référence du composant
+ *
+ * @example
+ * <GameBar rounds={rounds} actualRound={actualRound} openMenu={openMainMenu} sound={props.sound} ref={gameBarRef} />
+ *
+ * @return {JSX} Le rendu jsx de la liste de round
+ */
+
 const GameBar = React.forwardRef((props, ref) => {
 
     // ---------- Timer ------------

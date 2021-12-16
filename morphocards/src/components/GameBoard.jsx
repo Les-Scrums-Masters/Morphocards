@@ -2,6 +2,25 @@ import React, { createRef, useImperativeHandle } from "react";
 import CardPlacement from './CardPlacement';
 import CardStatic from './CardStatic'
 
+
+
+
+
+/**
+ * Plateau de jeu : le plateau durant le jeu
+ *
+ * @component GameBoard
+ *
+ * @param   {string} word  Id du mot (mot attendu)
+ * @param   {function} say   Fonction pour faire parler la synthèse vocale
+ * @param   {Ref} ref  Référence du composant
+ *
+ * @example
+ * <GameBoard ref={boardRef} word={props.round.word} say={props.say}/>
+ *
+ * @return {JSX} Le rendu jsx du plateau de jeu
+ */
+
 const GameBoard = React.forwardRef((props, ref) => {
 
 
@@ -10,7 +29,7 @@ const GameBoard = React.forwardRef((props, ref) => {
     props.word.cards.map( () => (
       boardRefs.push(createRef())
     ));
-    
+
 
     // Fonctions incluses dans useImperativeHandle afin qu'elles soient accésibles depuis le parent
     useImperativeHandle(ref, () => ({
@@ -33,7 +52,7 @@ const GameBoard = React.forwardRef((props, ref) => {
             boardRefs.forEach((ref) => {
                 if(ref.current.getValue() === "") nbEmpty++;
             });
-            
+
             return nbEmpty;
         },
 
@@ -76,7 +95,7 @@ const GameBoard = React.forwardRef((props, ref) => {
         }
 
     }))
-    
+
 
     // Rendu
     return(
@@ -84,16 +103,16 @@ const GameBoard = React.forwardRef((props, ref) => {
             {props.word.cards?.map( (card, index) => {
 
                 let id = props.word.id+"/"+index;
-    
+
                 if(!card.isBoard){
                     return <CardPlacement id={id} key={index} index={index} ref={boardRefs[index]} say={props.say} />;
-    
+
                 } else{
                     return <CardStatic key={index} index={index} ref={boardRefs[index]} value={card.value} />;
                 }
-    
+
             })}
-        </div>  
+        </div>
     );
 
 });

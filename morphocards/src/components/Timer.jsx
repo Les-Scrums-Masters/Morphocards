@@ -1,6 +1,23 @@
 import { useStopwatch } from 'react-timer-hook';
 import React, { useImperativeHandle, } from 'react'
 
+
+
+
+/**
+ * Minuteur : le minuteur du jeu
+ *
+ * @component Timer
+ *
+ * @param   {Ref} ref  Référence du composant
+ *
+ * @example
+ * <Timer ref={timerRef}/>
+ *
+ * @return {JSX} Le rendu jsx du minuteur.
+ */
+
+
 const Timer = React.forwardRef((props, ref) => {
 
 
@@ -19,12 +36,12 @@ const Timer = React.forwardRef((props, ref) => {
         */
       } =useStopwatch({ autoStart: true });
 
-    
+
       const getStylizedTime = () => {
          return Math.trunc(minutes/10) + "" + minutes%10 + ":" + Math.trunc(seconds/10) + "" + seconds%10;
       }
 
-      
+
 
 
       useImperativeHandle(ref, () => ({

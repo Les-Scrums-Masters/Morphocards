@@ -1,10 +1,8 @@
 import React, {useState, useEffect} from "react";
 import Button from "./components/Button";
 import ReactCanvasConfetti from 'react-canvas-confetti';
-
-import useSound from "use-sound";
 import Firebase from './Firebase'
-
+import useSound from "use-sound";
 import finishedSound from './sounds/win.ogg';
 import RoundHistoryList from "./components/RoundHistoryList";
 
@@ -26,7 +24,7 @@ export default function EndPage(props) {
     const [played, setPlayed] = useState(false);
 
     useEffect(() => {
-        
+
         if(!initialized) {
             setInitialized(true);
             setconfetti( {fire: {}} );
@@ -50,7 +48,7 @@ export default function EndPage(props) {
             <div className="bg-white rounded-xl p-10 text-center h-full flex flex-col gap-3">
                 <h1 className="text-6xl">{String.fromCodePoint(0x1F973)}</h1>
                 <h3 className="text-2xl text-gray-900 font-bold mt-5">{props.title}</h3>
-                <h5 className="text-xl text-gray-900 mt-5">{props.time}</h5>    
+                <h5 className="text-xl text-gray-900 mt-5">{props.time}</h5>
 
                 <div className="mt-10 flex flex-col gap-3">
                     <h4 className="text-lg font-bold text-gray-800">Vos résultats</h4>

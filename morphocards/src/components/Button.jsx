@@ -4,7 +4,28 @@ import useSound from 'use-sound';
 
 import clickSound from '../sounds/button_click.ogg'
 
-export default function Button(props) {
+
+
+
+/**
+ * Bouton : les boutons rectangles de l'application
+ *
+ * @component Button
+ *
+ * @param   {function} onClick  Fonction qui s'execute lorsqu'on clique sur le bouton
+ * @param   {string} color  Css color tailwind du bouton
+ * @param   {string} paddingY  Css padding axe Y tailwind du bouton
+ * @param   {string} textSize   Css taille du texte tailwind du bouton
+ *
+ * @example
+ <Button onClick={play} color='bg-indigo-500 text-white ring-indigo-200 hover:bg-indigo-400 active:bg-indigo-800 mt-5' paddingY="py-3" textSize="text-lg">
+  //buttonContent
+ </Button>
+ *
+ * @return {JSX} Le rendu jsx du bouton.
+ */
+
+function Button(props) {
 
     const [playClick] = useSound(clickSound, {
       volume: 0.3,
@@ -26,3 +47,4 @@ export default function Button(props) {
       </button>);
 
 }
+export default Button

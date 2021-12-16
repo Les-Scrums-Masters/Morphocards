@@ -19,7 +19,8 @@ module.exports = {
       textColor: ['active'],
       padding: ['hover'],
       margin: ['hover'],
-      backgroundOpacity: ['active']
+      backgroundOpacity: ['active'],
+      gap: ['hover', 'focus'],
     },
   },
   plugins: [],

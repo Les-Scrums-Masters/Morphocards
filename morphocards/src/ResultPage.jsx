@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import Firebase from "./Firebase";
 import Loading from "./components/Loading";
 import RoundHistoryList from "./components/RoundHistoryList";
+import BackButton from "./components/BackButton";
+import { CalendarIcon, ClockIcon } from "@heroicons/react/outline";
 
 export default function ResultPage(props) {
 
@@ -11,6 +13,7 @@ export default function ResultPage(props) {
 
     const getData = useCallback(async () => {
         let result = await Firebase.getGames(props.userId);
+        result.forEach((element) => element.generate());
         setGames(result);
         setLoaded(true);
     }, [setGames, setLoaded, props.userId]);
@@ -33,7 +36,7 @@ export default function ResultPage(props) {
         return (
             <div className="grid gap-3 justify-center">
                 <Loading />
-                <button className="text-white text-opacity-50 hover:text-opacity-100" onClick={props.backToMenu}>Retour</button>
+                <BackButton onClick={props.backToMenu}>Retour au menu principal</BackButton>
             </div>
         );
     }
@@ -52,13 +55,8 @@ function ResultContent(props) {
         setToShow(null);
     }
 
-    console.log("id:" + toShow);
-    if(toShow!== null) {
-        console.log(props.data[toShow])
-    }
-
     return(
-        <div className="container bg-white mx-auto h-4/5 rounded-xl w-full grid gap-3 justify-center items-center">
+        <div className="container bg-white mx-auto h-4/5 rounded-xl w-full flex gap-3 justify-center items-center">
             {(props.data.length === 0)
             // Aucune partie :
             ? (<p>Ce joueur n'a aucune partie</p>)
@@ -66,11 +64,13 @@ function ResultContent(props) {
             : (toShow !== null) 
                 ? (<GameInfo key={toShow-1} game={props.data[toShow-1]} goBack={goToList} />)
                 // Aucune partie à afficher, afficher la liste :
-                :   (<div>
-                        <button onClick={props.backToMenu}>Retour au menu principal</button>
-                        <h3 className="text-bold text-xl">Vos parties</h3>
+                :   (<div className="grid gap-3 flex-1 h-full w-full py-5">
+                        <div className="mx-5">
+                            <BackButton onClick={props.backToMenu}>Retour au menu principal</BackButton>
+                        </div>
+                        <h3 className="text-bold text-2xl font-bold text-center">Vos parties</h3>
                         
-                        <div className="grid gap-3">
+                        <div className="grid grid-cols-1 divide-y w-full">
                             {props.data.map((element, index) => {
                                 return <GameItem game={element} key={index} onClick={openGame} />;
                             })}
@@ -87,9 +87,11 @@ function GameItem(props) {
     // TODO : Count success/fails
 
     return (
-        <button onClick={() => props.onClick(props.game.id)}>
-            <p>{"Partie #" + props.game.id}</p>
-            <p>{props.game.date}</p>
+        <button onClick={() => props.onClick(props.game.id)} className="hover:bg-gray-100 transition ease-out duration-200 active:bg-gray-200 py-3 flex px-3 md:px-10 h-auto">
+            <p className="font-bold text-lg text-left flex-1">
+                {"Partie #" + props.game.id}
+            </p>
+            <DateDisplay date={props.game.dateString} />
         </button>
     );
 
@@ -98,16 +100,28 @@ function GameItem(props) {
 function GameInfo(props) {
 
     return (
-        <div>
-            <button onClick={props.goBack}>Retour</button>
-            <h1>{"Partie #" + props.game.id}</h1>
-            <p>{props.game.date}</p>
+        <div className="h-full w-full flex flex-col gap-3 items-center justify-center">
+            <BackButton onClick={props.goBack}>Retour à la liste</BackButton>
+            <h1 className="font-bold text-2xl text-center">{"Partie #" + props.game.id}
+            </h1>
+            <DateDisplay date={props.game.dateString} />
             <p>{props.game.time}</p>
 
             <h4>Vos résultats</h4>
 
             <RoundHistoryList rounds={props.game.rounds} />
 
+        </div>
+    );
+
+}
+
+function DateDisplay(props) {
+
+    return (
+        <div className="text-gray-500 flex gap-3 justify-end items-center">
+                <p>{props.date}</p>
+                <CalendarIcon className="h-4 w-4" />
         </div>
     );
 

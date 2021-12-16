@@ -41,13 +41,15 @@ export default function MainMenu(props){
 
         <p className='text-center'>Jouez a morphocards parce que c'est un bon jeu :)</p>
 
-        <Button onClick={play} color='bg-indigo-500 text-white ring-indigo-200 hover:bg-indigo-400 active:bg-indigo-800 mt-5' paddingY="py-3" textSize="text-lg">
-          <div className='flex-1'></div>
-          Jouer
-          <div className='flex-1 flex justify-end'>
-            <ArrowRightIcon className='h-8 w-8'/>
-          </div>
-        </Button>
+        <div className='flex items-center justify-center mt-5 h-20'>
+          <Button onClick={play} color='bg-indigo-500 text-white ring-indigo-200 hover:bg-indigo-400 active:bg-indigo-800' paddingY="py-3 hover:px-6 my-1 hover:my-0 hover:py-4" textSize="text-lg">
+            <div className='flex-1'></div>
+            Jouer
+            <div className='flex-1 flex justify-end'>
+              <ArrowRightIcon className='h-8 w-8'/>
+            </div>
+          </Button>
+        </div>
           
         <div className='mt-5' >
         {

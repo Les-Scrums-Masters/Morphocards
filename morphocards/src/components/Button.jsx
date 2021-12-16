@@ -17,7 +17,7 @@ export default function Button(props) {
 
     return(<button
         type="button"
-        className={"w-full inline-flex justify-center rounded-xl border border-transparent shadow-sm px-4 font-bold transition ease-out duration-200 focus:outline-none hover:ring-4 focus:ring-offset-2 gap-3 items-center "+ props.color + " " + paddingY + " " + textSize}
+        className={"w-full inline-flex justify-center rounded-xl border border-transparent shadow-sm px-4 font-bold transition-all ease-out duration-200 focus:outline-none hover:ring-4 focus:ring-offset-2 gap-3 items-center "+ props.color + " " + paddingY + " " + textSize}
         onClick={() => {
           props.onClick();
           playClick();

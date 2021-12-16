@@ -16,7 +16,9 @@ module.exports = {
       ringWidth: ['hover', 'active'],
       backgroundColor: ['active'],
       borderRadius: ['hover', 'focus'],
-      textColor: ['active']
+      textColor: ['active'],
+      padding: ['hover'],
+      margin: ['hover'],
     },
   },
   plugins: [],

@@ -73,8 +73,7 @@ export default function GameManager(props) {
   // Variable qui vérifie si la voix préférée à déjà été initialisée
   const [voiceInitialized, setVoiceInitialized] = useState(false);
   // Voix préférée :
-  const [preferredVoice, setPreferredVoice] = useState({});
-
+  const [preferredVoice, setPreferredVoice] = useState(null);
 
   // ------- Boite de dialogue d'echec/succès -------
   const [modalEmoji, setModalEmoji] = useState("");
@@ -118,7 +117,8 @@ export default function GameManager(props) {
   // Fonction qui prononce un mot
   const say = useCallback((text) => {
 
-    if ( Object.entries(preferredVoice).length !== 0 && supported) {
+    console.log( preferredVoice)
+    if ( preferredVoice !== null && supported) {
       cancel();
       speak({text: text, voice: preferredVoice});
     } else{
@@ -432,7 +432,7 @@ export default function GameManager(props) {
   return (
     <div className='game-bg w-full h-screen fixed'>
       {
-        (rounds.length > 0 && preferredVoice)
+        (rounds.length > 0 && (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') ? true : preferredVoice)
         // Si les componsants sont chargés et qu'il y a des voix disponibles, afficher le jeu
         ? (
           <div className="w-full h-full overscroll-none overflow-hidden flex flex-col">

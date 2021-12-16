@@ -2,11 +2,13 @@ import './css/index.css';
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
-import Hand from './components/Hand';
-import { CheckIcon, MicrophoneIcon, VolumeUpIcon } from '@heroicons/react/outline'
-import GameBoard from './components/GameBoard';
-import RoundButton from './components/RoundButton';
 import useSound from 'use-sound';
+import { CheckIcon, MicrophoneIcon, VolumeUpIcon } from '@heroicons/react/outline'
+
+import GameBoard from './components/GameBoard';
+import Hand from './components/Hand';
+import RoundButton from './components/RoundButton';
+import Notification from './components/Notification';
 
 import dragCardSong from './sounds/card_drag_in.ogg';
 import dropCardSong from './sounds/card_drop_out.ogg';
@@ -28,6 +30,13 @@ export default function GameContext(props) {
 
   // Mot prononcé initialement
   const [initialSpreech, setInitialSpreech] = useState(false);
+
+  // Notification
+  const [openNotification, setOpenNotification] = useState(false);
+
+  let closeNotification = () =>{
+    setOpenNotification(false);
+  }
 
 
   /*SON DE CARTE*/
@@ -88,6 +97,8 @@ export default function GameContext(props) {
   // Fonction de vérification de victoire
   const checkWin = () => {
 
+    setOpenNotification(false);
+
     // Si le mot est terminé (si toutes les cases ont été rempli) :
     if (boardRef.current.getEmptyCount() === 0) {
       if (boardRef.current.checkWin()) {
@@ -100,6 +111,8 @@ export default function GameContext(props) {
         props.onFail(playerWord);
         playFail();
       }
+    } else{
+      setOpenNotification(true);
     }
 
   }
@@ -281,6 +294,8 @@ export default function GameContext(props) {
         </div>
 
       </div>
+
+      <Notification open={openNotification} closeNotification={closeNotification} />
 
       {/* MAIN */}
 

@@ -21,13 +21,13 @@ function RoundList(props) {
         <div className="flex gap-2">
             {
                 props.rounds.map((element, index) => {
-                    return "" //<RoundCircle key={index} round={element} isActive={(index === props.actualRound)} />
+                    return <RoundCircle key={index} round={element} isActive={(index === props.actualRound)} />
                 })
             }
         </div>
 
     );
-    
+
 }
 
 function RoundCircle(props) {
@@ -54,6 +54,5 @@ function RoundCircle(props) {
 
 }
 
-}
 
 export default RoundList;

@@ -5,8 +5,6 @@ export default class GameModel {
     time;
     rounds;
 
-    
-
     constructor(id, date, time, rounds) {
         this.id = id;
         this.date = date;
@@ -39,9 +37,10 @@ export default class GameModel {
 
         // Comptage du nombre d'erreurs et de succès
         let s = 0;
-        let f = 0;
-        this.rounds.forEach((element) => {if (element.success) s++});
-        
+        this.rounds.forEach((element) => {
+            if (element['isSuccess']) s++;
+        });
+        this.successes = s;
     }
 
 }

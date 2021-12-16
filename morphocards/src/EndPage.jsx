@@ -55,7 +55,7 @@ export default function EndPage(props) {
                 <div className="mt-10 flex flex-col gap-3">
                     <h4 className="text-lg font-bold text-gray-800">Vos résultats</h4>
 
-                    <RoundHistoryList rounds={props.rounds} />
+                    <RoundHistoryList rounds={props.rounds} say={props.say} />
 
                 </div>
 

@@ -88,10 +88,17 @@ function GameItem(props) {
 
     return (
         <button onClick={() => props.onClick(props.game.id)} className="hover:bg-gray-100 transition ease-out duration-200 active:bg-gray-200 py-3 flex px-3 md:px-10 h-auto">
-            <p className="font-bold text-lg text-left flex-1">
-                {"Partie #" + props.game.id}
-            </p>
+            <div className="flex-1 flex flex-col">
+                <p className="font-bold text-lg text-left">
+                    {"Partie #" + props.game.id}
+                </p>
+                <div className="flex gap-3">
+                    <p className="italic font-medium">{props.game.successes+"/"+props.game.rounds.length}</p>
+                    <TimeDisplay time={props.game.time} />
+                </div>
+            </div>
             <DateDisplay date={props.game.dateString} />
+            
         </button>
     );
 
@@ -100,8 +107,10 @@ function GameItem(props) {
 function GameInfo(props) {
 
     return (
-        <div className="h-full w-full flex flex-col gap-3 items-center justify-center">
-            <BackButton onClick={props.goBack}>Retour à la liste</BackButton>
+        <div className="h-full w-full flex flex-col gap-3 items-center py-5 flex-1">
+            <div className="w-full px-5 text-left">
+                <BackButton onClick={props.goBack}>Retour à la liste</BackButton>
+            </div>
             <h1 className="font-bold text-2xl text-center">{"Partie #" + props.game.id}
             </h1>
             <DateDisplay date={props.game.dateString} />
@@ -122,6 +131,17 @@ function DateDisplay(props) {
         <div className="text-gray-500 flex gap-3 justify-end items-center">
                 <p>{props.date}</p>
                 <CalendarIcon className="h-4 w-4" />
+        </div>
+    );
+
+}
+
+function TimeDisplay(props) {
+
+    return (
+        <div className="text-gray-500 flex gap-3 justify-end items-center">
+                <p>{props.date}</p>
+                <ClockIcon className="h-4 w-4" />
         </div>
     );
 

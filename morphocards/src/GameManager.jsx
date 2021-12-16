@@ -73,8 +73,7 @@ export default function GameManager(props) {
   // Variable qui vérifie si la voix préférée à déjà été initialisée
   const [voiceInitialized, setVoiceInitialized] = useState(false);
   // Voix préférée :
-  const [preferredVoice, setPreferredVoice] = useState({});
-
+  const [preferredVoice, setPreferredVoice] = useState(null);
 
   // ------- Boite de dialogue d'echec/succès -------
   const [modalEmoji, setModalEmoji] = useState("");
@@ -117,9 +116,23 @@ export default function GameManager(props) {
 
   // Fonction qui prononce un mot
   const say = useCallback((text) => {
-    if (preferredVoice && supported) {
+
+    console.log( preferredVoice)
+    if ( preferredVoice !== null && supported) {
       cancel();
-      //speak({text: text, voice: preferredVoice});
+      speak({text: text, voice: preferredVoice});
+    } else{
+
+      //Ne pas afficher la modal d'avertissement pour les devs
+      if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+        console.log("Tu n'as pas de synthèse vocal !");
+      } else {
+          // production code
+          setModalContent("");
+          setModalTitle("Vous n'avez pas de synthèse vocal !")
+          setModalEmoji(String.fromCodePoint(0x1F6AB));
+          setModalOpen(true);
+      }
     }
   }, [speak, preferredVoice, cancel, supported])
 
@@ -420,7 +433,7 @@ export default function GameManager(props) {
   return (
     <div className='game-bg w-full h-screen fixed'>
       {
-        (rounds.length > 0 && preferredVoice)
+        (rounds.length > 0 && (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') ? true : preferredVoice)
         // Si les componsants sont chargés et qu'il y a des voix disponibles, afficher le jeu
         ? (
           <div className="w-full h-full overscroll-none overflow-hidden flex flex-col">

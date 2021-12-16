@@ -119,7 +119,7 @@ export default function GameManager(props) {
   const say = useCallback((text) => {
     if (preferredVoice && supported) {
       cancel();
-      speak({text: text, voice: preferredVoice});
+      //speak({text: text, voice: preferredVoice});
     }
   }, [speak, preferredVoice, cancel, supported])
 
@@ -429,7 +429,7 @@ export default function GameManager(props) {
                 {modalContent}
             </Modal>
 
-            <GameBar rounds={rounds} actualRound={actualRound} openMenu={openMainMenu} sound={props.sound} cookies={props.cookies} ref={gameBarRef} />
+            <GameBar rounds={rounds} actualRound={actualRound} openMenu={openMainMenu} sound={props.sound} ref={gameBarRef} />
 
             {getMainComponent()}
 

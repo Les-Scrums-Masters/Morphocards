@@ -3,7 +3,22 @@ import { Draggable } from 'react-beautiful-dnd';
 import { VolumeUpIcon } from '@heroicons/react/outline';
 
 
-export default function Card(props) {
+/**
+ * Carte : la carte qui peut être glisser et déposer
+ *
+ * @component Card
+ *
+ * @param   {int} index  Numero de carte
+ * @param   {string} key  Id unique de la carte (Mot du round + numero)
+ * @param   {HandCardModel} card  Modèle de la carte qui contient toutes les données
+ * @param   {function} say   Fonction pour faire parler la synthèse vocale
+ *
+ * @example
+ * <Card index={index} key={item.uniqueId} card={item} say={props.say}/>
+ *
+ * @return {JSX} Le rendu jsx de la carte.
+ */
+function Card(props) {
 
     return (
         <Draggable
@@ -28,3 +43,5 @@ export default function Card(props) {
     </Draggable>
     );
   }
+
+export default Card;

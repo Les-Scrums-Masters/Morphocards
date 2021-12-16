@@ -5,6 +5,10 @@ import RoundHistoryList from "./components/RoundHistoryList";
 import BackButton from "./components/BackButton";
 import { CalendarIcon, ClockIcon } from "@heroicons/react/outline";
 
+import useSound from 'use-sound';
+
+import clickSound from './sounds/button_click.ogg'
+
 export default function ResultPage(props) {
 
     const [games, setGames] = useState([]);
@@ -84,10 +88,16 @@ function ResultContent(props) {
 
 function GameItem(props) {
 
-    // TODO : Count success/fails
+    const [playClick] = useSound(clickSound, {
+        volume: 0.3,
+        interrupt: false
+      })
 
     return (
-        <button onClick={() => props.onClick(props.game.id)} className="hover:bg-gray-100 transition ease-out duration-200 active:bg-gray-200 py-3 flex px-3 md:px-10 h-auto">
+        <button onClick={() => {
+            props.onClick(props.game.id);
+            playClick();
+        }} className="hover:bg-gray-100 transition ease-out duration-200 active:bg-gray-200 py-3 flex px-3 md:px-10 h-auto">
             <div className="flex-1 flex flex-col">
                 <p className="font-bold text-lg text-left">
                     {"Partie #" + props.game.id}
@@ -114,9 +124,7 @@ function GameInfo(props) {
             <h1 className="font-bold text-2xl text-center">{"Partie #" + props.game.id}
             </h1>
             <DateDisplay date={props.game.dateString} />
-            <p>{props.game.time}</p>
-
-            <h4 className="font-bold text-xl">Vos résultats</h4>
+            <TimeDisplay time={props.game.time} />
 
             <RoundHistoryList rounds={props.game.rounds} />
 

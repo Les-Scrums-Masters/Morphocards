@@ -1,5 +1,5 @@
 import React, {useRef, useImperativeHandle} from "react";
-import RoundList from "./RoundList";
+import RoundCircleList from "./RoundCircleList";
 import MusicSound from './MusicSound';
 import Timer from './Timer';
 
@@ -38,7 +38,7 @@ const GameBar = React.forwardRef((props, ref) => {
                         : "Round " + (props.actualRound+1) +"/"+props.rounds.length
                     }
                 </p>
-                <RoundList rounds={props.rounds} actualRound={props.actualRound} />
+                <RoundCircleList rounds={props.rounds} actualRound={props.actualRound} />
             </div>
             <div className="flex-1 flex justify-end items-center gap-3">
                 {props.rounds.length === props.actualRound

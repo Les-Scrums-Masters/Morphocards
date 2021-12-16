@@ -1,7 +1,7 @@
 import React from "react";
 import RoundCircle from "./RoundCircle";
 
-export default function RoundList(props) {
+export default function RoundCircleList(props) {
 
     return (
         <div className="flex gap-2">

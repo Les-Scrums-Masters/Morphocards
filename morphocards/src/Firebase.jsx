@@ -93,7 +93,8 @@ class FirebaseClass {
     // Données à enregistrer dans la base
     let data = {
       rounds: array,
-      time:time ?? 0
+      time:time ?? 0,
+      date: Date.now()
     }
 
     // Création du document dans lequel stocker la partie

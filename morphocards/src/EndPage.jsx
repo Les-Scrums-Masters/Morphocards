@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from "react";
 import Button from "./components/Button";
-import RoundResult from "./components/RoundResult";
 import ReactCanvasConfetti from 'react-canvas-confetti';
 
 import useSound from "use-sound";
 import Firebase from './Firebase'
 
 import finishedSound from './sounds/win.ogg';
+import RoundHistoryList from "./components/RoundHistoryList";
 
 
 export default function EndPage(props) {
@@ -55,13 +55,7 @@ export default function EndPage(props) {
                 <div className="mt-10 flex flex-col gap-3">
                     <h4 className="text-lg font-bold text-gray-800">Vos résultats</h4>
 
-                    <div className="flex flex-col gap-4 justify-center">
-
-                        {props.rounds.map((item, index) => (
-                            <RoundResult key={index} say={props.say} round={item} number={index+1} />
-                        ))}
-
-                    </div>
+                    <RoundHistoryList rounds={props.rounds} />
 
                 </div>
 

@@ -37,12 +37,7 @@ export default function ResultPage(props) {
             <ResultContent data={games} backToMenu={props.backToMenu} />
         );
     } else {
-        return (
-            <div className="grid gap-3 justify-center">
-                <Loading />
-                <BackButton onClick={props.backToMenu}>Retour au menu principal</BackButton>
-            </div>
-        );
+        return (<Loading />);
     }
     
 }

@@ -21,7 +21,7 @@ function RoundList(props) {
         <div className="flex gap-2">
             {
                 props.rounds.map((element, index) => {
-                    return "" //<RoundCircle key={index} round={element} isActive={(index === props.actualRound)} />
+                    return (<RoundCircle key={index} round={element} isActive={(index === props.actualRound)} />)
                 })
             }
         </div>
@@ -51,8 +51,6 @@ function RoundCircle(props) {
            <div className={"bg-" + getColor() + " shadow-sm w-4 h-4 rounded-full"}></div>
        </div>
    );
-
-}
 
 }
 

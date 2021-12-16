@@ -117,7 +117,6 @@ export default function GameManager(props) {
   // Fonction qui prononce un mot
   const say = useCallback((text) => {
 
-    console.log( preferredVoice)
     if ( preferredVoice !== null && supported) {
       cancel();
       speak({text: text, voice: preferredVoice});
@@ -433,7 +432,7 @@ export default function GameManager(props) {
   return (
     <div className='game-bg w-full h-screen fixed'>
       {
-        (rounds.length > 0 && (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') ? true : preferredVoice)
+        (rounds.length > 0 && preferredVoice)
         // Si les componsants sont chargés et qu'il y a des voix disponibles, afficher le jeu
         ? (
           <div className="w-full h-full overscroll-none overflow-hidden flex flex-col">

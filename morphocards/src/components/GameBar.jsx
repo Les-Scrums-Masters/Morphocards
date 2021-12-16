@@ -2,6 +2,7 @@ import React, {useRef, useImperativeHandle} from "react";
 import RoundCircleList from "./RoundCircleList";
 import MusicSound from './MusicSound';
 import Timer from './Timer';
+import AppLogo from "./AppLogo";
 
 
 
@@ -42,9 +43,7 @@ const GameBar = React.forwardRef((props, ref) => {
         <div className="w-full flex flex-col md:flex-row items-center py-6 px-10 gap-4">
 
             <div className="flex-1">
-               <button onClick={props.openMenu}>
-                    <h3 className="text-2xl text-white text-opacity-50 hover:text-opacity-100 transition ease-out duration-200"><span className="font-extrabold">Morpho</span>cards</h3>
-               </button>
+                <AppLogo onClick={props.openMenu} />
             </div>
 
             <div className="flex flex-col gap-1 justify-center items-center align-middle">

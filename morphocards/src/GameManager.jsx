@@ -117,9 +117,22 @@ export default function GameManager(props) {
 
   // Fonction qui prononce un mot
   const say = useCallback((text) => {
-    if (preferredVoice && supported) {
+
+    if ( Object.entries(preferredVoice).length !== 0 && supported) {
       cancel();
-      //speak({text: text, voice: preferredVoice});
+      speak({text: text, voice: preferredVoice});
+    } else{
+
+      //Ne pas afficher la modal d'avertissement pour les devs
+      if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+        console.log("Tu n'as pas de synthèse vocal !");
+      } else {
+          // production code
+          setModalContent("");
+          setModalTitle("Vous n'avez pas de synthèse vocal !")
+          setModalEmoji(String.fromCodePoint(0x1F6AB));
+          setModalOpen(true);
+      }
     }
   }, [speak, preferredVoice, cancel, supported])
 

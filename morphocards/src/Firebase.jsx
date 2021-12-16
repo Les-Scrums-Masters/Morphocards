@@ -49,11 +49,36 @@ class FirebaseClass {
     this.CARDHAND_COLLECTION = collection(db, "cards_handV2");
     this.WORDS_COLLECTION = collection(db, "wordsV2");
     this.USERS_COLLECTION = collection(db, "users");
+    this.LEADERBOARD_COLLECTION = collection(db, "leaderboard");
 
     FirebaseClass.instance = this;
    }
 
    return FirebaseClass.instance;
+  }
+  
+  
+  async updateLeaderboard(time) {
+    // Récupération de la référence au document de l'utilisateur
+    let docRef = doc(this.LEADERBOARD_COLLECTION, Firebase.auth.currentUser.uid);
+
+    let docSnap = await getDoc(docRef);
+
+    // Si le document n'existe pas, c'est le meilleur score :
+    if (!docSnap.exists()) {
+      await setDoc(docRef, {time: time, name: Firebase.auth.currentUser.displayName});
+    } else {
+      // Sinon on update seulement si le temps est mieux 
+      
+      // Récupération du temps :
+      let oldTime = parseInt(docSnap.data()['time']) ?? 0;
+
+      if (time < oldTime) {
+        // Le temps est meilleur, on update:
+        await updateDoc(docRef, {time: time});
+      }
+    }
+
   }
 
 
@@ -84,11 +109,16 @@ class FirebaseClass {
 
     // Création des données de round
     let array = [];
+    let eligible = true;
     rounds.forEach((element) => {
+      // Si un round est échoué, la partie n'est plus éligible au classement
+      if (!element.success) {
+        eligible = false;
+      }
+
+      // On ajoute à la liste le round converti en map
       array.push(element.toMap());
     });
-
-    console.log(array);
 
     // Données à enregistrer dans la base
     let data = {
@@ -104,9 +134,10 @@ class FirebaseClass {
     await setDoc(newDocRef, data);
 
     // Enregistrement du numéro de partie
-    if (!alreadyIncremend) {
-      await updateDoc(docRef, {gameId: gameId});
-    }
+    if (!alreadyIncremend) await updateDoc(docRef, {gameId: gameId});
+
+    // Si la partie à été éligible, vérifier l'enregistrement du classement
+    if (eligible) await this.updateLeaderboard(time);
 
   }
 

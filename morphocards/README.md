@@ -6,6 +6,10 @@
     * MANSOURI Sofiane
     * GUTMANN Franck
 
+## **Jouer**
+
+Pour vous amusez, il suffit simplement d'aller sur le site : [Morphocards](http://morphocards.franck-g.fr/)
+
 
 ## **🛠️ Installation en local**
 

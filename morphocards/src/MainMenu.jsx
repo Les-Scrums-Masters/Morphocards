@@ -1,7 +1,10 @@
 import { ArrowRightIcon, InformationCircleIcon } from '@heroicons/react/outline';
 import React, {useEffect, useState} from 'react';
-import Firebase from "./Firebase";
+import {isMobile} from 'react-device-detect';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+
+
+import Firebase from "./Firebase";
 import Button from './components/Button';
 import MusicSound from './components/MusicSound';
 import ResultPage from './ResultPage';
@@ -85,6 +88,7 @@ function MenuContent(props) {
   const [Buttons, setButtons] = useState(null);
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalWidth, setModalWidth] = useState(null);
 
 
   let showInfoModal = () => {
@@ -103,12 +107,43 @@ function MenuContent(props) {
         Le but du jeu est d'<b>aider à la compréhension</b> en s’appuyant sur l'entraînement à la morphologie, une branche de la linguistique.
       </p>
     )
+
     setButtons(
-      <Button onClick={() => setModalOpen(false)} color="ring-red-200 text-white hover:bg-red-700 bg-red-600">
-        Fermer
+      <Button onClick={() => setModalOpen(false)} color="ring-green-200 text-white hover:bg-green-700 active:bg-green-900 bg-green-600">
+        J'ai compris !
       </Button>
     )
+    setModalWidth("sm:max-w-3xl");
     setModalOpen(true);
+  }
+
+  let showTutorialModal = () => {
+    if(!isMobile){
+      setModalEmoji( null );
+      setModalTitle("Tutoriel");
+      setModalContent(
+
+        <iframe className="mx-auto w-5xl " width="1200" height="600"
+        src="https://www.youtube.com/embed/RhlQvbvMg-0"
+        title="YouTube video player" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        >
+        </iframe>
+
+
+      )
+
+      setButtons(
+        <Button onClick={() => setModalOpen(false)} color="ring-green-200 text-white hover:bg-green-700 active:bg-green-900 bg-green-600">
+          J'ai compris !
+        </Button>
+      )
+      setModalWidth("max-w-full");
+      setModalOpen(true);
+    }else{
+      window.open('https://www.youtube.com/embed/RhlQvbvMg-0', '_blank');
+    }
+
   }
 
   // Fonction de fermeture de la boite de dialogue
@@ -129,7 +164,7 @@ function MenuContent(props) {
           </button>
         </div>
 
-        <Modal open={modalOpen} emoji={modalEmoji} title={modalTitle} buttons={Buttons} onClose={closeModal} paddingY={"py-4"} maxW={"sm:max-w-3xl"}>
+        <Modal open={modalOpen} emoji={modalEmoji} title={modalTitle} buttons={Buttons} onClose={closeModal} paddingY={"py-4"} maxW={modalWidth}>
             {modalContent}
         </Modal>
 
@@ -144,7 +179,15 @@ function MenuContent(props) {
           </Button>
         </div>
 
-
+        <div className='flex items-center justify-center mt-5 h-10'>
+          <Button onClick={showTutorialModal} color='bg-white text-indigo-200 ring-indigo-200 hover:bg-indigo-400 active:bg-indigo-600' paddingY="py-3 hover:px-6 my-1 hover:my-0 hover:py-4" textSize="text-lg">
+            <div className='flex-1'></div>
+            Tutoriel
+            <div className='flex-1 flex justify-end'>
+              <ArrowRightIcon className='h-8 w-8'/>
+            </div>
+          </Button>
+        </div>
 
         <div className='mt-5' >
         {

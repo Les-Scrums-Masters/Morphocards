@@ -22,6 +22,13 @@ import { Dialog, Transition } from '@headlessui/react'
  */
 function Modal(props) {
 
+  let classModal =
+  props.maxW == null
+   ? "inline-block align-bottom bg-white rounded-xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+   : "inline-block align-bottom bg-white rounded-xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:w-full " + props.maxW;
+
+
+
   return (
     <Transition.Root show={props.open} as={Fragment}>
       <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" initialFocus={props.focusedRef} onClose={props.onClose}>
@@ -51,7 +58,7 @@ function Modal(props) {
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <div className="inline-block align-bottom bg-white rounded-xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div className={classModal}>
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div>
                     <h1 className="text-6xl text-center mt-4"><span role='img' aria-label="emoji">{props.emoji}</span></h1>
@@ -65,7 +72,7 @@ function Modal(props) {
                   </div>
                 </div>
               </div>
-              <div className="bg-gray-50 px-4">
+              <div className={"bg-gray-50 px-4 " + props.paddingY ?? "" }>
                 {props.buttons}
               </div>
             </div>

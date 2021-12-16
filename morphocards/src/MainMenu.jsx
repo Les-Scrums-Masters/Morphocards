@@ -1,10 +1,12 @@
-import { ArrowRightIcon } from '@heroicons/react/outline';
+import { ArrowRightIcon, InformationCircleIcon } from '@heroicons/react/outline';
 import React, {useEffect, useState} from 'react';
 import Firebase from "./Firebase";
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import Button from './components/Button';
 import MusicSound from './components/MusicSound';
 import ResultPage from './ResultPage';
+import Modal from './components/Modal'
+
 
 export default function MainMenu(props){
 
@@ -49,7 +51,7 @@ export default function MainMenu(props){
           ? (<ResultPage backToMenu={backToMenu} />)
           : (<MenuContent play={play} isLogged={props.isLogged} goToList={goToList} />)
       }
-      
+
       { props.sound !== null ?
           ( <MusicSound sound={props.sound} additionnalStyle="absolute right-10 top-8" />)
           : ""
@@ -67,6 +69,51 @@ export default function MainMenu(props){
 
 function MenuContent(props) {
 
+  const infoButton = (
+    <button>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    </button>
+  )
+
+  // ------- Boite de dialogue  -------
+  const [modalEmoji, setModalEmoji] = useState("");
+  const [modalTitle, setModalTitle] = useState("");
+
+  const [modalContent, setModalContent] = useState(null);
+  const [Buttons, setButtons] = useState(null);
+
+  const [modalOpen, setModalOpen] = useState(false);
+
+
+  let showInfoModal = () => {
+    setModalEmoji( String.fromCodePoint(0x2139) );
+    setModalTitle("Objectif pédagogique");
+    setModalContent(
+      <p>
+        En jouant à notre jeu sérieux vous travaillerez sur un sous-ensemble de la dyslexie, la <b>dyslexie phonologique</b> (la forme la plus courante).
+        <br/>
+        <br/>
+        Notre thèse étudiée évoque le trouble d'acquisition de la lecture et de l’écoute, causé par un déficit d'identification des mots écrits.
+        <br/>
+        La dyslexie phonologique concerne la formation et la construction des mots à partir de <b>phonèmes</b> (élément sonore du langage parlé, considéré comme une unité distinctive).
+        <br/>
+        <br/>
+        Le but du jeu est d'<b>aider à la compréhension</b> en s’appuyant sur l'entraînement à la morphologie, une branche de la linguistique.
+      </p>
+    )
+    setButtons(
+      <Button onClick={() => setModalOpen(false)} color="ring-red-200 text-white hover:bg-red-700 bg-red-600">
+        Fermer
+      </Button>
+    )
+    setModalOpen(true);
+  }
+
+  // Fonction de fermeture de la boite de dialogue
+  let closeModal = () => setModalOpen(false);
+
   return (
     <div className='w-auto md:w-4/12 rounded-xl bg-white shadow-md p-6 mx-auto flex flex-col justify-center gap-5'>
 
@@ -74,7 +121,18 @@ function MenuContent(props) {
 
         <h1 className="text-4xl text-gray-900 text-center"><span className="font-extrabold">Morpho</span>cards</h1>
 
-        <p className='text-center'>Jouez a morphocards parce que c'est un bon jeu :)</p>
+        <div className='flex flex-row justify-center items-center gap-2'>
+          <p className='text-center text-gray-800'>Jouer à Morphocards vous permet de comprendre ce qu'est la dyslexie !
+          </p>
+          <button onClick={showInfoModal} >
+            <InformationCircleIcon className='h-6 w-6 text-gray-600 hover:text-indigo-400 active:text-indigo-600  '/>
+          </button>
+        </div>
+
+        <Modal open={modalOpen} emoji={modalEmoji} title={modalTitle} buttons={Buttons} onClose={closeModal} paddingY={"py-4"} maxW={"sm:max-w-3xl"}>
+            {modalContent}
+        </Modal>
+
 
         <div className='flex items-center justify-center mt-5 h-20'>
           <Button onClick={props.play} color='bg-indigo-500 text-white ring-indigo-200 hover:bg-indigo-400 active:bg-indigo-800' paddingY="py-3 hover:px-6 my-1 hover:my-0 hover:py-4" textSize="text-lg">
@@ -85,10 +143,12 @@ function MenuContent(props) {
             </div>
           </Button>
         </div>
-          
+
+
+
         <div className='mt-5' >
         {
-          props.isLogged 
+          props.isLogged
             ? (
               <div id="user" className='text-center grid gap-3'>
                 <p>Vous êtes connecté en tant que <span className='font-bold'>{Firebase.auth.currentUser.displayName}</span>
@@ -98,7 +158,7 @@ function MenuContent(props) {
                   Firebase.logOut();
                 }}>Se déconnecter</button>
               </div>
-            ) 
+            )
             : (<div id="login">
                 <p className='italic text-gray-500 text-center'>Connectez vous pour enregistrer vos parties et entrer dans le classement !</p>
                 <StyledFirebaseAuth uiConfig={Firebase.uiConfig} firebaseAuth={Firebase.auth} />

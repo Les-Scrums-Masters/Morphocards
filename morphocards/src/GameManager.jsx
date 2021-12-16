@@ -188,7 +188,7 @@ export default function GameManager(props) {
       // FIN DE PARTIE
 
       return (
-        <EndPage say={say} rounds={rounds} title={modalTitle} goToMenu={openMainMenu} restartGame={startNewGame} isLogged={props.isLogged} time={gameBarRef.current.getTime()} />
+        <EndPage say={say} rounds={rounds} title={modalTitle} goToMenu={openMainMenu} restartGame={startNewGame} isLogged={props.isLogged} time={gameBarRef.current.getTimeComponent().getTime()} timeValue={gameBarRef.current.getTimeComponent().getSeconds()}/>
       );
     } else {
       // ROUND
@@ -200,6 +200,7 @@ export default function GameManager(props) {
 
 
   const gameFinished = () => {
+    gameBarRef.current.getTimeComponent().stopTime();
     setModalTitle(pickRandomList(winTitles));
     setActualRound(actualRound+1);
     setModalOpen(false);

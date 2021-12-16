@@ -31,7 +31,7 @@ export default function EndPage(props) {
             setInitialized(true);
             setconfetti( {fire: {}} );
             if(props.isLogged){
-                Firebase.saveGame(props.rounds, 18.6);
+                Firebase.saveGame(props.rounds, props.timeValue);
             }
         }
 
@@ -40,7 +40,7 @@ export default function EndPage(props) {
             playFinishedSound();
         }
 
-    }, [playFinishedSound, props.isLogged, props.rounds, initialized, played, sound])
+    }, [playFinishedSound, props.isLogged, props.rounds, initialized, played, sound, props.timeValue])
 
 
 

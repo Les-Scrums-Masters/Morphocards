@@ -1,14 +1,25 @@
 import { ArrowRightIcon } from '@heroicons/react/outline';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Firebase from "./Firebase";
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import Button from './components/Button';
 import MusicSound from './components/MusicSound';
+import ResultPage from './ResultPage';
 
 export default function MainMenu(props){
 
   const play = () => {
     props.setWindow("game");
+  }
+
+  const [showList, setShowList] = useState(false);
+
+  const goToList = () => {
+    setShowList(true);
+  }
+
+  const backToMenu = () => {
+    setShowList(false);
   }
 
   useEffect(() => {
@@ -31,9 +42,33 @@ export default function MainMenu(props){
     to-yellow-500
     background-animate">
 
-      <div className='w-full h-full bg-white bg-opacity-25 background-filter backdrop-blur-lg	flex items-center'>
+      <div className='w-full h-full bg-white bg-opacity-25 background-filter backdrop-blur-lg	flex items-center justify-center'>
 
-      <div className='w-auto md:w-4/12 rounded-xl bg-white shadow-md p-6 mx-auto flex flex-col justify-center gap-5'>
+      {
+        (showList)
+          ? (<ResultPage backToMenu={backToMenu} />)
+          : (<MenuContent play={play} isLogged={props.isLogged} goToList={goToList} />)
+      }
+      
+      { props.sound !== null ?
+          ( <MusicSound sound={props.sound} additionnalStyle="absolute right-10 top-8" />)
+          : ""
+      }
+
+      <a target='_blank' href="https://git.unistra.fr/les-scrums-masters/foc21-t3-a" className='absolute bottom-5 right-8 text-white text-opacity-50 hover:text-opacity-100' rel="noopener noreferrer">
+      Les Scrums Masters © 2021
+      </a>
+
+    </div>
+
+    </div>
+  );
+}
+
+function MenuContent(props) {
+
+  return (
+    <div className='w-auto md:w-4/12 rounded-xl bg-white shadow-md p-6 mx-auto flex flex-col justify-center gap-5'>
 
         <img src="/logo512.png" className='h-36 w-36 mx-auto' alt="Morphocards Logo" />
 
@@ -42,7 +77,7 @@ export default function MainMenu(props){
         <p className='text-center'>Jouez a morphocards parce que c'est un bon jeu :)</p>
 
         <div className='flex items-center justify-center mt-5 h-20'>
-          <Button onClick={play} color='bg-indigo-500 text-white ring-indigo-200 hover:bg-indigo-400 active:bg-indigo-800' paddingY="py-3 hover:px-6 my-1 hover:my-0 hover:py-4" textSize="text-lg">
+          <Button onClick={props.play} color='bg-indigo-500 text-white ring-indigo-200 hover:bg-indigo-400 active:bg-indigo-800' paddingY="py-3 hover:px-6 my-1 hover:my-0 hover:py-4" textSize="text-lg">
             <div className='flex-1'></div>
             Jouer
             <div className='flex-1 flex justify-end'>
@@ -55,9 +90,10 @@ export default function MainMenu(props){
         {
           props.isLogged 
             ? (
-              <div id="user" className='text-center' >
+              <div id="user" className='text-center grid gap-3'>
                 <p>Vous êtes connecté en tant que <span className='font-bold'>{Firebase.auth.currentUser.displayName}</span>
                 </p>
+                <Button color="bg-indigo-500 hover:bg-opacity-10 active:bg-opacity-20 text-indigo-500 bg-opacity-0" onClick={props.goToList}>Voir vos résultats</Button>
                 <button className='text-red-500 hover:text-red-400 active:text-red-600' onClick={() => {
                   Firebase.logOut();
                 }}>Se déconnecter</button>
@@ -71,18 +107,6 @@ export default function MainMenu(props){
         </div>
 
       </div>
-      { props.sound !== null ?
-          ( <MusicSound sound={props.sound} additionnalStyle="absolute right-10 top-8" />)
-          : ""
-
-      }
-
-      <a target='_blank' href="https://git.unistra.fr/les-scrums-masters/foc21-t3-a" className='absolute bottom-5 right-8 text-white text-opacity-50 hover:text-opacity-100' rel="noopener noreferrer">
-      Les Scrums Masters © 2021
-      </a>
-
-    </div>
-
-    </div>
   );
+
 }

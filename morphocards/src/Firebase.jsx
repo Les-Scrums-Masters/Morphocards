@@ -3,6 +3,7 @@ import { getFirestore, collection, getDocs, doc, getDoc, setDoc, updateDoc} from
 import { getAuth, GoogleAuthProvider, signOut  } from "firebase/auth";
 import HandCardModel from './models/HandCardModel';
 import WordModel from './models/WordModel';
+import GameModel from './models/GameModel';
 
 class FirebaseClass {
 
@@ -68,7 +69,6 @@ class FirebaseClass {
     // Création de la variable du numéro de partie
     let gameId = 0;
 
-
     let alreadyIncremend = false;
     if (docSnap.exists()) {
       // Le document existe, on défini le numéro de la partie à enregistrer
@@ -130,6 +130,36 @@ class FirebaseClass {
     return list;
   }
 
+  async getGames(userId) {
+    
+    // Récupère le document de l'utilisateur
+    let docRef = doc(this.USERS_COLLECTION, userId ?? Firebase.auth.currentUser.uid);
+
+    // Récupérer la collection parties de l'utilisateur :
+    let gamesCollection = collection(docRef, "games");
+
+    // Récupérer la liste des parties
+    let gameList = await getDocs(gamesCollection);
+
+    // Si il n'y a pas de parties, on retourne une liste vide
+    if (gameList.empty) {
+      return [];
+    } 
+
+    // Création de la liste des résultats
+    let results = [];
+
+    // Pour chaque partie
+    gameList.forEach((element)=> {
+      let data = element.data();
+
+      let game = new GameModel(element.id, data['date'], data['time'], data['rounds']);
+      results.push(game);
+    });
+  
+    return results;
+
+  }
 
   refToString(item) {
     if (item.path) {

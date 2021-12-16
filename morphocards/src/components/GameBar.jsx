@@ -29,10 +29,8 @@ const GameBar = React.forwardRef((props, ref) => {
 
     useImperativeHandle(ref, () => ({
 
-
-        getTime(){
-            //Renvoie le temps de son timer
-            return timerRef.current.getTime();
+        getTimeComponent() {
+            return timerRef.current;
         },
 
         restartTimer(){

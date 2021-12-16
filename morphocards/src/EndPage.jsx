@@ -29,7 +29,7 @@ export default function EndPage(props) {
             setInitialized(true);
             setconfetti( {fire: {}} );
             if(props.isLogged){
-                Firebase.saveGame(props.rounds, 18.6);
+                Firebase.saveGame(props.rounds, props.timeValue);
             }
         }
 
@@ -38,7 +38,7 @@ export default function EndPage(props) {
             playFinishedSound();
         }
 
-    }, [playFinishedSound, props.isLogged, props.rounds, initialized, played, sound])
+    }, [playFinishedSound, props.isLogged, props.rounds, initialized, played, sound, props.timeValue])
 
 
 
@@ -50,10 +50,10 @@ export default function EndPage(props) {
                 <h3 className="text-2xl text-gray-900 font-bold mt-5">{props.title}</h3>
                 <h5 className="text-xl text-gray-900 mt-5">{props.time}</h5>
 
-                <div className="mt-10 flex flex-col gap-3">
+                <div className="mt-10 flex flex-col gap-3 h-full">
                     <h4 className="text-lg font-bold text-gray-800">Vos résultats</h4>
 
-                    <RoundHistoryList rounds={props.rounds} />
+                    <RoundHistoryList rounds={props.rounds} say={props.say} />
 
                 </div>
 

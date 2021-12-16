@@ -29,9 +29,9 @@ const Timer = React.forwardRef((props, ref) => {
         seconds,
         minutes,
         reset,
+        pause,
         /*isRunning,
         start,
-        pause,
         resume,
         */
       } =useStopwatch({ autoStart: true });
@@ -45,6 +45,14 @@ const Timer = React.forwardRef((props, ref) => {
 
 
       useImperativeHandle(ref, () => ({
+
+        getSeconds() {
+            return minutes*60 + seconds;
+        },
+
+        stopTime() {
+            pause();
+        },
 
         getTime(){
             return getStylizedTime();

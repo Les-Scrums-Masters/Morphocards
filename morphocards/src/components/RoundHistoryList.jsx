@@ -5,7 +5,7 @@ import React from "react";
 export default function RoundHistoryList(props) {
 
     return(
-        <div className="flex flex-col gap-4 justify-center">
+        <div className="flex flex-col gap-4 justify-center w-full h-full overflow-y-auto">
 
         {props.rounds.map((item, index) => (
             <RoundResult key={index} say={props.say} round={item} number={index+1} />

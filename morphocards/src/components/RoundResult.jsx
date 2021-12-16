@@ -25,7 +25,7 @@ function RoundResult(props) {
     let svgClass="h-10 w-10 "
 
     return(
-        <div className="flex justify-start md:justify-center flex-wrap gap-3 items-center p-3 rounded-lg mx-auto hover:shadow-lg transition ease-out duration-100 w-full md:w-5/12 bg-gray-100 shadow-sm">
+        <div className="flex justify-start md:justify-center flex-wrap gap-3 items-center p-3 rounded-lg mx-auto hover:shadow-lg transition ease-out duration-100 w-full md:w-8/12 bg-gray-100 shadow-sm">
 
             {props.round.success
                 ? <CheckIcon className={svgClass+"text-green-600"} />

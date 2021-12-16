@@ -61,11 +61,7 @@ function ResultContent(props) {
 
     return(
         <div className="container bg-white mx-auto h-4/5 rounded-xl w-full flex gap-3 justify-center items-center">
-            {(props.data.length === 0)
-            // Aucune partie :
-            ? (<p>Ce joueur n'a aucune partie</p>)
-            // Afficher la partie n° toShow
-            : (toShow !== null) 
+            {(toShow !== null) 
                 ? (<GameInfo key={toShow} game={props.data.filter((element) => element.id === toShow)[0]} goBack={goToList} />)
                 // Aucune partie à afficher, afficher la liste :
                 :   (<div className="grid gap-3 flex-1 h-full w-full py-5">
@@ -74,11 +70,13 @@ function ResultContent(props) {
                         </div>
                         <h3 className="text-bold text-2xl font-bold text-center">Vos parties</h3>
                         
-                        <div className="grid grid-cols-1 divide-y w-full overflow-y-auto">
+                       {(props.data.length > 0)
+                        ? ( <div className="grid grid-cols-1 divide-y w-full overflow-y-auto">
                             {props.data.map((element, index) => {
                                 return <GameItem game={element} key={index} onClick={openGame} />;
                             })}
-                        </div>
+                        </div>)
+                        : (<p className="text-center">Ce joueur n'a aucune partie</p>)}
 
                     </div>)}
         </div>
@@ -97,17 +95,15 @@ function GameItem(props) {
         <button onClick={() => {
             props.onClick(props.game.id);
             playClick();
-        }} className="hover:bg-gray-100 transition ease-out duration-200 active:bg-gray-200 py-3 flex px-3 md:px-10 h-auto">
-            <div className="flex-1 flex flex-col">
+        }} className="hover:bg-gray-100 transition ease-out duration-200 active:bg-gray-200 py-3 flex flex-col px-3 md:px-20 h-auto">
                 <p className="font-bold text-lg text-left">
                     {"Partie #" + props.game.id}
                 </p>
                 <div className="flex gap-3">
                     <p className="italic font-medium">{props.game.successes+"/"+props.game.rounds.length}</p>
                     <TimeDisplay time={props.game.time} />
+                    <DateDisplay date={props.game.dateString} />
                 </div>
-            </div>
-            <DateDisplay date={props.game.dateString} />
             
         </button>
     );
@@ -137,8 +133,8 @@ function DateDisplay(props) {
 
     return (
         <div className="text-gray-500 flex gap-3 justify-end items-center">
-                <p>{props.date}</p>
-                <CalendarIcon className="h-4 w-4" />
+            <CalendarIcon className="h-4 w-4" />
+            <p>{props.date}</p>    
         </div>
     );
 

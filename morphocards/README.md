@@ -1,70 +1,62 @@
-# Getting Started with Create React App
+# FOC21-T3-A : Les Scrums Masters 🕵️
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## **👨 Membres du groupes**
 
-## Available Scripts
+    * CEYLAN Eren Mustafa
+    * MANSOURI Sofiane
+    * GUTMANN Franck
 
-In the project directory, you can run:
+## **Jouer**
 
-### `npm start`
+Pour vous amusez, il suffit simplement d'aller sur le site : [Morphocards](http://morphocards.franck-g.fr/)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## **🛠️ Installation en local**
 
-### `npm test`
+### **Prérequis :**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- [Node.js](https://nodejs.org/) (min v16)
+- [npm](http://www.npmjs.com)
 
-### `npm run build`
+### **1. Cloner le repos :**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+git clone https://git.unistra.fr/les-scrums-masters/foc21-t3-a.git
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### **2. Installer les dépendances Node.js :**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Au sein du dossier `/morphocards`, executer la commande
+```bash
+npm install
+```
 
-### `npm run eject`
+### **3. Demarrer le serveur Node.js :**
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Au sein du dossier `/morphocards`, executer la commande
+```bash
+node app
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+L'application est alors disponible depuis un navigateur à l'adresse [http://localhost:3000/](http://localhost:3000/)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## **📃 Description du jeu**
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+MorphoCards est un jeu sérieux ludique qui a pour vocation de faire ***comprendre ce qu'est la dyslexie.***
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Il s'agit d'un jeu de cartes visuel. Le joueur se retrouvera avec une main de 10 cartes constituée de symboles représentant différents phonèmes. Le plateau de jeu, lui, contiendra une ou plusieurs cartes représentant différentes parties d'un mot, que le joueur devra compléter à l'aide des cartes de sa main. Lors de chaque manche, le joueur entendra le mot à compléter, et pourra le réécouter autant qu'il le souhaite. Le but du joueur sera donc de reconstituer le mot entendu à l'aide des cartes de sa main.
 
-### Code Splitting
+Un clic sur une carte de sa main lui permettra d'écouter le son qu'elle représente. Si le joueur complète correctement le mot, il passe à la manche suivante. Sinon, il peut soit réesayer autant de fois qu'il le souhaite jusqu'à reussir à réconstituer le bon soit passer au prochain mot.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Une partie se déroulera en 5 tours. L'objectif est de terminer la partie avec le meilleur temps possible.
 
-### Analyzing the Bundle Size
+Le joueur pourra donc se mettre à la place d'une personne dyslexique qui interprète les mots d'une manière différente.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Information supplémentaire
+-  [WIKI](https://git.unistra.fr/les-scrums-masters/foc21-t3-a/-/wikis/home)

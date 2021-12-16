@@ -1,6 +1,18 @@
 import React from "react";
 
-export default function Loading(props) {
+
+/**
+ * Chargement : le placement (trou) où une carte doit être placé
+ *
+ * @component Loading
+ * @visibleName Loading
+ *
+ * @example
+ * <Loading />
+ *
+ * @return {JSX} Le rendu jsx du chargement.
+ */
+function Loading(props) {
 
     return(
         <div className="grid justify-center items-center h-32 text-white font-bold gap-3">
@@ -12,3 +24,5 @@ export default function Loading(props) {
         </div>
     );
 }
+
+export default Loading;

@@ -2,7 +2,25 @@ import { CheckIcon, XIcon } from "@heroicons/react/outline";
 import React from "react";
 import WordDisplay from "./WordDisplay";
 
-export default function RoundResult(props) {
+
+/**
+ * Résultat d'un round : Affichage d'un seul round
+ *
+ * @component RoundResult
+ *
+ * @param   {string} key  Id unique d'un resultat
+ * @param   {RoundData} item Donnée d'un seul round
+ * @param   {function} say   Fonction pour faire parler la synthèse vocale
+ * @param   {int} number  le round actuel
+ *
+ * @example
+ * <RoundResult key={index} say={props.say} round={item} number={index+1} />
+ *
+ * @return {JSX} Le rendu jsx du resultat du round
+ */
+
+
+function RoundResult(props) {
 
     let svgClass="h-10 w-10 "
 
@@ -20,7 +38,7 @@ export default function RoundResult(props) {
                 <WordDisplay word={props.round.word.id} legend="Le mot était" say={props.say} align="left"/>
             </div>
 
-            {props.round.success 
+            {props.round.success
                 ? ""
                 :   (
                     <div className="w-1/3">
@@ -33,3 +51,5 @@ export default function RoundResult(props) {
     );
 
 }
+
+export default RoundResult;

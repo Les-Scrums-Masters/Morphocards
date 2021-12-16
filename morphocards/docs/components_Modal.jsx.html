@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/Modal.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/Modal.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { Fragment } from 'react'
+import { Dialog, Transition } from '@headlessui/react'
+
+
+/**
+ * Boîte de dialogue : la boîte de dialogue qui apparait par dessus l'écran principal
+ *
+ * @component Modal
+ *
+ * @param   {bool} open  Etat du modal (ouvert/fermé)
+ * @param   {string} emoji  Emoji affiché dans la boîte de dialogue
+ * @param   {string} title   Titre affiché dans la boîte de dialgoue
+ * @param   {Button[]} buttons  Liste de boutons a mettre dans la boîte de dialogue
+ * @param   {function} onClose  Référence du composant
+ *
+ * @example
+ * &lt;Modal open={modalOpen} emoji={modalEmoji} title={modalTitle} buttons={Buttons} onClose={closeModal}>
+ *     //modalContent
+ * &lt;/Modal>
+ *
+ * @return {JSX} Le rendu jsx de la main
+ */
+function Modal(props) {
+
+  return (
+    &lt;Transition.Root show={props.open} as={Fragment}>
+      &lt;Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" initialFocus={props.focusedRef} onClose={props.onClose}>
+        &lt;div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+          &lt;Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            &lt;Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" />
+          &lt;/Transition.Child>
+
+          {/* This element is to trick the browser into centering the modal contents. */}
+          &lt;span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
+            &amp;#8203;
+          &lt;/span>
+          &lt;Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            enterTo="opacity-100 translate-y-0 sm:scale-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+            leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+          >
+            &lt;div className="inline-block align-bottom bg-white rounded-xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+              &lt;div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                &lt;div>
+                    &lt;h1 className="text-6xl text-center mt-4">&lt;span role='img' aria-label="emoji">{props.emoji}&lt;/span>&lt;/h1>
+                  &lt;div className="mt-5 text-center">
+                    &lt;Dialog.Title as="h3" className="text-2xl leading-6 font-medium text-gray-900">
+                      {props.title}
+                    &lt;/Dialog.Title>
+                    &lt;div className="mt-6">
+                      {props.children}
+                    &lt;/div>
+                  &lt;/div>
+                &lt;/div>
+              &lt;/div>
+              &lt;div className="bg-gray-50 px-4">
+                {props.buttons}
+              &lt;/div>
+            &lt;/div>
+          &lt;/Transition.Child>
+        &lt;/div>
+      &lt;/Dialog>
+    &lt;/Transition.Root>
+  );
+
+}
+
+export default Modal;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Button.html">Button</a></li><li><a href="Card.html">Card</a></li><li><a href="CardPlacement.html">CardPlacement</a></li><li><a href="CardStatic.html">CardStatic</a></li><li><a href="GameBar.html">GameBar</a></li><li><a href="GameBoard.html">GameBoard</a></li><li><a href="Hand.html">Hand</a></li><li><a href="HandCardModel.html">HandCardModel</a></li><li><a href="Loading.html">Loading</a></li><li><a href="Modal.html">Modal</a></li><li><a href="MusicSound.html">MusicSound</a></li><li><a href="RoundButton.html">RoundButton</a></li><li><a href="RoundData.html">RoundData</a></li><li><a href="RoundList.html">RoundList</a></li><li><a href="RoundResult.html">RoundResult</a></li><li><a href="SpeakButton.html">SpeakButton</a></li><li><a href="Timer.html">Timer</a></li><li><a href="WordDisplay.html">WordDisplay</a></li><li><a href="WordModel.html">WordModel</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu Dec 16 2021 17:08:21 GMT+0100 (heure normale d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

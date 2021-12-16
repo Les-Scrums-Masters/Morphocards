@@ -62,7 +62,7 @@ function ResultContent(props) {
             ? (<p>Ce joueur n'a aucune partie</p>)
             // Afficher la partie n° toShow
             : (toShow !== null) 
-                ? (<GameInfo key={toShow-1} game={props.data[toShow-1]} goBack={goToList} />)
+                ? (<GameInfo key={toShow} game={props.data.filter((element) => element.id === toShow)[0]} goBack={goToList} />)
                 // Aucune partie à afficher, afficher la liste :
                 :   (<div className="grid gap-3 flex-1 h-full w-full py-5">
                         <div className="mx-5">
@@ -70,7 +70,7 @@ function ResultContent(props) {
                         </div>
                         <h3 className="text-bold text-2xl font-bold text-center">Vos parties</h3>
                         
-                        <div className="grid grid-cols-1 divide-y w-full">
+                        <div className="grid grid-cols-1 divide-y w-full overflow-y-auto">
                             {props.data.map((element, index) => {
                                 return <GameItem game={element} key={index} onClick={openGame} />;
                             })}
@@ -116,7 +116,7 @@ function GameInfo(props) {
             <DateDisplay date={props.game.dateString} />
             <p>{props.game.time}</p>
 
-            <h4>Vos résultats</h4>
+            <h4 className="font-bold text-xl">Vos résultats</h4>
 
             <RoundHistoryList rounds={props.game.rounds} />
 
@@ -139,9 +139,9 @@ function DateDisplay(props) {
 function TimeDisplay(props) {
 
     return (
-        <div className="text-gray-500 flex gap-3 justify-end items-center">
-                <p>{props.date}</p>
-                <ClockIcon className="h-4 w-4" />
+        <div className="text-gray-500 flex gap-2 justify-end items-center">
+        <ClockIcon className="h-4 w-4" />
+        <p>{props.time}</p>
         </div>
     );
 

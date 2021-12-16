@@ -1,3 +1,6 @@
+import RoundData from "./RoundData";
+import WordModel from "./WordModel";
+
 export default class GameModel {
 
     id;
@@ -9,7 +12,16 @@ export default class GameModel {
         this.id = id;
         this.date = date;
         this.time = time;
-        this.rounds = rounds;
+
+        // Conversion des rounds
+        let roundsList = [];
+        rounds.forEach((element) => {
+            let r = new RoundData(new WordModel(element['word'], null), null);
+            r.success = element['isSuccess'];
+            r.userWord = element['userWord'];
+            roundsList.push(r);
+        })
+        this.rounds = roundsList;
     }
 
     toMap() {
@@ -38,7 +50,7 @@ export default class GameModel {
         // Comptage du nombre d'erreurs et de succès
         let s = 0;
         this.rounds.forEach((element) => {
-            if (element['isSuccess']) s++;
+            if (element.success) s++;
         });
         this.successes = s;
     }

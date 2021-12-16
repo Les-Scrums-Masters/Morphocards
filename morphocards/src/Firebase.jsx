@@ -152,6 +152,7 @@ class FirebaseClass {
     // Pour chaque partie
     gameList.forEach((element)=> {
       let data = element.data();
+
       let game = new GameModel(element.id, data['date'], data['time'], data['rounds']);
       results.push(game);
     });

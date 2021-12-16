@@ -1,6 +1,24 @@
 import React from "react";
 
-export default function RoundButton(props) {
+
+/**
+ * Bouton en cercle : les boutons rectangles de l'application
+ *
+ * @component Button
+ *
+ * @param   {function} onClick  Fonction qui s'execute lorsqu'on clique sur le bouton
+ * @param   {string} label  Label du boutons
+ * @param   {bool} animated   Etat qui indique si le bouton doit être animé ou non
+ *
+ * @example
+ * <RoundButton animated={true} onClick={sayWord} label="Écouter le mot à reconstituer">
+ *  //roundbuttonContent
+ * </RoundButton>
+ *
+ * @return {JSX} Le rendu jsx du bouton arrondi.
+ */
+
+function RoundButton(props) {
 
     let className = ((props.animated) ? "animate-pulse" /*"animate__animated animate__pulse animate__infinite"*/ : "")
 
@@ -12,3 +30,4 @@ export default function RoundButton(props) {
     );
 
 }
+export default RoundButton;

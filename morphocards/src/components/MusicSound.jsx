@@ -1,6 +1,21 @@
 import React, {useState, useEffect} from "react";
 
-export default function MusicSound(props) {
+
+/**
+ * Paramêtrage de son : composant qui permet de muter et démuter un son
+ *
+ * @component MusicSound
+ *
+ * @param  {Howl} sound  Son à manipuler
+ * @param  {string} [additionnalStyle]  Css
+ *
+ * @example
+ * <MusicSound sound={props.sound} />
+ *
+ * @return {JSX} Le rendu jsx du paramêtrage de son
+ */
+
+function MusicSound(props) {
 
     const size = 35;
 
@@ -53,3 +68,5 @@ export default function MusicSound(props) {
       </button>);
 
 }
+
+export default MusicSound;

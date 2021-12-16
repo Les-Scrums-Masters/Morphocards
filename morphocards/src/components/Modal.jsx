@@ -1,7 +1,26 @@
 import React, { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 
-export default function Modal(props) {
+
+/**
+ * Boîte de dialogue : la boîte de dialogue qui apparait par dessus l'écran principal
+ *
+ * @component Modal
+ *
+ * @param   {bool} open  Etat du modal (ouvert/fermé)
+ * @param   {string} emoji  Emoji affiché dans la boîte de dialogue
+ * @param   {string} title   Titre affiché dans la boîte de dialgoue
+ * @param   {Button[]} buttons  Liste de boutons a mettre dans la boîte de dialogue
+ * @param   {function} onClose  Référence du composant
+ *
+ * @example
+ * <Modal open={modalOpen} emoji={modalEmoji} title={modalTitle} buttons={Buttons} onClose={closeModal}>
+ *     //modalContent
+ * </Modal>
+ *
+ * @return {JSX} Le rendu jsx de la main
+ */
+function Modal(props) {
 
   return (
     <Transition.Root show={props.open} as={Fragment}>
@@ -57,3 +76,5 @@ export default function Modal(props) {
   );
 
 }
+
+export default Modal;

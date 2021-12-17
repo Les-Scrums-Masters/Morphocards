@@ -183,10 +183,10 @@ class FirebaseClass {
     return days[date.getDay()] + " " + date.getDate() + " " + months[date.getMonth()] + " " + date.getFullYear() + " à " + date.getHours() + ":" + minutes; 
   }
 
-  async getLeaderboard() {
+  async getLeaderboard(max) {
 
     // Création de la requete
-    const q = query(this.LEADERBOARD_COLLECTION, orderBy("time", "asc"), limit(10));
+    const q = query(this.LEADERBOARD_COLLECTION, orderBy("time", "asc"), limit(max));
 
     // Execution de la requete
     let docs = await getDocs(q);

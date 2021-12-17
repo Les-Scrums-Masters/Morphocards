@@ -56,8 +56,8 @@ class FirebaseClass {
 
    return FirebaseClass.instance;
   }
-  
-  
+
+
   async updateLeaderboard(time) {
     // Récupération de la référence au document de l'utilisateur
     let docRef = doc(this.LEADERBOARD_COLLECTION, Firebase.auth.currentUser.uid);
@@ -68,8 +68,8 @@ class FirebaseClass {
     if (!docSnap.exists()) {
       await setDoc(docRef, {time: time, name: Firebase.auth.currentUser.displayName});
     } else {
-      // Sinon on update seulement si le temps est mieux 
-      
+      // Sinon on update seulement si le temps est mieux
+
       // Récupération du temps :
       let oldTime = parseInt(docSnap.data()['time']) ?? 0;
 
@@ -180,7 +180,7 @@ class FirebaseClass {
       minutes = '0'+minutes;
     }
 
-    return days[date.getDay()] + " " + date.getDate() + " " + months[date.getMonth()] + " " + date.getFullYear() + " à " + date.getHours() + ":" + minutes; 
+    return days[date.getDay()] + " " + date.getDate() + " " + months[date.getMonth()] + " " + date.getFullYear() + " à " + date.getHours() + ":" + minutes;
   }
 
   async getLeaderboard(max) {
@@ -223,7 +223,7 @@ class FirebaseClass {
   }
 
   async getGames(userId) {
-    
+
     // Récupère le document de l'utilisateur
     let docRef = doc(this.USERS_COLLECTION, userId ?? Firebase.auth.currentUser.uid);
 
@@ -236,7 +236,7 @@ class FirebaseClass {
     // Si il n'y a pas de parties, on retourne une liste vide
     if (gameList.empty) {
       return [];
-    } 
+    }
 
     // Création de la liste des résultats
     let results = [];
@@ -248,7 +248,9 @@ class FirebaseClass {
       let game = new GameModel(element.id, data['date'], data['time'], data['rounds']);
       results.push(game);
     });
-  
+
+    results.sort((a, b) => a.id - b.id);
+
     return results;
 
   }

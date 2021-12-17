@@ -174,7 +174,13 @@ class FirebaseClass {
         'Dimanche',
     ]
 
-    return days[date.getDay()] + " " + date.getDate() + " " + months[date.getMonth()] + " " + date.getFullYear(); 
+    let minutes = date.getMinutes();
+
+    if (minutes.toString().length === 1) {
+      minutes = '0'+minutes;
+    }
+
+    return days[date.getDay()] + " " + date.getDate() + " " + months[date.getMonth()] + " " + date.getFullYear() + " à " + date.getHours() + ":" + minutes; 
   }
 
   async getLeaderboard() {

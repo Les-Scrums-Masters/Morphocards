@@ -121,13 +121,14 @@ function MenuContent(props) {
   }
 
   const showTutorialModal = () => {
+
     if(!isMobile){
       setModalEmoji( null );
       setModalTitle("Tutoriel");
       setModalContent(
 
         <iframe className="mx-auto w-5xl " width="1200" height="600"
-        src="https://www.youtube.com/embed/RhlQvbvMg-0"
+        src="https://www.youtube.com/embed/xcrQ8a4zAnY"
         title="YouTube video player" frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         >
@@ -144,7 +145,7 @@ function MenuContent(props) {
       setModalWidth("max-w-full");
       setModalOpen(true);
     }else{
-      window.open('https://www.youtube.com/embed/RhlQvbvMg-0', '_blank');
+      window.open('https://youtu.be/xcrQ8a4zAnY', '_blank');
     }
 
   }

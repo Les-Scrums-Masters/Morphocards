@@ -26,8 +26,8 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React, { Fragment, useState } from 'react'
-
+            <pre class="prettyprint source linenums"><code>import React from 'react'
+import { Transition } from '@headlessui/react'
 
 /**
  * Notification : la notification qui indique des informations au joueur
@@ -46,26 +46,35 @@ function Notification(props) {
 
   return (
 
-    props.open === true
-    ?
-    (
 
-    &lt;div className="pl-3 w-64 bg-white rounded-md drop-shadow-xl border-2 border-red-500 absolute right-10 bottom-1/4 p-4">
-    &lt;div className="flex items-center justify-between w-full">
-        &lt;p className="text-sm leading-none">
-            &lt;span className="text-red-500 text-bold">Alert :&lt;/span> Vous devez remplir toutes les cases en priorité
-        &lt;/p>
-        &lt;button className="cursor-pointer" onClick={ props.closeNotification }>
-            &lt;svg width={14} height={14} viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                &lt;path d="M10.5 3.5L3.5 10.5" stroke="#4B5563" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                &lt;path d="M3.5 3.5L10.5 10.5" stroke="#4B5563" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-            &lt;/svg>
-        &lt;/button>
+      &lt;div>
+      &lt;Transition
+        show={props.open}
+        enter="transition-opacity duration-600"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="transition-opacity duration-400"
+        leaveFrom="opacity-100"
+        leaveTo="opacity-0"
+      >
+      &lt;div className="pl-3 w-64 bg-white rounded-md drop-shadow-xl border-2 border-red-500 absolute right-10 bottom-1/4 p-4 transition-all ">
+        &lt;div className="flex items-center justify-between w-full">
+          &lt;p className="text-sm leading-none">
+              &lt;span className="text-red-500 text-bold">Alert :&lt;/span> Vous devez remplir toutes les cases en priorité
+          &lt;/p>
+          &lt;button className="cursor-pointer" onClick={ props.closeNotification }>
+              &lt;svg width={14} height={14} viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  &lt;path d="M10.5 3.5L3.5 10.5" stroke="#4B5563" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+                  &lt;path d="M3.5 3.5L10.5 10.5" stroke="#4B5563" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+              &lt;/svg>
+          &lt;/button>
+        &lt;/div>
+        &lt;p className="text-xs leading-3 pt-1 text-gray-500">Remplissez tous les emplacements&lt;/p>
       &lt;/div>
-      &lt;p className="text-xs leading-3 pt-1 text-gray-500">Remplissez tous les emplacements&lt;/p>
-  &lt;/div>
-  )
-    : ""
+      &lt;/Transition>
+    &lt;/div>
+
+
   );
 
 }
@@ -81,13 +90,13 @@ export default Notification;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AppLogo.html">AppLogo</a></li><li><a href="BackButton.html">BackButton</a></li><li><a href="Button.html">Button</a></li><li><a href="Card.html">Card</a></li><li><a href="CardPlacement.html">CardPlacement</a></li><li><a href="CardStatic.html">CardStatic</a></li><li><a href="GameBar.html">GameBar</a></li><li><a href="GameBoard.html">GameBoard</a></li><li><a href="Hand.html">Hand</a></li><li><a href="HandCardModel.html">HandCardModel</a></li><li><a href="Loading.html">Loading</a></li><li><a href="Modal.html">Modal</a></li><li><a href="MusicSound.html">MusicSound</a></li><li><a href="Notification.html">Notification</a></li><li><a href="RoundButton.html">RoundButton</a></li><li><a href="RoundData.html">RoundData</a></li><li><a href="RoundHistoryList.html">RoundHistoryList</a></li><li><a href="RoundList.html">RoundList</a></li><li><a href="RoundResult.html">RoundResult</a></li><li><a href="SpeakButton.html">SpeakButton</a></li><li><a href="Timer.html">Timer</a></li><li><a href="WordDisplay.html">WordDisplay</a></li><li><a href="WordModel.html">WordModel</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AppLogo.html">AppLogo</a></li><li><a href="BackButton.html">BackButton</a></li><li><a href="Button.html">Button</a></li><li><a href="Card.html">Card</a></li><li><a href="CardPlacement.html">CardPlacement</a></li><li><a href="CardStatic.html">CardStatic</a></li><li><a href="GameBar.html">GameBar</a></li><li><a href="GameBoard.html">GameBoard</a></li><li><a href="Hand.html">Hand</a></li><li><a href="HandCardModel.html">HandCardModel</a></li><li><a href="Leaderboard.html">Leaderboard</a></li><li><a href="LeaderboardPreview.html">LeaderboardPreview</a></li><li><a href="Loading.html">Loading</a></li><li><a href="Modal.html">Modal</a></li><li><a href="MusicSound.html">MusicSound</a></li><li><a href="Notification.html">Notification</a></li><li><a href="RoundButton.html">RoundButton</a></li><li><a href="RoundData.html">RoundData</a></li><li><a href="RoundHistoryList.html">RoundHistoryList</a></li><li><a href="RoundList.html">RoundList</a></li><li><a href="RoundResult.html">RoundResult</a></li><li><a href="SpeakButton.html">SpeakButton</a></li><li><a href="Timer.html">Timer</a></li><li><a href="WordDisplay.html">WordDisplay</a></li><li><a href="WordModel.html">WordModel</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Dec 17 2021 01:13:26 GMT+0100 (heure normale d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Dec 17 2021 03:15:26 GMT+0100 (heure normale d’Europe centrale)
 </footer>
 
 <script> prettyPrint(); </script>

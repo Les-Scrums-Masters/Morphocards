@@ -1,6 +1,20 @@
 import React, { useState, useEffect } from "react";
 import Firebase from "../Firebase";
 
+
+
+/**
+ * Classement détaillé : le classement détaillé (Top 100 des meilleurs joueurs)
+ *
+ * @component Leaderboard
+ *
+ * @example
+ * <Leaderboard />
+ *
+ * @return {JSX} Le rendu jsx du classement détaillé
+ */
+
+
 function Leaderboard(props) {
 
     const [initialized, setInitialized] = useState(false);
@@ -15,7 +29,7 @@ function Leaderboard(props) {
 
         if (!initialized) {
             setInitialized(true);
-            getData();            
+            getData();
         }
 
     }, [initialized, data])
@@ -26,7 +40,7 @@ function Leaderboard(props) {
 
     return (
         <div className={"pt-2 flex flex-col divide-y " + gap}>
-        {(data === null) 
+        {(data === null)
             ? (
                 loadingTab.map((index) => <div key={"loading"+index} className="w-52 bg-gray-900 opacity-30 h-4 rounded animate-pulse "></div>)
             )

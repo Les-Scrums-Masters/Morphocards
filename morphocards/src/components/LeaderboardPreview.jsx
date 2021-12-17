@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Loading from "./Loading";
 import Firebase from "../Firebase";
 
 function LeaderboardPreview(props) {
@@ -21,15 +20,19 @@ function LeaderboardPreview(props) {
 
     }, [initialized, data])
 
+    const loadingTab = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+
     return (
         <div className="absolute md:right-8 opacity-0 md:opacity-100">
             <div className="flex-col justify-end divide-y">
             <h3 className="text-xl text-white font-bold uppercase italic text-right pb-2">Classement</h3>
 
-            <div className="pt-2">
+            <div className="pt-2 flex flex-col gap-2">
             {(data === null) 
-                ? (<Loading/>)
-                : data.map(((element, index) => <LeaderboardPreviewItem key={index} item={element} />))
+                ? (
+                    loadingTab.map((index) => <div className="w-52 bg-white opacity-30 h-4 rounded animate-pulse "></div>)
+                )
+                : data.map(((element, index) => <LeaderboardPreviewItem position={index} key={index} item={element} />))
             }
             </div>
             </div>

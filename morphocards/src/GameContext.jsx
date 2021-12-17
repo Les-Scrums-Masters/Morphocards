@@ -187,7 +187,11 @@ export default function GameContext(props) {
   const onDragEnd = (result) => {
 
     //Arret du son Magique de carte en fade-out
-    sound.fade(dropLoopVolume, 0, 400)
+    try {
+      sound.fade(dropLoopVolume, 0, 400)
+    } catch(e) {
+      console.error(e);
+    }
 
     const {destination, source} = result;
 
@@ -245,7 +249,8 @@ export default function GameContext(props) {
 
     // Fonction appelé lorsque le joueur va prendre une carte
     const onDragStart = (result) => {
-      //Son de l'action prendre une carte
+      try {
+        //Son de l'action prendre une carte
         playDrag();
 
         //Met la répétition du son
@@ -253,13 +258,21 @@ export default function GameContext(props) {
         //Joue le son magique lorsqu'on prend la carte et
         sound.loop(true);
         sound.fade(0, dropLoopVolume, 700)
-        sound.play();
+        sound.play()
+      } catch (e) {
+        console.error(e);
+      }
     };
 
     const onDragUpdate = (update) => {
       if(update.destination !== null){
         if( !isHand(update.destination.droppableId)){
-          playHover();
+          
+          try {
+            playHover();
+          } catch (e) {
+            console.error(e);
+          }
 
         }
       }

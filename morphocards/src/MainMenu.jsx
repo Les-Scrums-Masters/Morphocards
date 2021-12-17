@@ -83,14 +83,6 @@ export default function MainMenu(props){
 
 function MenuContent(props) {
 
-  const infoButton = (
-    <button>
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    </button>
-  )
-
   // ------- Boite de dialogue  -------
   const [modalEmoji, setModalEmoji] = useState("");
   const [modalTitle, setModalTitle] = useState("");
@@ -191,7 +183,7 @@ function MenuContent(props) {
         </div>
 
         <div className='flex items-center justify-center mt-5 h-10'>
-          <Button onClick={showTutorialModal} color='bg-white text-indigo-200 ring-indigo-200 hover:bg-indigo-400 active:bg-indigo-600' paddingY="py-3 hover:px-6 my-1 hover:my-0 hover:py-4" textSize="text-lg">
+          <Button onClick={showTutorialModal} color='bg-white text-indigo-200 ring-indigo-200 hover:bg-indigo-400 active:bg-indigo-600' paddingY="py-3 hover:px-6  my-1 hover:my-0 hover:py-4 active:px-10" textSize="text-lg">
             <div className='flex-1'></div>
             Tutoriel
             <div className='flex-1 flex justify-end'>

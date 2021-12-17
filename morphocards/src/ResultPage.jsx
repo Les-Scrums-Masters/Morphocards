@@ -90,14 +90,14 @@ function GameItem(props) {
         <button onClick={() => {
             props.onClick(props.game.id);
             playClick();
-        }} className="hover:bg-gray-100 transition ease-out duration-200 active:bg-gray-200 py-3 flex flex-col px-3 md:px-20 h-auto">
+        }} className="hover:bg-gray-100 transition ease-out duration-200 active:bg-gray-200 py-3 flex md:flex-col px-3 md:px-20 sm:h-auto flex-wrap items-center md:items-start gap-3 sm:gap-0 h-full justify-center sm:justify-start">
                 <p className="font-bold text-lg text-left">
                     {"Partie #" + props.game.id}
                 </p>
-                <div className="flex gap-3">
+                <div className="flex gap-1 sm:gap-3 flex-col sm:flex-row w-full text-center sm:text-left justify-center sm:justify-start">
                     <p className="italic font-medium">{props.game.successes+"/"+props.game.rounds.length}</p>
                     <TimeDisplay time={props.game.time} />
-                    <DateDisplay date={props.game.dateString} />
+                    <DateDisplay date={props.game.date} />
                 </div>
             
         </button>
@@ -114,7 +114,7 @@ function GameInfo(props) {
             </div>
             <h1 className="font-bold text-2xl text-center">{"Partie #" + props.game.id}
             </h1>
-            <DateDisplay date={props.game.dateString} />
+            <DateDisplay date={props.game.date} />
             <TimeDisplay time={props.game.time} />
 
             <RoundHistoryList rounds={props.game.rounds} />
@@ -127,9 +127,9 @@ function GameInfo(props) {
 function DateDisplay(props) {
 
     return (
-        <div className="text-gray-500 flex gap-3 justify-end items-center">
+        <div className="text-gray-500 flex gap-3 items-center">
             <CalendarIcon className="h-4 w-4" />
-            <p>{props.date}</p>    
+            <p>{Firebase.getDate(props.date)}</p>    
         </div>
     );
 
@@ -138,9 +138,9 @@ function DateDisplay(props) {
 function TimeDisplay(props) {
 
     return (
-        <div className="text-gray-500 flex gap-2 justify-end items-center">
+        <div className="text-gray-500 flex gap-2 items-center">
         <ClockIcon className="h-4 w-4" />
-        <p>{props.time}</p>
+        <p>{Firebase.getTime(props.time)}</p>
         </div>
     );
 

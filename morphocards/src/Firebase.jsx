@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, doc, getDoc, setDoc, updateDoc} from 'firebase/firestore/lite';
+import { getFirestore, collection, getDocs, doc, getDoc, setDoc, updateDoc, query, orderBy, limit} from 'firebase/firestore/';
 import { getAuth, GoogleAuthProvider, signOut  } from "firebase/auth";
 import HandCardModel from './models/HandCardModel';
 import WordModel from './models/WordModel';
@@ -138,6 +138,61 @@ class FirebaseClass {
 
     // Si la partie à été éligible, vérifier l'enregistrement du classement
     if (eligible) await this.updateLeaderboard(time);
+
+  }
+
+
+  getTime(time) {
+    return new Date(time * 1000).toISOString().substring(14, 19)
+  }
+
+  getDate(d) {
+    let date = new Date(d);
+
+    const months = [
+        'Janvier',
+        'Février',
+        'Mars',
+        'Avrim',
+        'Mai',
+        'Juin',
+        'Juillet',
+        'Août',
+        'Septembre',
+        'Octobre',
+        'Novembre',
+        'Décembre'
+      ]
+
+    const days = [
+        'Lundi',
+        'Mardi',
+        'Mercredi',
+        'Jeudi',
+        'Vendredi',
+        'Samedi',
+        'Dimanche',
+    ]
+
+    return days[date.getDay()] + " " + date.getDate() + " " + months[date.getMonth()] + " " + date.getFullYear(); 
+  }
+
+  async getLeaderboard() {
+
+    // Création de la requete
+    const q = query(this.LEADERBOARD_COLLECTION, orderBy("time", "asc"), limit(10));
+
+    // Execution de la requete
+    let docs = await getDocs(q);
+
+    // Création des résultats :
+    let results = [];
+    docs.forEach((element) => {
+      let data = element.data();
+      results.push({name: data["name"] ?? "...", time: data["time"] ?? -1});
+    });
+
+    return results;
 
   }
 

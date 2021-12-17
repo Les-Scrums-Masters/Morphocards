@@ -20,7 +20,7 @@ import React from "react";
 
 function RoundButton(props) {
 
-    let className = ((props.animated) ? "animate-pulse" /*"animate__animated animate__pulse animate__infinite"*/ : "")
+    let className = ((props.animated) ? "pulse" /*"animate__animated animate__pulse animate__infinite"*/ : "")
 
     return(
         <div className="flex flex-col justify-center gap-3 md:gap-3 items-center text-center mt-5">

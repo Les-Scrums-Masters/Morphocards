@@ -94,3 +94,37 @@ html, body, #root {
 h1, h2, h3, h4, h5, h6, p {
   @apply select-none
 }
+
+/* Animation de bouton dans le jeu (écoute)  rgba(204,169,44, 0.4)*/
+.pulse {
+  animation: pulse 2s infinite;
+}
+.pulse:hover {
+  animation: none;
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(255,255,255, 0.5);
+  }
+  70% {
+      -webkit-box-shadow: 0 0 0 30px rgba(255,255,255, 0);
+  }
+  100% {
+      -webkit-box-shadow: 0 0 0 0 rgba(255,255,255, 0);
+  }
+}
+@keyframes pulse {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(255,255,255, 0.5);
+    box-shadow: 0 0 0 0 rgba(255,255,255, 0.4);
+  }
+  70% {
+      -moz-box-shadow: 0 0 0 30px rgba(255,255,255, 0);
+      box-shadow: 0 0 0 30px rgba(255,255,255, 0);
+  }
+  100% {
+      -moz-box-shadow: 0 0 0 0 rgba(255,255,255, 0);
+      box-shadow: 0 0 0 0 rgba(255,255,255, 0);
+  }
+}

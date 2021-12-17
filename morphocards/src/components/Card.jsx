@@ -34,9 +34,9 @@ function Card(props) {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             >
-                <VolumeUpIcon className="h-4 w-4 text-gray-500 self-end"/>
+                <VolumeUpIcon className="h-3 w-3 text-gray-500 self-end md:h-6 md:w-6"/>
                 <div className="justify-self-center flex-grow grid mb-4 content-center">
-                    <h3 className="select-none text-indigo-500 ">{props.card.value}</h3>
+                    <h3 className="select-none text-indigo-500 text-xl md:text-3xl">{props.card.value}</h3>
                 </div>
             </div>
         )}

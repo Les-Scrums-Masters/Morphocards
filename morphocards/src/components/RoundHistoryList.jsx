@@ -2,7 +2,21 @@ import RoundResult from "./RoundResult";
 
 import React from "react";
 
-export default function RoundHistoryList(props) {
+
+/**
+ * Historique des rounds : l'historique des rounds en affichage
+ *
+ * @component RoundHistoryList
+ *
+ * @param   {RoundData[]} rounds  listes des rounds à afficher
+ *
+ * @example
+ * <RoundList rounds={myRounds} actualRound={actualRound} />
+ *
+ * @return {JSX} Le rendu jsx de l'historique des rounds
+ */
+
+function RoundHistoryList(props) {
 
     return(
         <div className="flex flex-col gap-4 justify-center w-full h-full overflow-y-auto">
@@ -15,3 +29,4 @@ export default function RoundHistoryList(props) {
     );
 
 }
+export default RoundHistoryList;

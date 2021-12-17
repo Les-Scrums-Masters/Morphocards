@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: components/SpeakButton.jsx</title>
+    <title>JSDoc: Source: components/RoundHistoryList.jsx</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: components/SpeakButton.jsx</h1>
+    <h1 class="page-title">Source: components/RoundHistoryList.jsx</h1>
 
     
 
@@ -26,32 +26,38 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { VolumeUpIcon } from "@heroicons/react/outline";
+            <pre class="prettyprint source linenums"><code>import RoundResult from "./RoundResult";
+
 import React from "react";
 
 
 /**
- * Bouton d'écoute : les petits boutons d'écoute dans les modals et résultat
+ * Historique des rounds : l'historique des rounds en affichage
  *
- * @component SpeakButton
+ * @component RoundHistoryList
  *
- * @param   {function} onClick  Fonction qui s'execute lorsqu'on clique sur le bouton
+ * @param   {RoundData[]} rounds  listes des rounds à afficher
  *
  * @example
- * &lt;SpeakButton onClick={() => say(word)} />
+ * &lt;RoundList rounds={myRounds} actualRound={actualRound} />
  *
- * @return {JSX} Le rendu jsx du bouton de réecoute.
+ * @return {JSX} Le rendu jsx de l'historique des rounds
  */
 
-function SpeakButton(props) {
+function RoundHistoryList(props) {
 
-    return(&lt;button onClick={props.onClick} className="h-5 w-5 text-indigo-500 transform transition duration-200 active:scale-95 hover:scale-110 hover:text-indigi-200 focus:ring rounded-full">
-          &lt;VolumeUpIcon />
-        &lt;/button>);
+    return(
+        &lt;div className="flex flex-col gap-4 justify-center w-full h-full overflow-y-auto">
+
+        {props.rounds.map((item, index) => (
+            &lt;RoundResult key={index} say={props.say} round={item} number={index+1} />
+        ))}
+
+        &lt;/div>
+    );
 
 }
-
-export default SpeakButton;
+export default RoundHistoryList;
 </code></pre>
         </article>
     </section>

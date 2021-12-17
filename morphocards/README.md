@@ -35,7 +35,7 @@ npm install
 
 Au sein du dossier `/morphocards`, executer la commande
 ```bash
-node app
+npm run start
 ```
 
 L'application est alors disponible depuis un navigateur à l'adresse [http://localhost:3000/](http://localhost:3000/)

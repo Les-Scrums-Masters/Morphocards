@@ -1,6 +1,20 @@
 import React, { useState, useEffect } from "react";
 import Firebase from "../Firebase";
 
+
+
+/**
+ * Classement détaillé : le classement détaillé (Top 100 des meilleurs joueurs)
+ *
+ * @component Leaderboard
+ *
+ * @example
+ * <Leaderboard />
+ *
+ * @return {JSX} Le rendu jsx du classement détaillé
+ */
+
+
 function Leaderboard(props) {
 
     const [initialized, setInitialized] = useState(false);
@@ -15,7 +29,7 @@ function Leaderboard(props) {
 
         if (!initialized) {
             setInitialized(true);
-            getData();            
+            getData();
         }
 
     }, [initialized, data])

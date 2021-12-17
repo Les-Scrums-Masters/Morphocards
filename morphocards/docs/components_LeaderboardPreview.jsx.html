@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: components/CardStatic.jsx</title>
+    <title>JSDoc: Source: components/LeaderboardPreview.jsx</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: components/CardStatic.jsx</h1>
+    <h1 class="page-title">Source: components/LeaderboardPreview.jsx</h1>
 
     
 
@@ -26,44 +26,75 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React, { forwardRef, useImperativeHandle } from 'react';
+            <pre class="prettyprint source linenums"><code>import React, { useEffect, useState } from "react";
+import Firebase from "../Firebase";
 
 
 
 /**
- * Carte plateau : la carte initialement placé sur le plateau (statique -> pas de déplacement)
+ * Classement bref : le classement bref (Top 10 des meilleurs joueurs)
  *
- * @component CardStatic
- *
- * @param   {int} index  Numéro de placement
- * @param   {string} key  Id unique de la carte (numero)
- * @param   {Ref} ref  Référence du composant
- * @param   {string} value   Valeur de la carte
+ * @component LeaderboardPreview
  *
  * @example
- * &lt;CardStatic key={index} index={index} ref={boardRefs[index]} value={card.value} />
+ * &lt;LeaderboardPreview />
  *
- * @return {JSX} Le rendu jsx de la carte plateau.
+ * @return {JSX} Le rendu jsx du classement bref
  */
-const CardStatic = forwardRef((props, ref) => {
 
-    useImperativeHandle(ref, () => (
-        {
-            getValue() {
-                return props.value;
-            }
+function LeaderboardPreview(props) {
+
+    const [data, setData] = useState(null);
+    const [initialized, setInitialized] = useState(false);
+
+    useEffect(()=> {
+
+        async function getData() {
+            let result = await Firebase.getLeaderboard(10);
+            setData(result);
         }
-    ));
+
+        if (!initialized) {
+            setInitialized(true);
+            getData();
+        }
+
+    }, [initialized, data])
+
+    const loadingTab = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 
     return (
-        &lt;div className="card">
-            &lt;h3 className="select-none">{props.value}&lt;/h3>
+        &lt;div className="absolute md:right-8 opacity-0 md:opacity-100">
+            &lt;div className="flex-col justify-end divide-y">
+            &lt;h3 className="text-xl text-white font-bold uppercase italic text-right pb-2">Classement&lt;/h3>
+
+            &lt;div className="pt-2 flex flex-col gap-2">
+            {(data === null)
+                ? (
+                    loadingTab.map((index) => &lt;div className="w-64 bg-white opacity-30 h-4 rounded animate-pulse " key={"loading"+index}>&lt;/div>)
+                )
+                : data.map(((element, index) => &lt;LeaderboardPreviewItem position={index+1} key={element.name+index} item={element} />))
+            }
+            &lt;/div>
+            &lt;/div>
         &lt;/div>
     );
 
-})
+}
 
-export default CardStatic;
+function LeaderboardPreviewItem(props) {
+
+    return (
+        &lt;div className="flex gap-2 items-center text-white w-64">
+            &lt;p className="font-bold w-12 text-right">{"#"+props.position}&lt;/p>
+            &lt;p className="flex-1">{props.item.name}&lt;/p>
+            &lt;p className="italic font-bold">{Firebase.getTime(props.item.time)}&lt;/p>
+        &lt;/div>
+    );
+
+}
+
+export default LeaderboardPreview;
 </code></pre>
         </article>
     </section>

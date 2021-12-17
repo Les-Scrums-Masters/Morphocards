@@ -1,6 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Firebase from "../Firebase";
 
+
+
+/**
+ * Classement bref : le classement bref (Top 10 des meilleurs joueurs)
+ *
+ * @component LeaderboardPreview
+ *
+ * @example
+ * <LeaderboardPreview />
+ *
+ * @return {JSX} Le rendu jsx du classement bref
+ */
+
 function LeaderboardPreview(props) {
 
     const [data, setData] = useState(null);
@@ -15,7 +28,7 @@ function LeaderboardPreview(props) {
 
         if (!initialized) {
             setInitialized(true);
-            getData();            
+            getData();
         }
 
     }, [initialized, data])
@@ -28,7 +41,7 @@ function LeaderboardPreview(props) {
             <h3 className="text-xl text-white font-bold uppercase italic text-right pb-2">Classement</h3>
 
             <div className="pt-2 flex flex-col gap-2">
-            {(data === null) 
+            {(data === null)
                 ? (
                     loadingTab.map((index) => <div className="w-64 bg-white opacity-30 h-4 rounded animate-pulse " key={"loading"+index}></div>)
                 )

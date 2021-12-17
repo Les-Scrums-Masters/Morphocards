@@ -7,6 +7,15 @@ import finishedSound from './sounds/win.ogg';
 import RoundHistoryList from "./components/RoundHistoryList";
 
 
+
+const tips = [
+  'Privilégie la tranquilité pour ne pas te tromper dans tes réponses.',
+  'Ne t\'occupes pas des remarques des autres personnes et donne le max !',
+  'Le timer est facultatif, ne cherche pas la rapidité.',
+  'Utilise un maximum les fonctionnalités pendant ta partie (bouton pour réécouter, pour recommencer, ...).',
+'  Écoute bien la voix du jeu au lieu d\'utiliser directement le texte.',
+  'Si les consignes te paraissent flous, essaie de bien comprendre le jeu avant de te lancer.'
+];
 export default function EndPage(props) {
 
     const [confetti, setconfetti] = useState({
@@ -22,6 +31,12 @@ export default function EndPage(props) {
 
     const [initialized, setInitialized] = useState(false);
     const [played, setPlayed] = useState(false);
+
+
+    // Fonction qui retourne un élément choisi au hasard dans la liste
+    const pickRandomList = (list) => {
+      return list[Math.floor(Math.random() * list.length)];
+    }
 
     useEffect(() => {
 
@@ -57,7 +72,7 @@ export default function EndPage(props) {
 
                 </div>
 
-                <p className="flex-1 justify-items-end">Petit conseil ;)</p>
+                <p className="flex-1 justify-items-end">Conseil: {pickRandomList(tips)}</p>
 
                 <div className="flex gap-3 items-center">
 

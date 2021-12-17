@@ -8,8 +8,9 @@ import Firebase from "./Firebase";
 import Button from './components/Button';
 import MusicSound from './components/MusicSound';
 import ResultPage from './ResultPage';
+import AppLogo from "./components/AppLogo"
+import LeaderboardPreview from './components/LeaderboardPreview';
 import Modal from './components/Modal'
-
 
 export default function MainMenu(props){
 
@@ -58,6 +59,16 @@ export default function MainMenu(props){
       { props.sound !== null ?
           ( <MusicSound sound={props.sound} additionnalStyle="absolute right-10 top-8" />)
           : ""
+      }
+
+      { showList 
+        ? (<AppLogo onClick={backToMenu} additionnalStyle="absolute top-8 left-10"/>)
+        : ""}
+
+      {
+        showList
+        ? ""
+        : (<LeaderboardPreview />)
       }
 
       <a target='_blank' href="https://git.unistra.fr/les-scrums-masters/foc21-t3-a" className='absolute bottom-5 right-8 text-white text-opacity-50 hover:text-opacity-100' rel="noopener noreferrer">
@@ -188,7 +199,7 @@ function MenuContent(props) {
               <div id="user" className='text-center grid gap-3'>
                 <p>Vous êtes connecté en tant que <span className='font-bold'>{Firebase.auth.currentUser.displayName}</span>
                 </p>
-                <Button color="bg-indigo-500 hover:bg-opacity-10 active:bg-opacity-20 text-indigo-500 bg-opacity-0" onClick={props.goToList}>Voir vos résultats</Button>
+                <Button color="bg-indigo-500 hover:bg-opacity-20 active:bg-opacity-30 text-indigo-500 bg-opacity-10" onClick={props.goToList}>Voir vos résultats</Button>
                 <button className='text-red-500 hover:text-red-400 active:text-red-600' onClick={() => {
                   Firebase.logOut();
                 }}>Se déconnecter</button>

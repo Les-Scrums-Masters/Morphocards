@@ -126,3 +126,4 @@ Le joueur pourra donc se mettre à la place d'une personne dyslexique qui interp
 
 ## Information supplémentaire
 -  [WIKI](https://git.unistra.fr/les-scrums-masters/foc21-t3-a/-/wikis/home)
+- [DOCS](http://morphocards-docs.franck-g.fr/)

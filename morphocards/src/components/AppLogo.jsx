@@ -3,10 +3,12 @@ import React from "react";
 function AppLogo(props) {
 
     return (
-        <button onClick={props.onClick}>
+        <button onClick={props.onClick} className={"text-2xl text-white opacity-50 hover:opacity-100 transition ease-out duration-200 flex items-center gap-2 " + props.additionnalStyle}>
 
-            <h3 className="text-2xl text-white text-opacity-50 hover:text-opacity-100 transition ease-out duration-200">
-                
+            <img src="/logo192.png" className="h-10 w-10" alt="Morphocards Logo" />
+
+            <h3>
+
                 <span className="font-extrabold">Morpho</span>
                 cards
             </h3>

@@ -1,4 +1,4 @@
-import { ArrowRightIcon, InformationCircleIcon } from '@heroicons/react/outline';
+import { AcademicCapIcon, ArrowRightIcon, InformationCircleIcon } from '@heroicons/react/outline';
 import React, {useEffect, useState} from 'react';
 import {isMobile} from 'react-device-detect';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
@@ -181,7 +181,7 @@ function MenuContent(props) {
 
 
         <div className='flex items-center justify-center mt-5 h-20'>
-          <Button onClick={props.play} color='bg-indigo-500 text-white ring-indigo-200 hover:bg-indigo-400 active:bg-indigo-800' paddingY="py-3 hover:px-6 my-1 hover:my-0 hover:py-4" textSize="text-lg">
+          <Button onClick={props.play} color='bg-indigo-500 text-white ring-indigo-200 hover:bg-indigo-400 active:bg-indigo-800' paddingY="py-4 hover:px-6 my-1 hover:my-0 hover:py-5" textSize="text-lg">
             <div className='flex-1'></div>
             Jouer
             <div className='flex-1 flex justify-end'>
@@ -190,15 +190,13 @@ function MenuContent(props) {
           </Button>
         </div>
 
-        <div className='flex items-center justify-center mt-5 h-10'>
-          <Button onClick={showTutorialModal} color='bg-white text-indigo-200 ring-indigo-200 hover:bg-indigo-400 active:bg-indigo-600' paddingY="py-3 hover:px-6 my-1 hover:my-0 hover:py-4" textSize="text-lg">
+        <Button onClick={showTutorialModal} color='bg-indigo-500 text-indigo-500 bg-opacity-10 ring-indigo-200 hover:bg-opacity-20 active:bg-opacity-30' textSize="text-lg">
             <div className='flex-1'></div>
             Tutoriel
             <div className='flex-1 flex justify-end'>
-              <ArrowRightIcon className='h-8 w-8'/>
+              <AcademicCapIcon className='h-6 w-6'/>
             </div>
-          </Button>
-        </div>
+        </Button>
 
         <div className='mt-5' >
         {

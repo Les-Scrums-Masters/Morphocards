@@ -31,7 +31,7 @@ export default function EndPage(props) {
 
     const [initialized, setInitialized] = useState(false);
     const [played, setPlayed] = useState(false);
-
+    const [tip, setTip] = useState("");
 
     // Fonction qui retourne un élément choisi au hasard dans la liste
     const pickRandomList = (list) => {
@@ -43,6 +43,7 @@ export default function EndPage(props) {
         if(!initialized) {
             setInitialized(true);
             setconfetti( {fire: {}} );
+            setTip(pickRandomList(tips));
             if(props.isLogged){
                 Firebase.saveGame(props.rounds, props.timeValue);
             }
@@ -58,23 +59,17 @@ export default function EndPage(props) {
 
 
     return(
-        <div className="container mx-auto h-full pt-5 pb-10">
+        <div className="container bg-white h-4/5 rounded-xl w-full flex flex-col gap-3 justify-center items-center p-5 m-auto">
 
-            <div className="bg-white rounded-xl p-10 text-center h-full flex flex-col gap-3">
                 <h1 className="text-6xl">{String.fromCodePoint(0x1F973)}</h1>
                 <h3 className="text-2xl text-gray-900 font-bold mt-5">{props.title}</h3>
                 <h5 className="text-xl text-gray-900 mt-5">{props.time}</h5>
 
-                <div className="mt-10 flex flex-col gap-3 h-full">
-                    <h4 className="text-lg font-bold text-gray-800">Vos résultats</h4>
+                <RoundHistoryList rounds={props.rounds} say={props.say} />
 
-                    <RoundHistoryList rounds={props.rounds} say={props.say} />
+                <p className="flex-1 text-center"><b>Conseil:</b> {tip}</p>
 
-                </div>
-
-                <p className="flex-1 justify-items-end">Conseil: {pickRandomList(tips)}</p>
-
-                <div className="flex gap-3 items-center">
+                <div className="flex gap-3 items-center w-full">
 
                     <Button onClick={props.goToMenu} color="ring-red-200 text-white hover:bg-red-700 bg-red-600">
                         Retour au menu principal
@@ -86,7 +81,6 @@ export default function EndPage(props) {
 
                 </div>
 
-            </div>
             <ReactCanvasConfetti
             style={canvasStyles}
             // set the callback for getting instance. The callback will be called after initialization ReactCanvasConfetti component

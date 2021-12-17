@@ -49,7 +49,7 @@ export default function MainMenu(props){
     to-yellow-500
     background-animate">
 
-      <div className='w-full h-full bg-white bg-opacity-25 background-filter backdrop-blur-lg	flex items-center justify-center'>
+      <div className='w-full h-full bg-white bg-opacity-25 background-filter backdrop-blur-lg	flex items-center justify-center px-2'>
 
       {
         (showList)
@@ -128,7 +128,7 @@ function MenuContent(props) {
 
         <iframe className="mx-auto w-5xl " width="1200" height="600"
         src="https://www.youtube.com/embed/RhlQvbvMg-0"
-        title="YouTube video player" frameborder="0"
+        title="YouTube video player" frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         >
         </iframe>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: RoundResult</title>
+    <title>JSDoc: Class: BackButton</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: RoundResult</h1>
+    <h1 class="page-title">Class: BackButton</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>RoundResult<span class="signature">(key, item, say, number)</span><span class="type-signature"> &rarr; {JSX}</span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>BackButton<span class="signature">(onClick)</span><span class="type-signature"> &rarr; {JSX}</span></h2>
         
     
 </header>
@@ -41,7 +41,7 @@
     
 
     
-    <h4 class="name" id="RoundResult"><span class="type-signature"></span>new RoundResult<span class="signature">(key, item, say, number)</span><span class="type-signature"> &rarr; {JSX}</span></h4>
+    <h4 class="name" id="BackButton"><span class="type-signature"></span>new BackButton<span class="signature">(onClick)</span><span class="type-signature"> &rarr; {JSX}</span></h4>
     
 
     
@@ -49,7 +49,7 @@
 
 
 <div class="description">
-    <p>Résultat d'un round : Affichage d'un seul round</p>
+    <p>Bouton de retour : les boutons de retour de l'application</p>
 </div>
 
 
@@ -85,53 +85,7 @@
 
         <tr>
             
-                <td class="name"><code>key</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Id unique d'un resultat</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>item</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="RoundData.html">RoundData</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Donnée d'un seul round</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>say</code></td>
+                <td class="name"><code>onClick</code></td>
             
 
             <td class="type">
@@ -147,30 +101,7 @@
 
             
 
-            <td class="description last"><p>Fonction pour faire parler la synthèse vocale</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>number</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">int</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>le round actuel</p></td>
+            <td class="description last"><p>Fonction qui s'execute lorsqu'on clique sur le bouton</p></td>
         </tr>
 
     
@@ -211,7 +142,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_RoundResult.jsx.html">components/RoundResult.jsx</a>, <a href="components_RoundResult.jsx.html#line23">line 23</a>
+        <a href="components_BackButton.jsx.html">components/BackButton.jsx</a>, <a href="components_BackButton.jsx.html#line25">line 25</a>
     </li></ul></dd>
     
 
@@ -240,7 +171,7 @@
 
         
 <div class="param-desc">
-    <p>Le rendu jsx du resultat du round</p>
+    <p>Le rendu jsx du bouton de retour.</p>
 </div>
 
 
@@ -264,7 +195,7 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>&lt;RoundResult key={index} say={props.say} round={item} number={index+1} /></code></pre>
+    <pre class="prettyprint"><code>&lt;BackButton onClick={backToMenu}>Retour au menu principal&lt;/BackButton></code></pre>
 
 
 

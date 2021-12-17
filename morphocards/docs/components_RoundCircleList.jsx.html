@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: components/SpeakButton.jsx</title>
+    <title>JSDoc: Source: components/RoundCircleList.jsx</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: components/SpeakButton.jsx</h1>
+    <h1 class="page-title">Source: components/RoundCircleList.jsx</h1>
 
     
 
@@ -26,32 +26,64 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { VolumeUpIcon } from "@heroicons/react/outline";
-import React from "react";
+            <pre class="prettyprint source linenums"><code>import React from "react";
 
 
 /**
- * Bouton d'écoute : les petits boutons d'écoute dans les modals et résultat
+ * Liste de round : le placement (trou) où une carte doit être placé
  *
- * @component SpeakButton
+ * @component RoundList
  *
- * @param   {function} onClick  Fonction qui s'execute lorsqu'on clique sur le bouton
+ * @param   {RoundData[]} rounds  listes des rounds
+ * @param   {RoundData} actualRound  le round actuel
  *
  * @example
- * &lt;SpeakButton onClick={() => say(word)} />
+ * &lt;RoundList rounds={myRounds} actualRound={actualRound} />
  *
- * @return {JSX} Le rendu jsx du bouton de réecoute.
+ * @return {JSX} Le rendu jsx de la liste de round
  */
 
-function SpeakButton(props) {
+function RoundList(props) {
 
-    return(&lt;button onClick={props.onClick} className="h-5 w-5 text-indigo-500 transform transition duration-200 active:scale-95 hover:scale-110 hover:text-indigi-200 focus:ring rounded-full">
-          &lt;VolumeUpIcon />
-        &lt;/button>);
+    return (
+        &lt;div className="flex gap-2">
+            {
+                props.rounds.map((element, index) => {
+                    return &lt;RoundCircle key={index} round={element} isActive={(index === props.actualRound)} />
+                })
+            }
+        &lt;/div>
+
+    );
 
 }
 
-export default SpeakButton;
+function RoundCircle(props) {
+
+    function getColor() {
+       if (props.isActive) {
+           return "white filter drop-shadow-lg";
+       } else if(props.round.success) {
+           return "green-400";
+       } else if (props.round.success === false) {
+           return "red-400";
+       } else {
+           return "white bg-opacity-25";
+       }
+   }
+
+   return(
+       &lt;div>
+           &lt;div className="bg-red-400 hidden">&lt;/div>
+           &lt;div className="bg-green-400 hidden">&lt;/div>
+           &lt;div className={"bg-" + getColor() + " shadow-sm w-4 h-4 rounded-full"}>&lt;/div>
+       &lt;/div>
+   );
+
+}
+
+
+export default RoundList;
 </code></pre>
         </article>
     </section>

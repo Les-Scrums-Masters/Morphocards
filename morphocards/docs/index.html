@@ -49,6 +49,8 @@
 * MANSOURI Sofiane
 * GUTMANN Franck
 </code></pre>
+<h2><strong>Jouer</strong></h2>
+<p>Pour vous amusez, il suffit simplement d'aller sur le site : <a href="http://morphocards.franck-g.fr/">Morphocards</a></p>
 <h2><strong>🛠️ Installation en local</strong></h2>
 <h3><strong>Prérequis :</strong></h3>
 <ul>
@@ -64,20 +66,18 @@
 </code></pre>
 <h3><strong>3. Demarrer le serveur Node.js :</strong></h3>
 <p>Au sein du dossier <code>/morphocards</code>, executer la commande</p>
-<pre class="prettyprint source lang-bash"><code>node app
+<pre class="prettyprint source lang-bash"><code>npm run start
 </code></pre>
 <p>L'application est alors disponible depuis un navigateur à l'adresse <a href="http://localhost:3000/">http://localhost:3000/</a></p>
 <h2><strong>📃 Description du jeu</strong></h2>
 <p>MorphoCards est un jeu sérieux ludique qui a pour vocation de faire <em><strong>comprendre ce qu'est la dyslexie.</strong></em></p>
-<p><img src="./images/Menu_principal.png" alt="Menu principal"></p>
-<p>Il s'agit d'un jeu de cartes visuel. Le joueur se retrouvera avec une main de X cartes constituée de symboles représentant différents phonèmes. Le plateau de jeu, lui, contiendra une ou plusieurs cartes représentant différentes parties d'un mot, que le joueur devra compléter à l'aide des cartes de sa main. Lors de chaque manche, le joueur entendra le mot à compléter, et pourra le réécouter autant qu'il le souhaite. Le but du joueur sera donc de reconstituer le mot entendu à l'aide des cartes de sa main.</p>
-<p>Un clic sur une carte de sa main lui permettra d'écouter le son qu'elle représente. Si le joueur complète correctement le mot, il passe à la manche suivante. Sinon, il peut réesayer autant de fois qu'il le souhaite, mais il peut demander la correction après avoir fait au moins une erreur.</p>
-<p>Une partie se déroulera en 10 tours. L'objectif est de terminer la partie avec le meilleur temps possible. À chaque fois que le joueur demande une correction, une pénalité de temps sera ajoutée.</p>
-<p>Le joueur pourra donc se mettre à la place d'une personne dyslexique qui interprète un mot d'une manière différente.</p>
-<p><img src="./images/Mode_1.png" alt="Mode 1"></p>
+<p>Il s'agit d'un jeu de cartes visuel. Le joueur se retrouvera avec une main de 10 cartes constituée de symboles représentant différents phonèmes. Le plateau de jeu, lui, contiendra une ou plusieurs cartes représentant différentes parties d'un mot, que le joueur devra compléter à l'aide des cartes de sa main. Lors de chaque manche, le joueur entendra le mot à compléter, et pourra le réécouter autant qu'il le souhaite. Le but du joueur sera donc de reconstituer le mot entendu à l'aide des cartes de sa main.</p>
+<p>Un clic sur une carte de sa main lui permettra d'écouter le son qu'elle représente. Si le joueur complète correctement le mot, il passe à la manche suivante. Sinon, il peut soit réesayer autant de fois qu'il le souhaite jusqu'à reussir à réconstituer le bon soit passer au prochain mot.</p>
+<p>Une partie se déroulera en 5 tours. L'objectif est de terminer la partie avec le meilleur temps possible.</p>
+<p>Le joueur pourra donc se mettre à la place d'une personne dyslexique qui interprète les mots d'une manière différente.</p>
 <h2>Information supplémentaire</h2>
 <ul>
-<li><a href="DESCRIPTION.md">DESCRIPTION.md</a></li>
+<li><a href="https://git.unistra.fr/les-scrums-masters/foc21-t3-a/-/wikis/home">WIKI</a></li>
 </ul></article>
     </section>
 
@@ -89,13 +89,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Button.html">Button</a></li><li><a href="Card.html">Card</a></li><li><a href="CardPlacement.html">CardPlacement</a></li><li><a href="CardStatic.html">CardStatic</a></li><li><a href="GameBar.html">GameBar</a></li><li><a href="GameBoard.html">GameBoard</a></li><li><a href="Hand.html">Hand</a></li><li><a href="HandCardModel.html">HandCardModel</a></li><li><a href="Loading.html">Loading</a></li><li><a href="Modal.html">Modal</a></li><li><a href="MusicSound.html">MusicSound</a></li><li><a href="RoundButton.html">RoundButton</a></li><li><a href="RoundData.html">RoundData</a></li><li><a href="RoundList.html">RoundList</a></li><li><a href="RoundResult.html">RoundResult</a></li><li><a href="SpeakButton.html">SpeakButton</a></li><li><a href="Timer.html">Timer</a></li><li><a href="WordDisplay.html">WordDisplay</a></li><li><a href="WordModel.html">WordModel</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BackButton.html">BackButton</a></li><li><a href="Button.html">Button</a></li><li><a href="Card.html">Card</a></li><li><a href="CardPlacement.html">CardPlacement</a></li><li><a href="CardStatic.html">CardStatic</a></li><li><a href="GameBar.html">GameBar</a></li><li><a href="GameBoard.html">GameBoard</a></li><li><a href="Hand.html">Hand</a></li><li><a href="HandCardModel.html">HandCardModel</a></li><li><a href="Loading.html">Loading</a></li><li><a href="Modal.html">Modal</a></li><li><a href="MusicSound.html">MusicSound</a></li><li><a href="Notification.html">Notification</a></li><li><a href="RoundButton.html">RoundButton</a></li><li><a href="RoundData.html">RoundData</a></li><li><a href="RoundHistoryList.html">RoundHistoryList</a></li><li><a href="RoundList.html">RoundList</a></li><li><a href="RoundResult.html">RoundResult</a></li><li><a href="SpeakButton.html">SpeakButton</a></li><li><a href="Timer.html">Timer</a></li><li><a href="WordDisplay.html">WordDisplay</a></li><li><a href="WordModel.html">WordModel</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu Dec 16 2021 17:08:21 GMT+0100 (heure normale d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Dec 17 2021 01:06:47 GMT+0100 (heure normale d’Europe centrale)
 </footer>
 
 <script> prettyPrint(); </script>

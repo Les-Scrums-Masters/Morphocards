@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Card</title>
+    <title>JSDoc: Class: AppLogo</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Card</h1>
+    <h1 class="page-title">Class: AppLogo</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Card<span class="signature">(index, key, card, say)</span><span class="type-signature"> &rarr; {JSX}</span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>AppLogo<span class="signature">(onClick)</span><span class="type-signature"> &rarr; {JSX}</span></h2>
         
     
 </header>
@@ -41,7 +41,7 @@
     
 
     
-    <h4 class="name" id="Card"><span class="type-signature"></span>new Card<span class="signature">(index, key, card, say)</span><span class="type-signature"> &rarr; {JSX}</span></h4>
+    <h4 class="name" id="AppLogo"><span class="type-signature"></span>new AppLogo<span class="signature">(onClick)</span><span class="type-signature"> &rarr; {JSX}</span></h4>
     
 
     
@@ -49,7 +49,7 @@
 
 
 <div class="description">
-    <p>Carte : la carte qui peut être glisser et déposer</p>
+    <p>Logo de l'application</p>
 </div>
 
 
@@ -85,76 +85,7 @@
 
         <tr>
             
-                <td class="name"><code>index</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">int</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Numero de carte</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>key</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Id unique de la carte (Mot du round + numero)</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>card</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="HandCardModel.html">HandCardModel</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Modèle de la carte qui contient toutes les données</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>say</code></td>
+                <td class="name"><code>onClick</code></td>
             
 
             <td class="type">
@@ -170,7 +101,7 @@
 
             
 
-            <td class="description last"><p>Fonction pour faire parler la synthèse vocale</p></td>
+            <td class="description last"><p>Fonction qui s'execute lorsqu'on clique sur le logo</p></td>
         </tr>
 
     
@@ -211,7 +142,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_Card.jsx.html">components/Card.jsx</a>, <a href="components_Card.jsx.html#line21">line 21</a>
+        <a href="components_AppLogo.jsx.html">components/AppLogo.jsx</a>, <a href="components_AppLogo.jsx.html#line17">line 17</a>
     </li></ul></dd>
     
 
@@ -240,7 +171,7 @@
 
         
 <div class="param-desc">
-    <p>Le rendu jsx de la carte.</p>
+    <p>Le rendu jsx du logo de l'application.</p>
 </div>
 
 
@@ -264,7 +195,7 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>&lt;Card index={index} key={item.uniqueId} card={item} say={props.say}/></code></pre>
+    <pre class="prettyprint"><code>&lt;AppLogo onClick={props.openMenu} /></code></pre>
 
 
 

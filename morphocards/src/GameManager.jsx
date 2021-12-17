@@ -432,7 +432,7 @@ export default function GameManager(props) {
   return (
     <div className='game-bg w-full h-screen fixed'>
       {
-        (rounds.length > 0 && preferredVoice)
+        (rounds.length > 0 && preferredVoice == null)
         // Si les componsants sont chargés et qu'il y a des voix disponibles, afficher le jeu
         ? (
           <div className="w-full h-full overscroll-none overflow-hidden flex flex-col">

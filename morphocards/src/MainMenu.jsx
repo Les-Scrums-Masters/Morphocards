@@ -2,7 +2,7 @@ import { ArrowRightIcon, InformationCircleIcon } from '@heroicons/react/outline'
 import React, {useEffect, useState} from 'react';
 import {isMobile} from 'react-device-detect';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-
+import TextAnimation from 'react-animate-text';
 
 import Firebase from "./Firebase";
 import Button from './components/Button';
@@ -157,7 +157,7 @@ function MenuContent(props) {
 
         <img src="/logo512.png" className='h-36 w-36 mx-auto' alt="Morphocards Logo" />
 
-        <h1 className="text-4xl text-gray-900 text-center"><span className="font-extrabold">Morpho</span>cards</h1>
+        <h1 className="text-4xl text-gray-900 text-center"><span className="font-extrabold">Morpho</span><TextAnimation>cards</TextAnimation></h1>
 
         <div className='flex flex-row justify-center items-center gap-2'>
           <p className='text-center text-gray-800'>Jouer à Morphocards vous permet de comprendre ce qu'est la dyslexie !

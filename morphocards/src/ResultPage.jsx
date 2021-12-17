@@ -139,8 +139,8 @@ function TimeDisplay(props) {
 
     return (
         <div className={"text-gray-500 flex gap-2 items-center " + props.additionnalStyle}>
-        <ClockIcon className="h-4 w-4" />
-        <p>{Firebase.getTime(props.time)}</p>
+            <ClockIcon className="h-4 w-4" />
+            <p>{Firebase.getTime(props.time)}</p>
         </div>
     );
 

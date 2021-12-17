@@ -39,13 +39,16 @@ function Leaderboard(props) {
     let gap = (data === null) ? "gap-3" : "gap-0";
 
     return (
-        <div className={"pt-2 flex flex-col divide-y " + gap}>
-        {(data === null)
-            ? (
-                loadingTab.map((index) => <div key={"loading"+index} className="w-52 bg-gray-900 opacity-30 h-4 rounded animate-pulse "></div>)
-            )
-            : data.map(((element, index) => <LeaderboardItem position={index+1} key={index} item={element} />))
-        }
+        <div>
+            <p className="italic text-gray-800 mb-3">Seules les parties sans fautes sont classées !</p>
+            <div className={"pt-2 flex flex-col divide-y " + gap}>
+            {(data === null) 
+                ? (
+                    loadingTab.map((index) => <div key={"loading"+index} className="w-52 bg-gray-900 opacity-30 h-4 rounded animate-pulse "></div>)
+                )
+                : data.map(((element, index) => <LeaderboardItem position={index+1} key={index} item={element} />))
+            }
+            </div>
         </div>
     );
 
@@ -54,7 +57,7 @@ function Leaderboard(props) {
 function LeaderboardItem(props) {
 
     return (
-        <div className="flex gap-2 items-center text-black w-full py-1">
+        <div className="flex gap-2 items-center text-black w-full py-2">
             <p className="font-bold w-12 text-right">{"#"+props.position}</p>
             <p className="flex-1 text-left">{props.item.name}</p>
             <p className="italic font-bold">{Firebase.getTime(props.item.time)}</p>

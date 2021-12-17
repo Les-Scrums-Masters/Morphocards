@@ -18,7 +18,7 @@ import { Dialog, Transition } from '@headlessui/react'
  *     //modalContent
  * </Modal>
  *
- * @return {JSX} Le rendu jsx de la main
+ * @return {JSX} Le rendu jsx de la modal
  */
 function Modal(props) {
 

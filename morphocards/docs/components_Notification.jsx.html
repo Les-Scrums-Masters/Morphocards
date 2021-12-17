@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: components/SpeakButton.jsx</title>
+    <title>JSDoc: Source: components/Notification.jsx</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: components/SpeakButton.jsx</h1>
+    <h1 class="page-title">Source: components/Notification.jsx</h1>
 
     
 
@@ -26,32 +26,51 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { VolumeUpIcon } from "@heroicons/react/outline";
-import React from "react";
+            <pre class="prettyprint source linenums"><code>import React, { Fragment, useState } from 'react'
 
 
 /**
- * Bouton d'écoute : les petits boutons d'écoute dans les modals et résultat
+ * Notification : la notification qui indique des informations au joueur
  *
- * @component SpeakButton
+ * @component Notification
  *
- * @param   {function} onClick  Fonction qui s'execute lorsqu'on clique sur le bouton
+ * @param   {bool} open  Etat de la notification (ouvert/fermé)
+ * @param   {function} closeNotification  Fonction pour faire disparaitre la notification
  *
  * @example
- * &lt;SpeakButton onClick={() => say(word)} />
+ * &lt;Notification open={openNotification} closeNotification={closeNotification} />
  *
- * @return {JSX} Le rendu jsx du bouton de réecoute.
+ * @return {JSX} Le rendu jsx de la notification
  */
+function Notification(props) {
 
-function SpeakButton(props) {
+  return (
 
-    return(&lt;button onClick={props.onClick} className="h-5 w-5 text-indigo-500 transform transition duration-200 active:scale-95 hover:scale-110 hover:text-indigi-200 focus:ring rounded-full">
-          &lt;VolumeUpIcon />
-        &lt;/button>);
+    props.open === true
+    ?
+    (
+
+    &lt;div className="pl-3 w-64 bg-white rounded-md drop-shadow-xl border-2 border-red-500 absolute right-10 bottom-1/4 p-4">
+    &lt;div className="flex items-center justify-between w-full">
+        &lt;p className="text-sm leading-none">
+            &lt;span className="text-red-500 text-bold">Alert :&lt;/span> Vous devez remplir toutes les cases en priorité
+        &lt;/p>
+        &lt;button className="cursor-pointer" onClick={ props.closeNotification }>
+            &lt;svg width={14} height={14} viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                &lt;path d="M10.5 3.5L3.5 10.5" stroke="#4B5563" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+                &lt;path d="M3.5 3.5L10.5 10.5" stroke="#4B5563" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+            &lt;/svg>
+        &lt;/button>
+      &lt;/div>
+      &lt;p className="text-xs leading-3 pt-1 text-gray-500">Remplissez tous les emplacements&lt;/p>
+  &lt;/div>
+  )
+    : ""
+  );
 
 }
 
-export default SpeakButton;
+export default Notification;
 </code></pre>
         </article>
     </section>

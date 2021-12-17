@@ -2,22 +2,17 @@ import React, { Fragment, useState } from 'react'
 
 
 /**
- * Boîte de dialogue : la boîte de dialogue qui apparait par dessus l'écran principal
+ * Notification : la notification qui indique des informations au joueur
  *
- * @component Modal
+ * @component Notification
  *
- * @param   {bool} open  Etat du modal (ouvert/fermé)
- * @param   {string} emoji  Emoji affiché dans la boîte de dialogue
- * @param   {string} title   Titre affiché dans la boîte de dialgoue
- * @param   {Button[]} buttons  Liste de boutons a mettre dans la boîte de dialogue
- * @param   {function} onClose  Référence du composant
+ * @param   {bool} open  Etat de la notification (ouvert/fermé)
+ * @param   {function} closeNotification  Fonction pour faire disparaitre la notification
  *
  * @example
- * <Modal open={modalOpen} emoji={modalEmoji} title={modalTitle} buttons={Buttons} onClose={closeModal}>
- *     //modalContent
- * </Modal>
+ * <Notification open={openNotification} closeNotification={closeNotification} />
  *
- * @return {JSX} Le rendu jsx de la main
+ * @return {JSX} Le rendu jsx de la notification
  */
 function Notification(props) {
 

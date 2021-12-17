@@ -9,7 +9,7 @@ function LeaderboardPreview(props) {
     useEffect(()=> {
 
         async function getData() {
-            let result = await Firebase.getLeaderboard();
+            let result = await Firebase.getLeaderboard(10);
             setData(result);
         }
 
@@ -30,9 +30,9 @@ function LeaderboardPreview(props) {
             <div className="pt-2 flex flex-col gap-2">
             {(data === null) 
                 ? (
-                    loadingTab.map((index) => <div className="w-52 bg-white opacity-30 h-4 rounded animate-pulse "></div>)
+                    loadingTab.map((index) => <div className="w-64 bg-white opacity-30 h-4 rounded animate-pulse " key={"loading"+index}></div>)
                 )
-                : data.map(((element, index) => <LeaderboardPreviewItem position={index} key={index} item={element} />))
+                : data.map(((element, index) => <LeaderboardPreviewItem position={index+1} key={element.name+index} item={element} />))
             }
             </div>
             </div>
@@ -44,9 +44,10 @@ function LeaderboardPreview(props) {
 function LeaderboardPreviewItem(props) {
 
     return (
-        <div className="flex gap-2 items-center text-white w-52">
-            <p className="font-semibold flex-1">{props.item.name}</p>
-            <p className="italic">{Firebase.getTime(props.item.time)}</p>
+        <div className="flex gap-2 items-center text-white w-64">
+            <p className="font-bold w-12 text-right">{"#"+props.position}</p>
+            <p className="flex-1">{props.item.name}</p>
+            <p className="italic font-bold">{Firebase.getTime(props.item.time)}</p>
         </div>
     );
 

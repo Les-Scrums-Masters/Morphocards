@@ -1,4 +1,4 @@
-import { ArrowRightIcon, InformationCircleIcon } from '@heroicons/react/outline';
+import { AcademicCapIcon, ArrowRightIcon, InformationCircleIcon, StarIcon } from '@heroicons/react/outline';
 import React, {useEffect, useState} from 'react';
 import {isMobile} from 'react-device-detect';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
@@ -11,6 +11,7 @@ import ResultPage from './ResultPage';
 import AppLogo from "./components/AppLogo"
 import LeaderboardPreview from './components/LeaderboardPreview';
 import Modal from './components/Modal'
+import Leaderboard from './components/Leaderboard';
 
 export default function MainMenu(props){
 
@@ -119,7 +120,7 @@ function MenuContent(props) {
     setModalOpen(true);
   }
 
-  let showTutorialModal = () => {
+  const showTutorialModal = () => {
     if(!isMobile){
       setModalEmoji( null );
       setModalTitle("Tutoriel");
@@ -149,10 +150,31 @@ function MenuContent(props) {
   }
 
   // Fonction de fermeture de la boite de dialogue
-  let closeModal = () => setModalOpen(false);
+  const closeModal = () => setModalOpen(false);
+
+  // Fonction d'ouverture du classement complet
+  const openLeaderboardModal = () => {
+    setModalEmoji( null );
+    setModalTitle("Classement");
+    setModalContent(
+      <Leaderboard />
+    )
+
+    setButtons(
+      <Button onClick={() => setModalOpen(false)} color="ring-green-200 text-white hover:bg-green-700 active:bg-green-900 bg-green-600">
+        C'est noté !
+      </Button>
+    )
+    setModalWidth("sm:max-w-lg sm:w-full");
+    setModalOpen(true);
+  }
 
   return (
-    <div className='w-auto md:w-4/12 rounded-xl bg-white shadow-md p-6 mx-auto flex flex-col justify-center gap-5'>
+    <div className='w-auto md:w-4/12 rounded-xl bg-white shadow-md p-6 mx-auto flex flex-col justify-center gap-3'>
+
+      <Modal open={modalOpen} emoji={modalEmoji} title={modalTitle} buttons={Buttons} onClose={closeModal} paddingY={"py-4"} maxW={modalWidth}>
+            {modalContent}
+      </Modal>
 
         <img src="/logo512.png" className='h-36 w-36 mx-auto' alt="Morphocards Logo" />
 
@@ -166,13 +188,8 @@ function MenuContent(props) {
           </button>
         </div>
 
-        <Modal open={modalOpen} emoji={modalEmoji} title={modalTitle} buttons={Buttons} onClose={closeModal} paddingY={"py-4"} maxW={modalWidth}>
-            {modalContent}
-        </Modal>
-
-
         <div className='flex items-center justify-center mt-5 h-20'>
-          <Button onClick={props.play} color='bg-indigo-500 text-white ring-indigo-200 hover:bg-indigo-400 active:bg-indigo-800' paddingY="py-3 hover:px-6 my-1 hover:my-0 hover:py-4" textSize="text-lg">
+          <Button onClick={props.play} color='bg-indigo-500 text-white ring-indigo-200 hover:bg-indigo-400 active:bg-indigo-800' paddingY="py-4 hover:px-6 my-1 hover:my-0 hover:py-5" textSize="text-lg">
             <div className='flex-1'></div>
             Jouer
             <div className='flex-1 flex justify-end'>
@@ -186,10 +203,17 @@ function MenuContent(props) {
             <div className='flex-1'></div>
             Tutoriel
             <div className='flex-1 flex justify-end'>
-              <ArrowRightIcon className='h-8 w-8'/>
+              <AcademicCapIcon className='h-6 w-6'/>
             </div>
-          </Button>
-        </div>
+        </Button>
+
+        <Button onClick={openLeaderboardModal} color='bg-indigo-500 text-indigo-500 bg-opacity-10 ring-indigo-200 hover:bg-opacity-20 active:bg-opacity-30' textSize="text-lg">
+            <div className='flex-1'></div>
+            Classement
+            <div className='flex-1 flex justify-end'>
+              <StarIcon className='h-6 w-6'/>
+            </div>
+        </Button>
 
         <div className='mt-5' >
         {

@@ -96,7 +96,7 @@ function GameItem(props) {
                 </p>
                 <div className="flex gap-1 sm:gap-3 flex-col sm:flex-row w-full text-center sm:text-left justify-center sm:justify-start">
                     <p className="italic font-medium">{props.game.successes+"/"+props.game.rounds.length}</p>
-                    <TimeDisplay time={props.game.time} />
+                    <TimeDisplay time={props.game.time} additionnalStyle="sm:flex-1"/>
                     <DateDisplay date={props.game.date} />
                 </div>
             
@@ -138,7 +138,7 @@ function DateDisplay(props) {
 function TimeDisplay(props) {
 
     return (
-        <div className="text-gray-500 flex gap-2 items-center">
+        <div className={"text-gray-500 flex gap-2 items-center " + props.additionnalStyle}>
         <ClockIcon className="h-4 w-4" />
         <p>{Firebase.getTime(props.time)}</p>
         </div>

@@ -60,8 +60,7 @@ export default function MainMenu(props){
           ( <MusicSound sound={props.sound} additionnalStyle="absolute right-10 top-8" />)
           : ""
       }
-
-      { showList 
+      { showList
         ? (<AppLogo onClick={backToMenu} additionnalStyle="absolute top-8 left-10"/>)
         : ""}
 

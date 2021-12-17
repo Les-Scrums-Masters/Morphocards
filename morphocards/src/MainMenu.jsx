@@ -172,7 +172,7 @@ function MenuContent(props) {
         </div>
 
         <div className='flex items-center justify-center mt-5 h-10'>
-          <Button onClick={showTutorialModal} color='bg-white text-indigo-200 ring-indigo-200 hover:bg-indigo-400 active:bg-indigo-600' paddingY="py-3 hover:px-6 my-1 hover:my-0 hover:py-4" textSize="text-lg">
+          <Button onClick={showTutorialModal} color='bg-white text-indigo-200 ring-indigo-200 hover:bg-indigo-400 active:bg-indigo-600' paddingY="py-3 hover:px-6  my-1 hover:my-0 hover:py-4 active:px-10" textSize="text-lg">
             <div className='flex-1'></div>
             Tutoriel
             <div className='flex-1 flex justify-end'>

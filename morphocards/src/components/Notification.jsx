@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
+import React from 'react'
+import { Transition } from '@headlessui/react'
 
 /**
  * Notification : la notification qui indique des informations au joueur

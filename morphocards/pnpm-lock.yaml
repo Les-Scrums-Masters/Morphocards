@@ -73,7 +73,7 @@ dependencies:
     version: 5.0.0
   vite-tsconfig-paths:
     specifier: ^4.2.1
-    version: 4.2.1(vite@5.0.0)
+    version: 4.2.1(typescript@5.3.2)(vite@5.0.0)
   web-vitals:
     specifier: ^1.1.2
     version: 1.1.2
@@ -88,6 +88,9 @@ devDependencies:
   tailwindcss:
     specifier: ^3.3.5
     version: 3.3.5
+  typescript:
+    specifier: ^5.3.2
+    version: 5.3.2
 
 packages:
 
@@ -3906,7 +3909,7 @@ packages:
     resolution: {integrity: sha512-vDWbsl26LIcPGmDpoVzjEP6+hvHZkBkLW7JpvwbCv/5IYPJlsbzCVXY3wsCeAxAUeTclNOUZxnLdGh3VBD/J6w==}
     dev: false
 
-  /tsconfck@2.1.2:
+  /tsconfck@2.1.2(typescript@5.3.2):
     resolution: {integrity: sha512-ghqN1b0puy3MhhviwO2kGF8SeMDNhEbnKxjK7h6+fvY9JAxqvXi8y5NAHSQv687OVboS2uZIByzGd45/YxrRHg==}
     engines: {node: ^14.13.1 || ^16 || >=18}
     hasBin: true
@@ -3915,6 +3918,8 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+    dependencies:
+      typescript: 5.3.2
     dev: false
 
   /tslib@2.6.2:
@@ -3932,6 +3937,11 @@ packages:
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: false
+
+  /typescript@5.3.2:
+    resolution: {integrity: sha512-6l+RyNy7oAHDfxC4FzSJcz9vnjTKxrLpDG5M2Vu4SHRVNg6xzqZp6LYSR9zjqQTu8DU/f5xwxUdADOkbrIX2gQ==}
+    engines: {node: '>=14.17'}
+    hasBin: true
 
   /ua-parser-js@1.0.37:
     resolution: {integrity: sha512-bhTyI94tZofjo+Dn8SN6Zv8nBDvyXTymAdM3LDI/0IboIUwTu1rEhW7v2TfiVsoYWgkQ4kOVqnI8APUFbIQIFQ==}
@@ -4006,7 +4016,7 @@ packages:
       convert-source-map: 2.0.0
     dev: false
 
-  /vite-tsconfig-paths@4.2.1(vite@5.0.0):
+  /vite-tsconfig-paths@4.2.1(typescript@5.3.2)(vite@5.0.0):
     resolution: {integrity: sha512-GNUI6ZgPqT3oervkvzU+qtys83+75N/OuDaQl7HmOqFTb0pjZsuARrRipsyJhJ3enqV8beI1xhGbToR4o78nSQ==}
     peerDependencies:
       vite: '*'
@@ -4016,7 +4026,7 @@ packages:
     dependencies:
       debug: 4.3.4
       globrex: 0.1.2
-      tsconfck: 2.1.2
+      tsconfck: 2.1.2(typescript@5.3.2)
       vite: 5.0.0
     transitivePeerDependencies:
       - supports-color

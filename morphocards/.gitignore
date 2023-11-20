@@ -27,3 +27,5 @@ yarn-error.log*
 sonar-projet.properties
 
 package-lock.json
+
+.env

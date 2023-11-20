@@ -10,41 +10,36 @@
 
 Pour vous amusez, il suffit simplement d'aller sur le site : **[Morphocards](http://morphocards.franck-g.fr/)**
 
-
 ## **🛠️ Installation en local**
 
 ### **Prérequis :**
 
 - [Node.js](https://nodejs.org/) (min v16)
-- [npm](http://www.npmjs.com)
+- [pnpm](https://pnpm.io/fr/)
 
 ### **1. Cloner le repos :**
-
-```bash
-git clone https://git.unistra.fr/les-scrums-masters/foc21-t3-a.git
-```
 
 ### **2. Installer les dépendances Node.js :**
 
 Au sein du dossier `/morphocards`, executer la commande
+
 ```bash
-npm install
+pnpm install
 ```
 
 ### **3. Demarrer le serveur Node.js :**
 
 Au sein du dossier `/morphocards`, executer la commande
+
 ```bash
-npm run start
+^pnpm start
 ```
 
 L'application est alors disponible depuis un navigateur à l'adresse [http://localhost:3000/](http://localhost:3000/)
 
-
 ## **📃 Description du jeu**
 
-MorphoCards est un jeu sérieux ludique qui a pour vocation de faire ***comprendre ce qu'est la dyslexie.***
-
+MorphoCards est un jeu sérieux ludique qui a pour vocation de faire **_comprendre ce qu'est la dyslexie._**
 
 Il s'agit d'un jeu de cartes visuel. Le joueur se retrouvera avec une main de 10 cartes constituée de symboles représentant différents phonèmes. Le plateau de jeu, lui, contiendra une ou plusieurs cartes représentant différentes parties d'un mot, que le joueur devra compléter à l'aide des cartes de sa main. Lors de chaque manche, le joueur entendra le mot à compléter, et pourra le réécouter autant qu'il le souhaite. Le but du joueur sera donc de reconstituer le mot entendu à l'aide des cartes de sa main.
 
@@ -55,7 +50,6 @@ Une partie se déroulera en 5 tours. L'objectif est de terminer la partie avec l
 Le joueur pourra donc se mettre à la place d'une personne dyslexique qui interprète les mots d'une manière différente.
 
 À la fin, le joueur pourra voir le récapitulatif de sa partie.
-
 
 ## **📷 Galerie**
 
@@ -122,7 +116,6 @@ Le joueur pourra donc se mettre à la place d'une personne dyslexique qui interp
     </tbody>
 </table>
 
-
-
 ## Information supplémentaire
--  [WIKI](https://git.unistra.fr/les-scrums-masters/foc21-t3-a/-/wikis/home)
+
+- [WIKI](https://git.unistra.fr/les-scrums-masters/foc21-t3-a/-/wikis/home)
